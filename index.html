@@ -1,14 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>My Web Page</title>
-        <link rel="stylesheet" href="styles.css">
-    </head>
-    <body>
-        <header>
-            <h1>Welcome to My Web Page</h1>
-        </header>
-    </body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Henrique Corneau</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+  <div class="wrap">
+
+    <header>
+      <div class="brand">
+        <div class="logo">HC</div>
+        <h1>Henrique Corneau</h1>
+      </div>
+      <nav>
+        <a href="#projects">Projects</a>
+        <a href="#papers">Papers</a>
+        <a href="#about">About</a>
+        <a href="#contact">Contact</a>
+        <a href="assets/resume_henrique_corneau.pdf" download>Resume</a>
+      </nav>
+    </header>
+
+    <!-- Projects -->
+    <section id="projects" class="projects">
+      <h2>Projects</h2>
+      <div class="grid">
+        <a href="project1.html" class="proj">
+          <img src="img/project1.jpg" alt="Boat Vision">
+          <h3>Boat Vision</h3>
+          <p>Calculating the global coordinates of detected objects by fusing data from YOLO, a stereo camera, an IMU, and GPS.</p>
+        </a>
+        <a href="project2.html" class="proj">
+          <img src="img/project2.jpg" alt="Tello Hand Control">
+          <h3>Tello Hand Control</h3>
+          <p>Real-Time Hand Gesture Detection for Drone Control.</p>
+        </a>
+        <a href="project3.html" class="proj">
+          <img src="img/project3.jpg" alt="Rasp-Tello ROS">
+          <h3>Rasp-Tello ROS</h3>
+          <p>HTTP-to-ROS2 Bridge for DJI Tello Drone Control Using a Raspberry Pi Pico.</p>
+        </a>
+        <a href="project4.html" class="proj">
+          <img src="img/project4.jpg" alt="Tello Tracking">
+          <h3>Tello Tracking</h3>
+          <p>Real-Time Object Tracking with a Drone Using PID Control and YOLO.</p>
+        </a>
+        <a href="project5.html" class="proj">
+          <img src="img/project5.jpg" alt="Arduino Drone">
+          <h3>Arduino Drone</h3>
+          <p>An Arduino-based drone using AVR-C and FreeRTOS, controlled by a radio control (RC) transmitter.</p>
+        </a>
+        <a href="project6.html" class="proj">
+          <img src="img/project6.jpg" alt="Keyboard ROS drone control">
+          <h3>Keyboard ROS drone control</h3>
+          <p>Controlling a simulated drone with a keyboard using ROS2 and Gazebo.</p>
+        </a>
+        <a href="project7.html" class="proj">
+          <img src="img/project7.jpg" alt="Tank Secure">
+          <h3>Tank Secure</h3>
+          <p>Real-Time Water Management System using Raspberry Pi Pico W and RFID.</p>
+        </a>
+        <a href="project8.html" class="proj">
+          <img src="img/project8.jpg" alt="Signal Generator">
+          <h3>Signal Generator</h3>
+          <p>An Arduino-based signal generator developed in AVR-C running on the FreeRTOS operating system.</p>
+        </a>
+        <a href="project9.html" class="proj">
+          <img src="img/project9.jpg" alt="Spectrum Analyzer">
+          <h3>Spectrum Analyzer</h3>
+          <p>Real-Time Audio Spectrum Analyzer using Raspberry Pi Pico W and FFT.</p>
+        </a>
+        <a href="project10.html" class="proj">
+          <img src="img/project10.jpg" alt="Motion Detector">
+          <h3>Motion Detector</h3>
+          <p>A motion detector system using an ESP32 and a mini Passive Infrared (PIR) sensor.</p>
+        </a>
+        <a href="project11.html" class="proj">
+          <img src="img/project11.jpg" alt="Robotic Vision Library">
+          <h3>Robotic Vision Library</h3>
+          <p>A repository containing robotic vision activities, with computer vision techniques implemented from scratch.</p>
+        </a>
+      </div>
+    </section>
+
+    <!-- Papers -->
+    <section id="papers" class="papers">
+      <h2>Academic Publications</h2>
+      <div class="paper-list">
+        <article class="paper">
+          <h3>Drone-Based Object Tracking with Convolutional Neural Networks</h3>
+          <p><strong>Authors:</strong> Ramon Souza, Henrique Corneau, Murilo Barros, Vinícius Silva, César Melo, Helton
+Maia</p>
+          <p><strong>Ano:</strong> 2024</p>
+          <a href="https://www.even3.com.br/anais/cobicet2024/884110-drone-based-object-tracking-with-convolutional-neural-networks/" target="_blank">Read Publication</a>
+        </article>
+        <article class="paper">
+          <h3>Drone Controlado por Gestos Manuais Classificados por Rede Neural</h3>
+          <p><strong>Authors:</strong> Henrique Corneau, Ramon Souza, João Victor de Andrade, Bruno Silva.</p>
+          <p><strong>Ano:</strong> 2025</p>
+          <a href="https://periodicos.ufersa.edu.br/ecop/article/view/14093" target="_blank">Read Publication</a>
+        </article>
+      </div>
+    </section>
+
+    <!-- Sobre -->
+    <section id="about">
+    <div class="about-text">
+        <h2>About</h2>
+        <p>Sou Henrique Corneau, estudante de Engenharia Mecatrônica, apaixonado por tecnologia, automação e desenvolvimento de soluções inovadoras.</p>
+    </div>
+    <img src="img/minha-foto.jpg" alt="Minha Foto">
+    </section>
+
+
+    <!-- Contato -->
+    <section id="contact" class="contact">
+      <div class="contact-content">
+        <div class="social-links">
+          <a href="https://github.com/seuusuario" target="_blank"><i class="fab fa-github"></i></a>
+          <a href="https://linkedin.com/in/seuusuario" target="_blank"><i class="fab fa-linkedin"></i></a>
+          <a href="https://instagram.com/seuusuario" target="_blank"><i class="fab fa-instagram"></i></a>
+          <a href="https://youtube.com/seuusuario" target="_blank"><i class="fab fa-youtube"></i></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <p>&copy; 2025 Meu Nome</p>
+    </footer>
+
+  </div>
+</body>
 </html>
