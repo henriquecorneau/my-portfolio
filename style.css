@@ -24,28 +24,28 @@
 
 #about {
   display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 20px;
+  align-items: center; /* Mantém o alinhamento vertical no centro */
+  justify-content: space-between; /* <-- Mude aqui! */
+  gap: 50px; /* Reduzi um pouco o gap para o caso de telas menores, ajuste se necessário */
 
-  background: none; /* sem fundo branco */
+  background: none;
   padding: 20px;
   border: none;
   max-width: 800px;
-  margin: 40px auto;
+  margin: 10px auto; /* 'auto' na margem horizontal ajuda a centralizar o container #about na página */
   text-align: left;
 }
 
 #about img {
-  width: 140px;
-  height: 140px;
+  width: 350px;  /* Ajustei o tamanho para caber melhor com o gap e o max-width */
+  height: 350px;
   border-radius: 50%;
   object-fit: cover;
   border: 3px solid var(--accent);
 }
 
 #about .about-text {
-  flex: 1;
+  flex: 1; /* Permite que o container de texto cresça e ocupe o espaço disponível */
 }
 
 
