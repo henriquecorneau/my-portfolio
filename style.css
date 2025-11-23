@@ -250,3 +250,57 @@ footer {
   margin-top: 16px;
   border-radius: 8px;
 }
+
+/* Container do Dropdown */
+.dropdown {
+  display: inline-block;
+  position: relative;
+}
+
+/* Estilo do Botão para parecer um link normal da Nav */
+.dropdown .dropbtn {
+  background-color: transparent;
+  border: none;
+  color: inherit; /* Pega a cor definida na sua nav */
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+  padding: 0 10px; /* Ajuste conforme o espaçamento dos seus outros links */
+
+}
+
+/* Conteúdo do menu (escondido por padrão) */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9; /* Cor de fundo do menu */
+  min-width: 120px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  right: 0; /* Alinha o menu à direita do botão */
+  border-radius: 4px;
+}
+
+/* Links dentro do dropdown */
+.dropdown-content a {
+  color: black; /* Cor do texto das opções */
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+/* Cor ao passar o mouse nas opções */
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+}
+
+/* Mostrar o menu ao passar o mouse no container */
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Opcional: Mudar cor do botão principal ao abrir */
+.dropdown:hover .dropbtn {
+  opacity: 0.8; 
+}
