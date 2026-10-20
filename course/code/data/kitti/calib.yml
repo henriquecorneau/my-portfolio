@@ -1,0 +1,8 @@
+%YAML:1.0
+# KITTI odometry, sequence 00, left grayscale camera (P0). Images are already rectified,
+# so the distortion is zero.
+K: !!opencv-matrix
+   rows: 3
+   cols: 3
+   dt: d
+   data: [ 718.856, 0., 607.1928, 0., 718.856, 185.2157, 0., 0., 1. ]

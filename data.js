@@ -208,6 +208,134 @@
     },
 
     {
+      slug: 'stereo-dynamic-programming',
+      year: 2026,
+      cats: ['vision'],
+      cover: 'assets/img/projects/stereo-dp.jpg',
+      title: { en: 'Stereo Matching with Dynamic Programming', pt: 'Visão Estéreo com Programação Dinâmica' },
+      summary: {
+        en: 'Dense stereo matching from scratch, inspired by Ohta & Kanade: each image row is solved as a shortest path on a graph, with an inter-scanline prior for consistency.',
+        pt: 'Correspondência estéreo densa feita do zero, inspirada em Ohta & Kanade: cada linha da imagem é resolvida como um caminho mínimo em um grafo, com uma restrição entre linhas para dar consistência.'
+      },
+      context: {
+        en: 'Developed during my exchange year at INSA Rouen Normandie (2025 – 2026).',
+        pt: 'Desenvolvido durante o intercâmbio no INSA Rouen Normandie (2025 – 2026).'
+      },
+      stack: ['Python', 'NumPy', 'Dynamic Programming', 'OpenCV', 'Matplotlib', 'pytest'],
+      links: [{ label: 'stereo-method-scratch', href: ME + 'stereo-method-scratch', primary: true }],
+      hero: { type: 'image', src: 'assets/img/gallery/stereo-comparison.jpg' },
+      overview: {
+        en: [
+          'Given two rectified images of the same scene, the goal is to find, for every pixel of the left image, how far its match is shifted in the right image. This shift — the disparity — is inversely proportional to depth, so the result is a dense depth map.',
+          'The method follows the idea of Ohta & Kanade (1985): every image row is a graph whose nodes are (column, disparity) pairs, and the best disparity profile is the cheapest path through it, found with dynamic programming. The row above is then used as a prior, which removes the horizontal streaks of purely row-by-row methods. OpenCV\'s StereoSGBM is used as a baseline.'
+        ],
+        pt: [
+          'Dadas duas imagens retificadas da mesma cena, o objetivo é descobrir, para cada pixel da imagem esquerda, o quanto o seu correspondente está deslocado na imagem direita. Esse deslocamento — a disparidade — é inversamente proporcional à profundidade, então o resultado é um mapa de profundidade denso.',
+          'O método segue a ideia de Ohta & Kanade (1985): cada linha da imagem é um grafo cujos nós são pares (coluna, disparidade), e o melhor perfil de disparidades é o caminho mais barato por ele, encontrado com programação dinâmica. A linha de cima é usada como referência, o que elimina as listras horizontais dos métodos que tratam cada linha isoladamente. O StereoSGBM do OpenCV é usado como base de comparação.'
+        ]
+      },
+      steps: {
+        en: [
+          'Matching cost: for each row, compare pixel x of the left image with pixel x − d of the right image for every disparity d; pixels without a valid match get an occlusion cost.',
+          'Intra-scanline search: dynamic programming finds the cheapest path along the row, where changing disparity between neighbouring pixels costs a penalty P_h.',
+          'Backtracking from the cheapest final node recovers the disparity of every pixel of the row.',
+          'Inter-scanline consistency: before solving a row, every disparity different from the one chosen on the row above costs an extra penalty P_v.',
+          'Repeat for all rows to build the dense disparity map, then compare with OpenCV StereoSGBM.'
+        ],
+        pt: [
+          'Custo de correspondência: para cada linha, comparar o pixel x da imagem esquerda com o pixel x − d da direita para cada disparidade d; pixels sem correspondente válido recebem um custo de oclusão.',
+          'Busca na linha (intra-scanline): a programação dinâmica encontra o caminho mais barato ao longo da linha, em que mudar de disparidade entre pixels vizinhos custa uma penalidade P_h.',
+          'O backtracking a partir do nó final mais barato recupera a disparidade de cada pixel da linha.',
+          'Consistência entre linhas (inter-scanline): antes de resolver uma linha, toda disparidade diferente da escolhida na linha de cima recebe uma penalidade extra P_v.',
+          'Repetir para todas as linhas para formar o mapa de disparidade denso e comparar com o StereoSGBM do OpenCV.'
+        ]
+      },
+      highlights: {
+        en: [
+          'Dense output with no invalid pixels, unlike SGBM, which leaves holes at occlusions.',
+          'The inter-scanline prior removes most streaks at no extra run time.',
+          'Vectorised DP: about 1.3 s for a 450×375 image with 64 disparity levels.',
+          'Step-by-step notebook, command-line script and unit tests.'
+        ],
+        pt: [
+          'Saída densa, sem pixels inválidos, ao contrário do SGBM, que deixa buracos nas oclusões.',
+          'A restrição entre linhas elimina a maior parte das listras sem aumentar o tempo de execução.',
+          'Programação dinâmica vetorizada: cerca de 1,3 s para uma imagem de 450×375 com 64 níveis de disparidade.',
+          'Notebook passo a passo, script de linha de comando e testes unitários.'
+        ]
+      },
+      gallery: [
+        { src: 'assets/img/gallery/stereo-comparison.jpg', caption: { en: 'Row-by-row DP, DP with inter-scanline consistency, and OpenCV StereoSGBM (Middlebury Cones).', pt: 'DP linha a linha, DP com consistência entre linhas e StereoSGBM do OpenCV (Middlebury Cones).' } },
+        { src: 'assets/img/gallery/stereo-surface_3d.jpg', caption: { en: '3D view of the disparity map.', pt: 'Visualização 3D do mapa de disparidade.' } },
+        { src: 'assets/img/gallery/stereo-pentagon.jpg', caption: { en: 'Aerial stereo pair (Pentagon).', pt: 'Par estéreo aéreo (Pentágono).' } }
+      ]
+    },
+
+    {
+      slug: 'orb-from-scratch',
+      year: 2026,
+      cats: ['vision'],
+      cover: 'assets/img/projects/orb.jpg',
+      title: { en: 'ORB from Scratch', pt: 'ORB do Zero' },
+      summary: {
+        en: 'Oriented FAST — the keypoint detector of ORB — implemented from scratch and verified against OpenCV, plus a study of ORB feature matching under rotation, zoom, noise and blur.',
+        pt: 'Oriented FAST — o detector de pontos-chave do ORB — implementado do zero e validado contra o OpenCV, além de um estudo do matching do ORB com rotação, zoom, ruído e desfoque.'
+      },
+      context: {
+        en: 'Developed during my exchange year at INSA Rouen Normandie (2025 – 2026).',
+        pt: 'Desenvolvido durante o intercâmbio no INSA Rouen Normandie (2025 – 2026).'
+      },
+      stack: ['Python', 'NumPy', 'OpenCV', 'FAST', 'ORB', 'RANSAC', 'pytest'],
+      links: [{ label: 'orb-scratch', href: ME + 'orb-scratch', primary: true }],
+      overview: {
+        en: [
+          'ORB (Oriented FAST and Rotated BRIEF) is one of the most used feature detectors in robotics — it is the front end of ORB-SLAM. This project rebuilds its detection stage from scratch to understand exactly what it does.',
+          'The FAST segment test, the corner score, non-maximum suppression and the intensity-centroid orientation are implemented in NumPy. The detector gives exactly the same corners as OpenCV\'s FAST. The second part uses OpenCV\'s full ORB to study how matching behaves when the image is rotated, zoomed, blurred, noisy or low-contrast, and where it fails.'
+        ],
+        pt: [
+          'O ORB (Oriented FAST and Rotated BRIEF) é um dos detectores de características mais usados em robótica — é a base do ORB-SLAM. Este projeto reconstrói a etapa de detecção do zero para entender exatamente o que ela faz.',
+          'O teste de segmento do FAST, o score dos cantos, a supressão de não-máximos e a orientação por centroide de intensidade são implementados em NumPy. O detector encontra exatamente os mesmos cantos que o FAST do OpenCV. A segunda parte usa o ORB completo do OpenCV para estudar como o matching se comporta quando a imagem é girada, ampliada, desfocada, ruidosa ou com pouco contraste, e onde ele falha.'
+        ]
+      },
+      steps: {
+        en: [
+          'FAST: a pixel is a corner if at least 9 contiguous pixels of the 16-pixel circle around it are all brighter or all darker than it by a threshold t. The test runs on the whole image at once.',
+          'Each corner gets a score, and non-maximum suppression keeps only the strongest corner in each neighbourhood.',
+          'Orientation: the angle from the corner to the intensity centroid of a circular 31-pixel patch, which rotates with the image.',
+          'Matching with OpenCV ORB: binary rBRIEF descriptors, brute-force Hamming matching with cross-check.',
+          'Geometric verification with a RANSAC homography to separate real matches from coincidences.'
+        ],
+        pt: [
+          'FAST: um pixel é um canto se pelo menos 9 pixels contíguos do círculo de 16 pixels ao seu redor forem todos mais claros ou todos mais escuros que ele por um limiar t. O teste roda na imagem inteira de uma vez.',
+          'Cada canto recebe um score, e a supressão de não-máximos mantém apenas o canto mais forte de cada vizinhança.',
+          'Orientação: o ângulo do canto até o centroide de intensidade de uma região circular de 31 pixels, que gira junto com a imagem.',
+          'Matching com o ORB do OpenCV: descritores binários rBRIEF e busca exaustiva por distância de Hamming com verificação cruzada.',
+          'Verificação geométrica com uma homografia estimada por RANSAC para separar correspondências reais de coincidências.'
+        ]
+      },
+      highlights: {
+        en: [
+          'Exactly the same corners as cv2.FastFeatureDetector, checked by a unit test.',
+          'Orientation is repeatable: after a 30° rotation, 89% of the corners turn by 30° ± 10°.',
+          'RANSAC keeps 71% of the matches for the rotated cathedral but only 3% against a different building.',
+          'Vectorised NumPy detector, about 26× faster than the first pure-Python version.'
+        ],
+        pt: [
+          'Exatamente os mesmos cantos que o cv2.FastFeatureDetector, verificado por um teste unitário.',
+          'A orientação é repetível: após uma rotação de 30°, 89% dos cantos giram 30° ± 10°.',
+          'O RANSAC mantém 71% dos matches com a catedral girada, mas só 3% com um prédio diferente.',
+          'Detector vetorizado em NumPy, cerca de 26× mais rápido que a primeira versão em Python puro.'
+        ]
+      },
+      gallery: [
+        { src: 'assets/img/gallery/orb-ofast_rouen.jpg', caption: { en: 'From-scratch oFAST: 300 strongest corners with their orientation.', pt: 'oFAST feito do zero: os 300 cantos mais fortes com sua orientação.' } },
+        { src: 'assets/img/gallery/orb-orientation.png', caption: { en: 'Angle change of each corner after rotating the image by 30°.', pt: 'Variação do ângulo de cada canto após girar a imagem em 30°.' } },
+        { src: 'assets/img/gallery/orb-match_cathedrale_rotated_cropped.jpg', caption: { en: 'ORB matching between the cathedral and a rotated, cropped version.', pt: 'Matching do ORB entre a catedral e uma versão girada e recortada.' } },
+        { src: 'assets/img/gallery/orb-false_matches_mecca.jpg', caption: { en: 'False matches between two different buildings, removed by RANSAC.', pt: 'Falsos matches entre dois prédios diferentes, eliminados pelo RANSAC.' } }
+      ]
+    },
+
+    {
       slug: 'slam-kinect',
       year: 2026,
       cats: ['ros', 'vision'],
@@ -477,49 +605,6 @@
       },
       gallery: [
         { src: 'assets/img/projects/rasp-tello.jpg', caption: { en: 'micro-ROS agent, ROS 2 subscriber and the web page on a phone.', pt: 'micro-ROS agent, subscriber ROS 2 e a página web no celular.' } }
-      ]
-    },
-
-    {
-      slug: 'arduino-drone',
-      year: 2025,
-      cats: ['drones', 'embedded'],
-      cover: 'assets/img/projects/arduino-drone.jpg',
-      title: { en: 'Arduino Drone', pt: 'Drone com Arduino' },
-      summary: {
-        en: 'A quadcopter flight controller written from scratch in AVR-C on FreeRTOS: MPU6050 attitude, PPM radio decoding, PID stabilization and hardware PWM to the ESCs.',
-        pt: 'Controladora de voo de quadricóptero escrita do zero em AVR-C sobre FreeRTOS: atitude com MPU6050, decodificação de rádio PPM, estabilização PID e PWM por hardware para os ESCs.'
-      },
-      stack: ['C', 'AVR', 'FreeRTOS', 'ATmega', 'MPU6050', 'PID', 'PPM'],
-      links: [{ label: 'nano-drone', href: ME + 'nano-drone/tree/mega-version', primary: true }],
-      overview: {
-        en: [
-          'Instead of using a ready-made flight controller, we wrote one: bare-metal C for an AVR microcontroller (Arduino), running FreeRTOS, flying a quadcopter with brushless motors and a standard RC transmitter.',
-          'Doing everything by hand — timers, interrupts, I2C, PWM and the control loop — was the point: to understand what a flight controller actually does.'
-        ],
-        pt: [
-          'Em vez de usar uma controladora de voo pronta, escrevemos uma: C bare-metal para um microcontrolador AVR (Arduino), rodando FreeRTOS, pilotando um quadricóptero com motores brushless e um rádio controle convencional.',
-          'Fazer tudo à mão — timers, interrupções, I2C, PWM e a malha de controle — era o objetivo: entender o que uma controladora de voo realmente faz.'
-        ]
-      },
-      steps: {
-        en: [
-          'Read the accelerometer and gyroscope of the MPU6050 over I2C and estimate roll and pitch.',
-          'Decode the 6-channel PPM signal from the RC receiver with interrupts (roll, pitch, throttle, yaw, arm/disarm).',
-          'Filter the sticks with moving averages and deadbands to smooth the commands.',
-          'Run PID controllers for roll and pitch (with anti-windup and output limits) at 50 Hz.',
-          'Mix the outputs and drive the four ESCs with hardware PWM from the AVR timers. FreeRTOS tasks and queues separate sensing, radio and control.'
-        ],
-        pt: [
-          'Ler o acelerômetro e o giroscópio do MPU6050 via I2C e estimar roll e pitch.',
-          'Decodificar o sinal PPM de 6 canais do receptor com interrupções (roll, pitch, throttle, yaw, armar/desarmar).',
-          'Filtrar os sticks com média móvel e zonas mortas para suavizar os comandos.',
-          'Rodar controladores PID de roll e pitch (com anti-windup e limites de saída) a 50 Hz.',
-          'Fazer o mixer das saídas e acionar os quatro ESCs com PWM por hardware dos timers do AVR. Tasks e filas do FreeRTOS separam sensores, rádio e controle.'
-        ]
-      },
-      gallery: [
-        { src: 'assets/img/projects/arduino-drone.jpg', caption: { en: 'The quadcopter on the bench during PID tuning.', pt: 'O quadricóptero na bancada durante o ajuste do PID.' } }
       ]
     },
 
