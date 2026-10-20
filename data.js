@@ -728,7 +728,7 @@
       'detail.gallery': 'Gallery', 'detail.stack': 'Tech stack', 'detail.links': 'Links',
       'detail.paper': 'Related publication', 'detail.year': 'Year', 'detail.next': 'Next project',
       'detail.prev': 'Previous project', 'detail.notfound': 'Project not found.',
-      cv: 'assets/cv_Henrique_CORNEAU_en.pdf',
+      cv: 'assets/cv_Henrique_CORNEAU_pt.pdf',
       metaDesc: 'Henrique Corneau — Mechatronics engineering student working on robotics, computer vision and embedded systems.'
     },
     pt: {
