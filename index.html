@@ -23,7 +23,7 @@
     } catch (e) {}
   </script>
 </head>
-<body>
+<body data-page="home">
   <header class="site-header">
     <div class="container header-inner">
       <a href="#top" class="logo">henrique<span>.corneau</span></a>
@@ -52,8 +52,8 @@
       <div class="hero-text">
         <p class="eyebrow mono" data-i18n="hero.eyebrow">Robotics · Computer Vision · Embedded Systems</p>
         <h1 data-i18n="hero.title">Hi, I'm Henrique!</h1>
-        <p class="lead" data-i18n-html="hero.lead">Mechatronics engineering student at <strong>UFRN</strong> (Brazil), currently on exchange at <strong>INSA Rouen Normandie</strong> (France). I build autonomous drones, robot perception pipelines and embedded systems — and I document my projects here.</p>
-        <p class="status mono"><span class="dot"></span><span data-i18n="hero.status">Looking for an internship in Computer Vision, Robotics, Embedded Systems or AI.</span></p>
+        <p class="lead" data-i18n-html="hero.lead">Mechatronics engineering student at <strong>UFRN</strong> (Brazil), with an exchange year at <strong>INSA Rouen Normandie</strong> (France). I build autonomous drones, robot perception pipelines and embedded systems — and I document my projects here.</p>
+        <p class="status mono"><span class="dot"></span><span data-i18n="hero.status">Currently: undergraduate researcher at UFRN, working on autonomous drone navigation with SLAM.</span></p>
         <div class="socials">
           <a href="https://github.com/henriquecorneau" target="_blank" rel="noopener" aria-label="GitHub">
             <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 .5C5.7.5.5 5.7.5 12c0 5.1 3.3 9.4 7.9 10.9.6.1.8-.3.8-.6v-2c-3.2.7-3.9-1.5-3.9-1.5-.5-1.3-1.3-1.7-1.3-1.7-1-.7.1-.7.1-.7 1.2.1 1.8 1.2 1.8 1.2 1 1.8 2.8 1.3 3.5 1 .1-.8.4-1.3.7-1.6-2.6-.3-5.3-1.3-5.3-5.7 0-1.3.5-2.3 1.2-3.1-.1-.3-.5-1.5.1-3.1 0 0 1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0C17.3 4.7 18.3 5 18.3 5c.6 1.6.2 2.8.1 3.1.8.8 1.2 1.9 1.2 3.1 0 4.4-2.7 5.4-5.3 5.7.4.4.8 1.1.8 2.2v3.2c0 .3.2.7.8.6A11.5 11.5 0 0 0 23.5 12C23.5 5.7 18.3.5 12 .5z"/></svg>
@@ -111,14 +111,14 @@
       </div>
       <div class="about-grid">
         <div class="about-text">
-          <p data-i18n="about.p1">I'm a mechatronics engineering student at the Universidade Federal do Rio Grande do Norte (UFRN), passionate about robotics, embedded systems and computer vision.</p>
-          <p data-i18n="about.p2">During my undergraduate studies I founded a robotics team focused on autonomous drones: we built them from scratch and programmed them to perform autonomous tasks using AI, computer vision and ROS.</p>
-          <p data-i18n="about.p3">As a scientific researcher (PIBIC), I worked on robotic perception for an autonomous sailboat, fusing YOLO detections, stereo vision, IMU and GPS to estimate the global coordinates of detected objects. I also took part in EMBARCATECH, a technology residency where our team developed embedded and IoT solutions for companies.</p>
-          <p data-i18n="about.p4">Today I'm an exchange student in Computer Science and Information Technology at INSA Rouen Normandie, in France.</p>
+          <p data-i18n="about.p1">I'm a mechatronics engineering student at the Universidade Federal do Rio Grande do Norte (UFRN), passionate about robotics, computer vision, embedded systems and edge AI.</p>
+          <p data-i18n="about.p2">During my undergraduate studies I founded Zune Drones, a team focused on autonomous drones: we build and program drones to perform autonomous tasks using computer vision, AI and ROS, and published our work at COBICET and ECOP.</p>
+          <p data-i18n="about.p3">As an undergraduate researcher (PIBIC), I first worked on perception for an autonomous sailboat, fusing YOLO detections, stereo vision, IMU and GPS to georeference detected objects. Today my research is on autonomous drone navigation with SLAM in pre-mapped environments. I also took part in EMBARCATECH, a technology residency where I developed embedded and IoT solutions for companies.</p>
+          <p data-i18n="about.p4">Between 2025 and 2026 I spent an exchange year studying Computer Science and Information Technology at INSA Rouen Normandie, in France.</p>
 
           <h3 class="sub" data-i18n="about.skills">Skills</h3>
           <ul class="tags">
-            <li>Python</li><li>C</li><li>C++</li><li>ROS 2</li><li>OpenCV</li><li>YOLO</li><li>ORB-SLAM3</li><li>Nav2</li><li>Gazebo</li><li>Docker</li><li>FreeRTOS</li><li>Raspberry Pi Pico</li><li>ESP32</li><li>Arduino / AVR</li><li>Pixhawk</li><li>Jetson</li><li>FPGA / VHDL</li><li>SolidWorks</li><li>KiCad</li><li>Linux</li>
+            <li>Python</li><li>C++</li><li>C</li><li>SQL</li><li>JavaScript</li><li>ROS 2</li><li>ORB-SLAM3</li><li>Nav2</li><li>PyTorch</li><li>TensorFlow</li><li>Scikit-Learn</li><li>OpenCV</li><li>YOLO</li><li>Pandas</li><li>NumPy</li><li>Matplotlib</li><li>FreeRTOS</li><li>Raspberry Pi Pico</li><li>ESP32</li><li>Arduino / AVR</li><li>Pixhawk / PX4</li><li>Jetson</li><li>Git</li><li>Docker</li><li>Linux</li>
           </ul>
 
           <h3 class="sub" data-i18n="about.languages">Languages</h3>
@@ -126,7 +126,7 @@
             <li><span data-i18n="lang.pt">Portuguese</span> <em data-i18n="lang.native">native</em></li>
             <li><span data-i18n="lang.en">English</span> <em>B2</em></li>
             <li><span data-i18n="lang.fr">French</span> <em>B2</em></li>
-            <li><span data-i18n="lang.es">Spanish</span> <em>A2</em></li>
+            <li><span data-i18n="lang.es">Spanish</span> <em>B1</em></li>
           </ul>
         </div>
 
@@ -142,7 +142,7 @@
     <!-- Contact -->
     <section id="contact" class="section container contact">
       <h2 data-i18n="contact.title">Let's talk</h2>
-      <p data-i18n="contact.text">Open to internships and collaborations in robotics, computer vision and embedded systems.</p>
+      <p data-i18n="contact.text">Open to opportunities and collaborations in robotics, computer vision and embedded systems.</p>
       <a class="btn" href="mailto:henriquegcorneau@gmail.com">henriquegcorneau@gmail.com</a>
     </section>
   </main>
@@ -154,6 +154,7 @@
     </div>
   </footer>
 
+  <script src="data.js"></script>
   <script src="main.js"></script>
 </body>
 </html>

@@ -10,13 +10,20 @@ python3 -m http.server 8000   # http://localhost:8000
 
 ## Edit content
 
-All content lives in `main.js`:
+All content lives in `data.js` (`main.js` only renders it):
 
-- `projects` – project cards (title/description in `en` and `pt`, image, stack, links, filter categories)
+- `projects` – cards on the home page **and** the content of each project page
+  (summary, overview, how it works, highlights, gallery, links), in `en` and `pt`
 - `papers`, `experience`, `education`
 - `strings` – UI text and the bio for each language
 
-Project images go in `assets/img/projects/` (16:10 crops look best).
+Each project has its own page in `projects/<slug>.html`. To add a project, add an entry
+to `projects` in `data.js`, then copy any page in `projects/` to `<new-slug>.html` and
+change `data-project` and the `<title>`.
+
+Images: card covers in `assets/img/projects/` (16:10 crops look best), extra pictures in
+`assets/img/gallery/`, videos in `assets/video/`. A project without `cover` gets a
+generated cover showing `coverLabel`.
 
 ## Deploy (GitHub Pages)
 
