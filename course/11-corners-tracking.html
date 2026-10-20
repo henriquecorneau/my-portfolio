@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>11 · Corners and tracking · Computer Vision Course</title>
+  <meta name="description" content="Corners are points you can find again in another image. Detect them with Harris and Shi-Tomasi from the structure tensor, refine them to sub-pixel accuracy, and follow them between video frames with template matching and Lucas-Kanade.">
+  <meta property="og:title" content="11 · Corners and tracking · Computer Vision Course">
+  <meta property="og:description" content="Corners are points you can find again in another image. Detect them with Harris and Shi-Tomasi from the structure tensor, refine them to sub-pixel accuracy, and follow them between video frames with template matching and Lucas-Kanade.">
+  <meta property="og:image" content="../assets/img/profile.jpg">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23111'/><text x='50' y='66' font-size='46' font-family='monospace' fill='%23fff' text-anchor='middle'>HC</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="course.css">
+  <script>
+    try { var t = localStorage.getItem('theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+</head>
+<body data-page="course">
+  <header class="site-header">
+    <div class="container header-inner wide">
+      <a href="../index.html" class="logo">henrique<span>.corneau</span></a>
+      <nav class="nav" aria-label="Main">
+        <a href="../index.html#projects">Projects</a>
+        <a href="index.html" class="current">CV Course</a>
+        <a href="../index.html#papers">Papers</a>
+        <a href="../index.html#about">About</a>
+      </nav>
+      <div class="header-actions">
+        <button type="button" class="icon-btn menu-btn" id="menu-toggle" aria-label="Lessons" aria-expanded="false" aria-controls="course-side">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <button type="button" class="icon-btn" id="theme-toggle" aria-label="Toggle theme">
+          <svg class="i-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="i-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="course-layout container wide">
+    <aside class="course-side" id="course-side" aria-label="Lessons">
+      <a class="side-home" href="index.html">← Course overview</a>
+      <div class="side-part"><span class="mono">Part I</span> Foundations</div><ol>
+<li><a href="00-setup.html"><span class="mono">00</span>Setup and how the course code works</a></li>
+<li><a href="01-images-as-arrays.html"><span class="mono">01</span>Images are arrays</a></li>
+<li><a href="02-sampling-quantization.html"><span class="mono">02</span>Sampling, quantization and interpolation</a></li>
+<li><a href="03-geometric-transforms.html"><span class="mono">03</span>Geometric transforms</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part II</span> Enhancement</div><ol>
+<li><a href="04-histograms-lut.html"><span class="mono">04</span>Histograms, point operations and LUTs</a></li>
+<li><a href="05-noise-filtering.html"><span class="mono">05</span>Noise and spatial filtering</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part III</span> Edges, shapes and colour</div><ol>
+<li><a href="06-edges.html"><span class="mono">06</span>Edge detection</a></li>
+<li><a href="07-canny.html"><span class="mono">07</span>The Canny edge detector</a></li>
+<li><a href="08-hough.html"><span class="mono">08</span>The Hough transform</a></li>
+<li><a href="09-morphology.html"><span class="mono">09</span>Mathematical morphology</a></li>
+<li><a href="10-color.html"><span class="mono">10</span>Colour spaces and colour segmentation</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part IV</span> Features</div><ol>
+<li><a href="11-corners-tracking.html" class="active" aria-current="page"><span class="mono">11</span>Corners and tracking</a></li>
+<li><a href="12-keypoints-orb-sift.html"><span class="mono">12</span>Keypoints and descriptors — FAST, ORB and SIFT</a></li>
+<li><a href="13-homography-ransac.html"><span class="mono">13</span>Homography and RANSAC</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part V</span> Geometry and 3-D</div><ol>
+<li><a href="14-camera-calibration.html"><span class="mono">14</span>Camera model and calibration</a></li>
+<li><a href="15-stereo-vision.html"><span class="mono">15</span>Stereo vision</a></li>
+<li><a href="16-structure-from-motion.html"><span class="mono">16</span>Structure from Motion</a></li>
+<li><a href="17-visual-slam.html"><span class="mono">17</span>Visual SLAM with ORB-SLAM3</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part VI</span> Case studies</div><ol>
+<li><a href="18-ct-lungs.html"><span class="mono">18</span>Case study: lungs and vessels in CT scans</a></li>
+<li><a href="19-fingerprints.html"><span class="mono">19</span>Case study: fingerprint identification</a></li>
+</ol>
+    </aside>
+    <main class="lesson" id="top">
+      <header class="lesson-head">
+        <p class="eyebrow mono">Part IV · Features · Lesson 11</p>
+        <h1>Corners and tracking</h1>
+        <p class="lead">Corners are points you can find again in another image. Detect them with Harris and Shi-Tomasi from the structure tensor, refine them to sub-pixel accuracy, and follow them between video frames with template matching and Lucas-Kanade.</p>
+        <p class="lesson-sources mono">Based on: INSA TIM lab 7, UFRN activity 05</p>
+        <div class="run-box"><div><span class="mono label">Run this lesson</span><code>python 11_corners_tracking.py</code><code>python 11_corners_tracking.py --save out</code></div><a class="btn btn-ghost" href="code/11_corners_tracking.py" download>Download 11_corners_tracking.py</a></div>
+      </header>
+      <article class="prose">
+<h2 id="why-corners">Why corners?<a class="headerlink" href="#why-corners" title="Permanent link">#</a></h2>
+<p>To track motion, match two photos or calibrate a camera we need points that can be <strong>found again</strong>. A pixel in a flat region looks like all its neighbours; a pixel on an edge can slide along the edge without changing; only at a <strong>corner</strong> does any small move change the local appearance.</p>
+<p>Make that precise: shift a window by <span class="arithmatex">\((u, v)\)</span> and measure the change</p>
+<div class="arithmatex">\[E(u, v) = \sum_{x, y} w(x, y)\, [I(x + u, y + v) - I(x, y)]^2\]</div>
+<p>A first-order Taylor expansion, <span class="arithmatex">\(I(x+u, y+v) \approx I + I_x u + I_y v\)</span>, turns it into a quadratic form:</p>
+<div class="arithmatex">\[E(u, v) \approx \begin{bmatrix} u &amp; v \end{bmatrix} M \begin{bmatrix} u \\ v \end{bmatrix}, \qquad
+M = \sum_{x, y} w(x, y) \begin{bmatrix} I_x^2 &amp; I_x I_y \\ I_x I_y &amp; I_y^2 \end{bmatrix} = \begin{bmatrix} S_{xx} &amp; S_{xy} \\ S_{xy} &amp; S_{yy} \end{bmatrix}\]</div>
+<p><span class="arithmatex">\(M\)</span> is the <strong>structure tensor</strong>. Its two eigenvalues <span class="arithmatex">\(\lambda_1, \lambda_2\)</span> say how much <span class="arithmatex">\(E\)</span> grows in the two principal directions: both small → flat; one large → edge; both large → <strong>corner</strong>.</p>
+<h2 id="harris-and-shi-tomasi">Harris and Shi-Tomasi<a class="headerlink" href="#harris-and-shi-tomasi" title="Permanent link">#</a></h2>
+<p>Computing eigenvalues at every pixel used to be expensive, so Harris and Stephens (1988) used a score built from the determinant and the trace, which are cheap:</p>
+<div class="arithmatex">\[R = \det M - k\,(\operatorname{tr} M)^2 = \lambda_1 \lambda_2 - k\,(\lambda_1 + \lambda_2)^2, \qquad k \approx 0.04\text{–}0.06\]</div>
+<p><span class="arithmatex">\(R\)</span> is large and positive at corners, negative on edges, near zero on flat areas. Shi and Tomasi (1994) used the smallest eigenvalue directly, <span class="arithmatex">\(\min(\lambda_1, \lambda_2) = \tfrac{1}{2}\big(\operatorname{tr} M - \sqrt{(\operatorname{tr} M)^2 - 4 \det M}\big)\)</span>, which tracks better.</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">structure_tensor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">block</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">sigma</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Sxx, Sxy, Syy: Gaussian-weighted sums of gradient products around each pixel."""</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">GaussianBlur</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="mi">0</span><span class="p">)</span>      <span class="c1"># tame the noise first</span>
+    <span class="n">ix</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">Sobel</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">CV_32F</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">ksize</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">iy</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">Sobel</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">CV_32F</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ksize</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+    <span class="n">sxx</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">GaussianBlur</span><span class="p">(</span><span class="n">ix</span> <span class="o">*</span> <span class="n">ix</span><span class="p">,</span> <span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">block</span><span class="p">),</span> <span class="n">sigma</span><span class="p">)</span>
+    <span class="n">sxy</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">GaussianBlur</span><span class="p">(</span><span class="n">ix</span> <span class="o">*</span> <span class="n">iy</span><span class="p">,</span> <span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">block</span><span class="p">),</span> <span class="n">sigma</span><span class="p">)</span>
+    <span class="n">syy</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">GaussianBlur</span><span class="p">(</span><span class="n">iy</span> <span class="o">*</span> <span class="n">iy</span><span class="p">,</span> <span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">block</span><span class="p">),</span> <span class="n">sigma</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">sxx</span><span class="p">,</span> <span class="n">sxy</span><span class="p">,</span> <span class="n">syy</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">harris_response</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">block</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">sxx</span><span class="p">,</span> <span class="n">sxy</span><span class="p">,</span> <span class="n">syy</span> <span class="o">=</span> <span class="n">structure_tensor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">block</span><span class="p">)</span>
+    <span class="n">det</span> <span class="o">=</span> <span class="n">sxx</span> <span class="o">*</span> <span class="n">syy</span> <span class="o">-</span> <span class="n">sxy</span> <span class="o">**</span> <span class="mi">2</span>          <span class="c1"># lambda1 * lambda2</span>
+    <span class="n">trace</span> <span class="o">=</span> <span class="n">sxx</span> <span class="o">+</span> <span class="n">syy</span>                   <span class="c1"># lambda1 + lambda2</span>
+    <span class="k">return</span> <span class="n">det</span> <span class="o">-</span> <span class="n">k</span> <span class="o">*</span> <span class="n">trace</span> <span class="o">**</span> <span class="mi">2</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">shi_tomasi_response</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">block</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+    <span class="n">sxx</span><span class="p">,</span> <span class="n">sxy</span><span class="p">,</span> <span class="n">syy</span> <span class="o">=</span> <span class="n">structure_tensor</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">block</span><span class="p">)</span>
+    <span class="n">det</span> <span class="o">=</span> <span class="n">sxx</span> <span class="o">*</span> <span class="n">syy</span> <span class="o">-</span> <span class="n">sxy</span> <span class="o">**</span> <span class="mi">2</span>
+    <span class="n">trace</span> <span class="o">=</span> <span class="n">sxx</span> <span class="o">+</span> <span class="n">syy</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">trace</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">maximum</span><span class="p">(</span><span class="n">trace</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">-</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">det</span><span class="p">,</span> <span class="mi">0</span><span class="p">)))</span> <span class="o">/</span> <span class="mi">2</span>   <span class="c1"># min(lambda1, lambda2)</span>
+</code></pre></div>
+<p>The window <span class="arithmatex">\(w\)</span> is a Gaussian, so the sums become Gaussian blurs of the gradient products.</p>
+<h2 id="non-maximum-suppression">Non-maximum suppression<a class="headerlink" href="#non-maximum-suppression" title="Permanent link">#</a></h2>
+<p>Thresholding <span class="arithmatex">\(R\)</span> gives <em>blobs</em> of candidates around each corner. Greedy NMS keeps the strongest candidate, forbids a square around it, and moves on:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">greedy_nms</span><span class="p">(</span><span class="n">response</span><span class="p">,</span> <span class="n">rel_threshold</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">min_distance</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">max_corners</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Best candidate first; every accepted corner forbids a square around it."""</span>
+    <span class="n">ys</span><span class="p">,</span> <span class="n">xs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">response</span> <span class="o">&gt;</span> <span class="n">rel_threshold</span> <span class="o">*</span> <span class="n">response</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+    <span class="n">order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">response</span><span class="p">[</span><span class="n">ys</span><span class="p">,</span> <span class="n">xs</span><span class="p">])[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>               <span class="c1"># strongest first</span>
+    <span class="n">allowed</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">response</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+    <span class="n">corners</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">ys</span><span class="p">[</span><span class="n">order</span><span class="p">],</span> <span class="n">xs</span><span class="p">[</span><span class="n">order</span><span class="p">]):</span>
+        <span class="k">if</span> <span class="n">allowed</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]:</span>
+            <span class="n">corners</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">))</span>
+            <span class="n">allowed</span><span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">y</span> <span class="o">-</span> <span class="n">min_distance</span><span class="p">):</span><span class="n">y</span> <span class="o">+</span> <span class="n">min_distance</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+                    <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">x</span> <span class="o">-</span> <span class="n">min_distance</span><span class="p">):</span><span class="n">x</span> <span class="o">+</span> <span class="n">min_distance</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">if</span> <span class="n">max_corners</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">corners</span><span class="p">)</span> <span class="o">==</span> <span class="n">max_corners</span><span class="p">:</span>
+                <span class="k">break</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">corners</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>Harris: 554 pixels above threshold -&gt; 41 corners after NMS
+</code></pre></div>
+<figure class="fig"><a href="img/11-harris.webp" target="_blank" rel="noopener"><img src="img/11-harris.webp" alt="$R$ (white = corner, dark = edge); the 554 candidates; 41 corners after NMS; Shi-Tomasi with the same NMS." loading="lazy"></a><figcaption markdown="span">$R$ (white = corner, dark = edge); the 554 candidates; 41 corners after NMS; Shi-Tomasi with the same NMS.</figcaption></figure>
+
+<h2 id="the-opencv-way-and-sub-pixel-accuracy">The OpenCV way, and sub-pixel accuracy<a class="headerlink" href="#the-opencv-way-and-sub-pixel-accuracy" title="Permanent link">#</a></h2>
+<div class="highlight"><pre><span></span><code><span class="n">R_cv</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cornerHarris</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">),</span> <span class="n">blockSize</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">ksize</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">k</span><span class="o">=</span><span class="mf">0.05</span><span class="p">)</span>   <span class="c1"># the map only</span>
+<span class="n">pts</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">goodFeaturesToTrack</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">maxCorners</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">qualityLevel</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">minDistance</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span>
+                              <span class="n">blockSize</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span> <span class="n">useHarrisDetector</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>          <span class="c1"># Shi-Tomasi + NMS</span>
+<span class="n">criteria</span> <span class="o">=</span> <span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">TERM_CRITERIA_EPS</span> <span class="o">+</span> <span class="n">cv2</span><span class="o">.</span><span class="n">TERM_CRITERIA_MAX_ITER</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">)</span>
+<span class="n">refined</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cornerSubPix</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">pts</span><span class="o">.</span><span class="n">copy</span><span class="p">(),</span> <span class="n">winSize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">zeroZone</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">criteria</span><span class="o">=</span><span class="n">criteria</span><span class="p">)</span>
+</code></pre></div>
+<p><code>goodFeaturesToTrack</code> is Shi-Tomasi (or Harris) + NMS + "keep the N best". Corners found on the pixel grid are only accurate to ±0.5 px, and the blur moves them further; <code>cornerSubPix</code> refines each one by finding the point where the image gradients around it are orthogonal to the vector towards it. Here corners moved by 1.9 px on average — huge for calibration (lesson 14), where we need ~0.1 px.</p>
+<figure class="fig"><a href="img/11-subpix.webp" target="_blank" rel="noopener"><img src="img/11-subpix.webp" alt="Integer corners (red) and refined ones (green) on a zoom of the blocks." loading="lazy"></a><figcaption markdown="span">Integer corners (red) and refined ones (green) on a zoom of the blocks.</figcaption></figure>
+
+<h2 id="tracking-by-template-matching">Tracking by template matching<a class="headerlink" href="#tracking-by-template-matching" title="Permanent link">#</a></h2>
+<p>To follow a corner into the next frame, take a small patch around it and look for the most similar patch nearby. The similarity that does not care about brightness or contrast changes is the <strong>zero-mean normalised cross-correlation</strong>:</p>
+<div class="arithmatex">\[\mathrm{NCC}(T, W) = \frac{\sum (T - \bar T)(W - \bar W)}{\sqrt{\sum (T - \bar T)^2 \, \sum (W - \bar W)^2}} \in [-1, 1]\]</div>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">ncc</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Zero-mean normalized cross-correlation of two equal-size patches, in [-1, 1]."""</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">-</span> <span class="n">a</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">b</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">-</span> <span class="n">b</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+    <span class="n">denom</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">((</span><span class="n">a</span> <span class="o">*</span> <span class="n">a</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">*</span> <span class="p">(</span><span class="n">b</span> <span class="o">*</span> <span class="n">b</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">())</span>
+    <span class="k">return</span> <span class="nb">float</span><span class="p">((</span><span class="n">a</span> <span class="o">*</span> <span class="n">b</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="n">denom</span><span class="p">)</span> <span class="k">if</span> <span class="n">denom</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="mf">0.0</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">track_ncc</span><span class="p">(</span><span class="n">img0</span><span class="p">,</span> <span class="n">img1</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">half</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span> <span class="n">search</span><span class="o">=</span><span class="mi">20</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""For each point, find the patch of img1 (within +-search px) most similar to its patch in img0."""</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">points</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">):</span>
+        <span class="n">tpl</span> <span class="o">=</span> <span class="n">img0</span><span class="p">[</span><span class="n">y</span> <span class="o">-</span> <span class="n">half</span><span class="p">:</span><span class="n">y</span> <span class="o">+</span> <span class="n">half</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">x</span> <span class="o">-</span> <span class="n">half</span><span class="p">:</span><span class="n">x</span> <span class="o">+</span> <span class="n">half</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="n">best</span><span class="p">,</span> <span class="n">best_xy</span> <span class="o">=</span> <span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">dy</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="n">search</span><span class="p">,</span> <span class="n">search</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">dx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="n">search</span><span class="p">,</span> <span class="n">search</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+                <span class="n">yy</span><span class="p">,</span> <span class="n">xx</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="n">dy</span><span class="p">,</span> <span class="n">x</span> <span class="o">+</span> <span class="n">dx</span>
+                <span class="n">win</span> <span class="o">=</span> <span class="n">img1</span><span class="p">[</span><span class="n">yy</span> <span class="o">-</span> <span class="n">half</span><span class="p">:</span><span class="n">yy</span> <span class="o">+</span> <span class="n">half</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">xx</span> <span class="o">-</span> <span class="n">half</span><span class="p">:</span><span class="n">xx</span> <span class="o">+</span> <span class="n">half</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">win</span><span class="o">.</span><span class="n">shape</span> <span class="o">!=</span> <span class="n">tpl</span><span class="o">.</span><span class="n">shape</span><span class="p">:</span>
+                    <span class="k">continue</span>
+                <span class="n">score</span> <span class="o">=</span> <span class="n">ncc</span><span class="p">(</span><span class="n">tpl</span><span class="p">,</span> <span class="n">win</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">score</span> <span class="o">&gt;</span> <span class="n">best</span><span class="p">:</span>
+                    <span class="n">best</span><span class="p">,</span> <span class="n">best_xy</span> <span class="o">=</span> <span class="n">score</span><span class="p">,</span> <span class="p">(</span><span class="n">xx</span><span class="p">,</span> <span class="n">yy</span><span class="p">)</span>
+        <span class="n">out</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="o">*</span><span class="n">best_xy</span><span class="p">,</span> <span class="n">best</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+</code></pre></div>
+<p><code>cv2.matchTemplate</code> computes the NCC at every position of the search window at once:</p>
+<div class="highlight"><pre><span></span><code><span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">p0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">tpl</span> <span class="o">=</span> <span class="n">frame0</span><span class="p">[</span><span class="n">y</span> <span class="o">-</span> <span class="mi">7</span><span class="p">:</span><span class="n">y</span> <span class="o">+</span> <span class="mi">8</span><span class="p">,</span> <span class="n">x</span> <span class="o">-</span> <span class="mi">7</span><span class="p">:</span><span class="n">x</span> <span class="o">+</span> <span class="mi">8</span><span class="p">]</span>
+<span class="n">area</span> <span class="o">=</span> <span class="n">frame1</span><span class="p">[</span><span class="n">y</span> <span class="o">-</span> <span class="mi">27</span><span class="p">:</span><span class="n">y</span> <span class="o">+</span> <span class="mi">28</span><span class="p">,</span> <span class="n">x</span> <span class="o">-</span> <span class="mi">27</span><span class="p">:</span><span class="n">x</span> <span class="o">+</span> <span class="mi">28</span><span class="p">]</span>                       <span class="c1"># +-20 px search window</span>
+<span class="n">scores</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">matchTemplate</span><span class="p">(</span><span class="n">area</span><span class="p">,</span> <span class="n">tpl</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">TM_CCOEFF_NORMED</span><span class="p">)</span>       <span class="c1"># same NCC, vectorised</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">best_score</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">best_loc</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">minMaxLoc</span><span class="p">(</span><span class="n">scores</span><span class="p">)</span>
+</code></pre></div>
+<p>Both find the same position with the same score (0.849).</p>
+<h2 id="lucas-kanade-optical-flow">Lucas-Kanade optical flow<a class="headerlink" href="#lucas-kanade-optical-flow" title="Permanent link">#</a></h2>
+<p>Template search costs <span class="arithmatex">\(O(\text{window}^2)\)</span> per point. <strong>Lucas-Kanade</strong> instead assumes brightness constancy, <span class="arithmatex">\(I_x u + I_y v + I_t = 0\)</span>, writes one such equation per pixel of a small window and solves the least-squares system <span class="arithmatex">\(M\,[u, v]^\top = -[\sum I_x I_t, \sum I_y I_t]^\top\)</span> — the same structure tensor <span class="arithmatex">\(M\)</span>. That is why it needs corners: on an edge <span class="arithmatex">\(M\)</span> is singular (the aperture problem). An image <strong>pyramid</strong> handles large motions by solving coarse-to-fine.</p>
+<div class="highlight"><pre><span></span><code><span class="n">p0_lk</span> <span class="o">=</span> <span class="n">p0</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">p1_lk</span><span class="p">,</span> <span class="n">status</span><span class="p">,</span> <span class="n">err</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">calcOpticalFlowPyrLK</span><span class="p">(</span><span class="n">frame0</span><span class="p">,</span> <span class="n">frame1</span><span class="p">,</span> <span class="n">p0_lk</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span>
+                                              <span class="n">winSize</span><span class="o">=</span><span class="p">(</span><span class="mi">21</span><span class="p">,</span> <span class="mi">21</span><span class="p">),</span> <span class="n">maxLevel</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="c1"># forward-backward check: track back to frame 0 and demand that we land where we started</span>
+<span class="n">p0_back</span><span class="p">,</span> <span class="n">status_back</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">calcOpticalFlowPyrLK</span><span class="p">(</span><span class="n">frame1</span><span class="p">,</span> <span class="n">frame0</span><span class="p">,</span> <span class="n">p1_lk</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span>
+                                                   <span class="n">winSize</span><span class="o">=</span><span class="p">(</span><span class="mi">21</span><span class="p">,</span> <span class="mi">21</span><span class="p">),</span> <span class="n">maxLevel</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="n">fb_error</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">p0_back</span> <span class="o">-</span> <span class="n">p0_lk</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span>
+<span class="n">good</span> <span class="o">=</span> <span class="p">(</span><span class="n">status</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">status_back</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">fb_error</span> <span class="o">&lt;</span> <span class="mf">1.0</span><span class="p">)</span>
+</code></pre></div>
+<p>The <strong>forward-backward check</strong> tracks every point back to the first frame and rejects those that do not return home (here 2 of 25). It is the cheapest outlier filter there is.</p>
+<figure class="fig"><a href="img/11-tracking.webp" target="_blank" rel="noopener"><img src="img/11-tracking.webp" alt="KITTI frames 0 → 2. Points move away from the centre of the image as the car drives forward. NCC and Lucas-Kanade agree to 0.6 px (median) on the points LK kept." loading="lazy"></a><figcaption markdown="span">KITTI frames 0 → 2. Points move away from the centre of the image as the car drives forward. NCC and Lucas-Kanade agree to 0.6 px (median) on the points LK kept.</figcaption></figure>
+
+<h2 id="exercises">Exercises<a class="headerlink" href="#exercises" title="Permanent link">#</a></h2>
+<ol>
+<li>Plot <span class="arithmatex">\(\lambda_1\)</span> vs <span class="arithmatex">\(\lambda_2\)</span> (computed with <code>np.linalg.eigvalsh</code> on <span class="arithmatex">\(M\)</span>) for every pixel of <code>blox.jpg</code> and colour the points by Harris' <span class="arithmatex">\(R\)</span>.</li>
+<li>Track 200 corners through all 15 KITTI frames with LK, re-detecting new corners when fewer than 100 remain, and draw the tracks.</li>
+<li>Make <code>track_ncc</code> vectorised with <code>cv2.matchTemplate</code> and compare speed.</li>
+</ol>
+      </article>
+      <nav class="pager" aria-label="Lessons">
+        <a href="10-color.html"><span class="mono">Previous</span><strong>10 · Colour spaces and colour segmentation</strong></a>
+        <a href="12-keypoints-orb-sift.html" class="next"><span class="mono">Next</span><strong>12 · Keypoints and descriptors — FAST, ORB and SIFT</strong></a>
+      </nav>
+    </main>
+    <aside class="lesson-toc" aria-label="On this page">
+      <div class="sub first">On this page</div>
+      <ul><li><a href="#why-corners">Why corners?</a></li>
+<li><a href="#harris-and-shi-tomasi">Harris and Shi-Tomasi</a></li>
+<li><a href="#non-maximum-suppression">Non-maximum suppression</a></li>
+<li><a href="#the-opencv-way-and-sub-pixel-accuracy">The OpenCV way, and sub-pixel accuracy</a></li>
+<li><a href="#tracking-by-template-matching">Tracking by template matching</a></li>
+<li><a href="#lucas-kanade-optical-flow">Lucas-Kanade optical flow</a></li>
+<li><a href="#exercises">Exercises</a></li></ul>
+    </aside>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container footer-inner mono wide">
+      <span>© <span id="year"></span> Henrique Corneau · course text and code under MIT</span>
+      <span><a href="https://github.com/henriquecorneau" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/henriquecorneau/" target="_blank" rel="noopener">LinkedIn</a></span>
+    </div>
+  </footer>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+  <script defer src="course.js"></script>
+</body>
+</html>

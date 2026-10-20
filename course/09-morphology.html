@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>09 · Mathematical morphology · Computer Vision Course</title>
+  <meta name="description" content="Erode, dilate, open and close binary images with a structuring element. Clean a noisy shape, make a damaged QR code readable again, and find patterns with hit-or-miss.">
+  <meta property="og:title" content="09 · Mathematical morphology · Computer Vision Course">
+  <meta property="og:description" content="Erode, dilate, open and close binary images with a structuring element. Clean a noisy shape, make a damaged QR code readable again, and find patterns with hit-or-miss.">
+  <meta property="og:image" content="../assets/img/profile.jpg">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23111'/><text x='50' y='66' font-size='46' font-family='monospace' fill='%23fff' text-anchor='middle'>HC</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="course.css">
+  <script>
+    try { var t = localStorage.getItem('theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+</head>
+<body data-page="course">
+  <header class="site-header">
+    <div class="container header-inner wide">
+      <a href="../index.html" class="logo">henrique<span>.corneau</span></a>
+      <nav class="nav" aria-label="Main">
+        <a href="../index.html#projects">Projects</a>
+        <a href="index.html" class="current">CV Course</a>
+        <a href="../index.html#papers">Papers</a>
+        <a href="../index.html#about">About</a>
+      </nav>
+      <div class="header-actions">
+        <button type="button" class="icon-btn menu-btn" id="menu-toggle" aria-label="Lessons" aria-expanded="false" aria-controls="course-side">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <button type="button" class="icon-btn" id="theme-toggle" aria-label="Toggle theme">
+          <svg class="i-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="i-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="course-layout container wide">
+    <aside class="course-side" id="course-side" aria-label="Lessons">
+      <a class="side-home" href="index.html">← Course overview</a>
+      <div class="side-part"><span class="mono">Part I</span> Foundations</div><ol>
+<li><a href="00-setup.html"><span class="mono">00</span>Setup and how the course code works</a></li>
+<li><a href="01-images-as-arrays.html"><span class="mono">01</span>Images are arrays</a></li>
+<li><a href="02-sampling-quantization.html"><span class="mono">02</span>Sampling, quantization and interpolation</a></li>
+<li><a href="03-geometric-transforms.html"><span class="mono">03</span>Geometric transforms</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part II</span> Enhancement</div><ol>
+<li><a href="04-histograms-lut.html"><span class="mono">04</span>Histograms, point operations and LUTs</a></li>
+<li><a href="05-noise-filtering.html"><span class="mono">05</span>Noise and spatial filtering</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part III</span> Edges, shapes and colour</div><ol>
+<li><a href="06-edges.html"><span class="mono">06</span>Edge detection</a></li>
+<li><a href="07-canny.html"><span class="mono">07</span>The Canny edge detector</a></li>
+<li><a href="08-hough.html"><span class="mono">08</span>The Hough transform</a></li>
+<li><a href="09-morphology.html" class="active" aria-current="page"><span class="mono">09</span>Mathematical morphology</a></li>
+<li><a href="10-color.html"><span class="mono">10</span>Colour spaces and colour segmentation</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part IV</span> Features</div><ol>
+<li><a href="11-corners-tracking.html"><span class="mono">11</span>Corners and tracking</a></li>
+<li><a href="12-keypoints-orb-sift.html"><span class="mono">12</span>Keypoints and descriptors — FAST, ORB and SIFT</a></li>
+<li><a href="13-homography-ransac.html"><span class="mono">13</span>Homography and RANSAC</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part V</span> Geometry and 3-D</div><ol>
+<li><a href="14-camera-calibration.html"><span class="mono">14</span>Camera model and calibration</a></li>
+<li><a href="15-stereo-vision.html"><span class="mono">15</span>Stereo vision</a></li>
+<li><a href="16-structure-from-motion.html"><span class="mono">16</span>Structure from Motion</a></li>
+<li><a href="17-visual-slam.html"><span class="mono">17</span>Visual SLAM with ORB-SLAM3</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part VI</span> Case studies</div><ol>
+<li><a href="18-ct-lungs.html"><span class="mono">18</span>Case study: lungs and vessels in CT scans</a></li>
+<li><a href="19-fingerprints.html"><span class="mono">19</span>Case study: fingerprint identification</a></li>
+</ol>
+    </aside>
+    <main class="lesson" id="top">
+      <header class="lesson-head">
+        <p class="eyebrow mono">Part III · Edges, shapes and colour · Lesson 09</p>
+        <h1>Mathematical morphology</h1>
+        <p class="lead">Erode, dilate, open and close binary images with a structuring element. Clean a noisy shape, make a damaged QR code readable again, and find patterns with hit-or-miss.</p>
+        <p class="lesson-sources mono">Based on: INSA TIM labs 5 and 9</p>
+        <div class="run-box"><div><span class="mono label">Run this lesson</span><code>python 09_morphology.py</code><code>python 09_morphology.py --save out</code></div><a class="btn btn-ghost" href="code/09_morphology.py" download>Download 09_morphology.py</a></div>
+      </header>
+      <article class="prose">
+<h2 id="shapes-not-intensities">Shapes, not intensities<a class="headerlink" href="#shapes-not-intensities" title="Permanent link">#</a></h2>
+<p>Filters of lesson 05 compute weighted <em>sums</em>. Morphology asks <em>set</em> questions: does a small shape — the <strong>structuring element</strong> (SE, or kernel) — fit inside the white region at this position? Does it touch it? That makes it ideal for cleaning up binary images after a threshold, and for measuring shapes.</p>
+<div class="highlight"><pre><span></span><code><span class="n">k_rect</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">getStructuringElement</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">MORPH_RECT</span><span class="p">,</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">k_ellipse</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">getStructuringElement</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">MORPH_ELLIPSE</span><span class="p">,</span> <span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">))</span>
+<span class="n">k_cross</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">getStructuringElement</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">MORPH_CROSS</span><span class="p">,</span> <span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">k_line</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">getStructuringElement</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">MORPH_RECT</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">11</span><span class="p">))</span>    <span class="c1"># (width, height)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">k_cross</span><span class="p">)</span>
+</code></pre></div>
+<figure class="fig"><a href="img/09-kernels.webp" target="_blank" rel="noopener"><img src="img/09-kernels.webp" alt="Structuring elements built with `cv2.getStructuringElement`. Note that the size is given as **(width, height)**." loading="lazy"></a><figcaption markdown="span">Structuring elements built with `cv2.getStructuringElement`. Note that the size is given as **(width, height)**.</figcaption></figure>
+
+<h2 id="erosion-and-dilation">Erosion and dilation<a class="headerlink" href="#erosion-and-dilation" title="Permanent link">#</a></h2>
+<p>With <span class="arithmatex">\(I\)</span> the set of white pixels and <span class="arithmatex">\(K_x\)</span> the kernel centred at <span class="arithmatex">\(x\)</span>:</p>
+<div class="arithmatex">\[\varepsilon_K(I) = \{\, x \mid K_x \subseteq I \,\} \qquad \delta_K(I) = \{\, x \mid \check K_x \cap I \neq \emptyset \,\}\]</div>
+<p><strong>Erosion</strong> keeps a pixel white only if the whole kernel fits in the white region: white objects shrink, white specks vanish. <strong>Dilation</strong> makes a pixel white if the (reflected) kernel touches any white pixel: objects grow, black holes fill.</p>
+<p>A neat way to compute them: for every "on" cell <span class="arithmatex">\((d_y, d_x)\)</span> of the kernel, shift the image by that offset; erosion is the AND of all the shifted copies, dilation is the OR.</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">erode</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""White at x only if the kernel, centred at x, fits entirely inside the white set."""</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">img</span> <span class="o">&gt;</span> <span class="mi">0</span>
+    <span class="n">kh</span><span class="p">,</span> <span class="n">kw</span> <span class="o">=</span> <span class="n">k</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="n">k</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">//</span> <span class="mi">2</span>
+    <span class="n">padded</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="p">((</span><span class="n">kh</span><span class="p">,</span> <span class="n">kh</span><span class="p">),</span> <span class="p">(</span><span class="n">kw</span><span class="p">,</span> <span class="n">kw</span><span class="p">)),</span> <span class="n">constant_values</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">dy</span><span class="p">,</span> <span class="n">dx</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">k</span><span class="p">)):</span>              <span class="c1"># AND of shifted copies, one per kernel cell</span>
+        <span class="n">out</span> <span class="o">&amp;=</span> <span class="n">padded</span><span class="p">[</span><span class="n">dy</span><span class="p">:</span><span class="n">dy</span> <span class="o">+</span> <span class="n">b</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dx</span><span class="p">:</span><span class="n">dx</span> <span class="o">+</span> <span class="n">b</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+    <span class="k">return</span> <span class="n">out</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span> <span class="o">*</span> <span class="mi">255</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">dilate</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""White at x if the (reflected) kernel centred at x touches the white set at all."""</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">img</span> <span class="o">&gt;</span> <span class="mi">0</span>
+    <span class="n">kh</span><span class="p">,</span> <span class="n">kw</span> <span class="o">=</span> <span class="n">k</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span> <span class="n">k</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">//</span> <span class="mi">2</span>
+    <span class="n">padded</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pad</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="p">((</span><span class="n">kh</span><span class="p">,</span> <span class="n">kh</span><span class="p">),</span> <span class="p">(</span><span class="n">kw</span><span class="p">,</span> <span class="n">kw</span><span class="p">)),</span> <span class="n">constant_values</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+    <span class="n">k_ref</span> <span class="o">=</span> <span class="n">k</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">dy</span><span class="p">,</span> <span class="n">dx</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span><span class="n">k_ref</span><span class="p">)):</span>          <span class="c1"># OR of shifted copies</span>
+        <span class="n">out</span> <span class="o">|=</span> <span class="n">padded</span><span class="p">[</span><span class="n">dy</span><span class="p">:</span><span class="n">dy</span> <span class="o">+</span> <span class="n">b</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dx</span><span class="p">:</span><span class="n">dx</span> <span class="o">+</span> <span class="n">b</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+    <span class="k">return</span> <span class="n">out</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span> <span class="o">*</span> <span class="mi">255</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">opening</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>          <span class="c1"># erosion then dilation: removes small white specks</span>
+    <span class="k">return</span> <span class="n">dilate</span><span class="p">(</span><span class="n">erode</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">k</span><span class="p">),</span> <span class="n">k</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">closing</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>          <span class="c1"># dilation then erosion: fills small black holes</span>
+    <span class="k">return</span> <span class="n">erode</span><span class="p">(</span><span class="n">dilate</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">k</span><span class="p">),</span> <span class="n">k</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">morph_gradient</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>   <span class="c1"># dilation - erosion: the outline of every shape</span>
+    <span class="k">return</span> <span class="n">cv2</span><span class="o">.</span><span class="n">subtract</span><span class="p">(</span><span class="n">dilate</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">k</span><span class="p">),</span> <span class="n">erode</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">k</span><span class="p">))</span>
+</code></pre></div>
+<p>All four operations are <strong>pixel-identical</strong> to <code>cv2.erode</code>, <code>cv2.dilate</code> and <code>cv2.morphologyEx</code>, which the script checks.</p>
+<div class="admonition bug">
+<p class="admonition-title">What went wrong in my first erosion</p>
+<p>I wrote <code>if not k.all() and window.all()</code>. That ignores the kernel's shape (a cross or a disc has zeros in it) and only compares whole windows. The definition says: <em>the window must be white wherever the kernel is 1</em> — <code>window[k == 1].all()</code>.</p>
+</div>
+<figure class="fig"><a href="img/09-basic-ops.webp" target="_blank" rel="noopener"><img src="img/09-basic-ops.webp" alt="Erosion removes white specks but enlarges black ones; dilation does the opposite. Opening (erode, then dilate) and closing (dilate, then erode) restore the size of the big shapes while removing the small ones." loading="lazy"></a><figcaption markdown="span">Erosion removes white specks but enlarges black ones; dilation does the opposite. Opening (erode, then dilate) and closing (dilate, then erode) restore the size of the big shapes while removing the small ones.</figcaption></figure>
+
+<table>
+<thead>
+<tr>
+<th>Operation</th>
+<th>Definition</th>
+<th>Effect on white objects</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Opening</td>
+<td><span class="arithmatex">\(\delta(\varepsilon(I))\)</span></td>
+<td>removes white parts smaller than the kernel</td>
+</tr>
+<tr>
+<td>Closing</td>
+<td><span class="arithmatex">\(\varepsilon(\delta(I))\)</span></td>
+<td>fills black holes and gaps smaller than the kernel</td>
+</tr>
+<tr>
+<td>Gradient</td>
+<td><span class="arithmatex">\(\delta(I) - \varepsilon(I)\)</span></td>
+<td>outlines of every shape</td>
+</tr>
+<tr>
+<td>Top-hat / black-hat</td>
+<td><span class="arithmatex">\(I - \text{open}(I)\)</span> / <span class="arithmatex">\(\text{close}(I) - I\)</span></td>
+<td>small bright / dark details (lesson 05's barcode)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="cleaning-very-noisy-shapes">Cleaning very noisy shapes<a class="headerlink" href="#cleaning-very-noisy-shapes" title="Permanent link">#</a></h2>
+<p>The yin-yang below has 14% of its pixels flipped. The obvious recipe — a big opening to remove the white specks, then a big closing for the black ones — <strong>fails</strong>: the white half is so riddled with black specks that the opening eats it. The solution is an <strong>alternating sequential filter</strong>: close and open with a <em>growing</em> kernel, so every step only has to deal with specks slightly larger than those already removed.</p>
+<div class="highlight"><pre><span></span><code><span class="n">truth</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">U</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s2">"morphology/yin_yang.png"</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">IMREAD_GRAYSCALE</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">127</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">error</span><span class="p">(</span><span class="n">img</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mi">100</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">img</span> <span class="o">!=</span> <span class="n">truth</span><span class="p">)</span>                     <span class="c1"># % of wrong pixels</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">ellipse</span><span class="p">(</span><span class="n">k</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">cv2</span><span class="o">.</span><span class="n">getStructuringElement</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">MORPH_ELLIPSE</span><span class="p">,</span> <span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">k</span><span class="p">))</span>
+
+
+<span class="c1"># One big opening followed by one big closing: the opening erases the white half too,</span>
+<span class="c1"># because it is riddled with black specks (13% of its pixels).</span>
+<span class="n">naive</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">morphologyEx</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">morphologyEx</span><span class="p">(</span><span class="n">noisy</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">MORPH_OPEN</span><span class="p">,</span> <span class="n">ellipse</span><span class="p">(</span><span class="mi">7</span><span class="p">)),</span> <span class="n">cv2</span><span class="o">.</span><span class="n">MORPH_CLOSE</span><span class="p">,</span> <span class="n">ellipse</span><span class="p">(</span><span class="mi">7</span><span class="p">))</span>
+
+<span class="c1"># Alternating sequential filter: close/open with *growing* kernels, so each step only</span>
+<span class="c1"># has to remove specks slightly bigger than the ones already gone.</span>
+<span class="n">asf</span> <span class="o">=</span> <span class="n">noisy</span>
+<span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">):</span>
+    <span class="n">asf</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">morphologyEx</span><span class="p">(</span><span class="n">asf</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">MORPH_CLOSE</span><span class="p">,</span> <span class="n">ellipse</span><span class="p">(</span><span class="n">k</span><span class="p">))</span>
+    <span class="n">asf</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">morphologyEx</span><span class="p">(</span><span class="n">asf</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">MORPH_OPEN</span><span class="p">,</span> <span class="n">ellipse</span><span class="p">(</span><span class="n">k</span><span class="p">))</span>
+
+<span class="n">outline</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">morphologyEx</span><span class="p">(</span><span class="n">asf</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">MORPH_GRADIENT</span><span class="p">,</span> <span class="n">k_cross</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"error: noisy </span><span class="si">{</span><span class="n">error</span><span class="p">(</span><span class="n">noisy</span><span class="p">)</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%  open7+close7 </span><span class="si">{</span><span class="n">error</span><span class="p">(</span><span class="n">naive</span><span class="p">)</span><span class="si">:</span><span class="s2">.1f</span><span class="si">}</span><span class="s2">%  ASF </span><span class="si">{</span><span class="n">error</span><span class="p">(</span><span class="n">asf</span><span class="p">)</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2">%"</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>error: noisy 13.7%  open7+close7 36.0%  ASF 0.72%
+</code></pre></div>
+<figure class="fig"><a href="img/09-clean.webp" target="_blank" rel="noopener"><img src="img/09-clean.webp" alt="One big opening + closing triples the error. The alternating filter brings it from 13.7% to 0.7% wrong pixels, and its morphological gradient is a clean outline." loading="lazy"></a><figcaption markdown="span">One big opening + closing triples the error. The alternating filter brings it from 13.7% to 0.7% wrong pixels, and its morphological gradient is a clean outline.</figcaption></figure>
+
+<h2 id="making-a-qr-code-readable">Making a QR code readable<a class="headerlink" href="#making-a-qr-code-readable" title="Permanent link">#</a></h2>
+<p>A QR code is just black and white squares, so noise inside a module can be removed with a kernel smaller than a module. To <em>measure</em> success, we ask OpenCV's QR decoder:</p>
+<div class="highlight"><pre><span></span><code><span class="n">qr</span> <span class="o">=</span> <span class="n">U</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s2">"morphology/QR_code.png"</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">IMREAD_GRAYSCALE</span><span class="p">)</span>
+<span class="n">detector</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">QRCodeDetector</span><span class="p">()</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">decode</span><span class="p">(</span><span class="n">img</span><span class="p">):</span>
+    <span class="c1"># QR readers need a white "quiet zone" around the code</span>
+    <span class="n">padded</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">copyMakeBorder</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">BORDER_CONSTANT</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">255</span><span class="p">)</span>
+    <span class="n">text</span><span class="p">,</span> <span class="n">points</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">detector</span><span class="o">.</span><span class="n">detectAndDecode</span><span class="p">(</span><span class="n">padded</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">text</span> <span class="ow">or</span> <span class="kc">None</span>
+
+
+<span class="n">k3</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">getStructuringElement</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">MORPH_CROSS</span><span class="p">,</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+<span class="n">qr_bin</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">threshold</span><span class="p">(</span><span class="n">qr</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">THRESH_BINARY</span> <span class="o">+</span> <span class="n">cv2</span><span class="o">.</span><span class="n">THRESH_OTSU</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+<span class="n">qr_open</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">morphologyEx</span><span class="p">(</span><span class="n">qr_bin</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">MORPH_OPEN</span><span class="p">,</span> <span class="n">k3</span><span class="p">)</span>       <span class="c1"># white noise inside black modules</span>
+<span class="n">qr_clean</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">morphologyEx</span><span class="p">(</span><span class="n">qr_open</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">MORPH_CLOSE</span><span class="p">,</span> <span class="n">k3</span><span class="p">)</span>    <span class="c1"># black noise inside white modules</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">im</span> <span class="ow">in</span> <span class="p">[(</span><span class="s2">"input"</span><span class="p">,</span> <span class="n">qr</span><span class="p">),</span> <span class="p">(</span><span class="s2">"cleaned"</span><span class="p">,</span> <span class="n">qr_clean</span><span class="p">)]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"QR </span><span class="si">{</span><span class="n">name</span><span class="si">:</span><span class="s2">&lt;8</span><span class="si">}</span><span class="s2"> decoded:"</span><span class="p">,</span> <span class="n">decode</span><span class="p">(</span><span class="n">im</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">)</span>
+</code></pre></div>
+<figure class="fig"><a href="img/09-qr.webp" target="_blank" rel="noopener"><img src="img/09-qr.webp" alt="The noisy code cannot be decoded. After an opening and a closing with a 3×3 cross, `cv2.QRCodeDetector` reads it." loading="lazy"></a><figcaption markdown="span">The noisy code cannot be decoded. After an opening and a closing with a 3×3 cross, `cv2.QRCodeDetector` reads it.</figcaption></figure>
+
+<p>Two practical lessons: the kernel must be <strong>smaller than one module</strong> (a 5×5 kernel starts eating the thin black lines), and decoders need a white <strong>quiet zone</strong> around the code — I had to pad the image with a white border before it worked.</p>
+<h2 id="hit-or-miss-finding-patterns">Hit-or-miss: finding patterns<a class="headerlink" href="#hit-or-miss-finding-patterns" title="Permanent link">#</a></h2>
+<p>Hit-or-miss looks for an exact local configuration. The kernel has three values: <span class="arithmatex">\(1\)</span> = must be white, <span class="arithmatex">\(-1\)</span> = must be black, <span class="arithmatex">\(0\)</span> = don't care. It is two erosions: the foreground eroded by the "1" cells AND the background eroded by the "−1" cells.</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">hit_or_miss</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">kernel</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""kernel: 1 = must be white, -1 = must be black, 0 = don't care."""</span>
+    <span class="n">fg</span> <span class="o">=</span> <span class="n">img</span> <span class="o">&gt;</span> <span class="mi">0</span>
+    <span class="n">hits</span> <span class="o">=</span> <span class="n">erode</span><span class="p">(</span><span class="n">fg</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">),</span> <span class="p">(</span><span class="n">kernel</span> <span class="o">==</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span>
+    <span class="n">misses</span> <span class="o">=</span> <span class="n">erode</span><span class="p">((</span><span class="o">~</span><span class="n">fg</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">),</span> <span class="p">(</span><span class="n">kernel</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">hits</span> <span class="o">&amp;</span> <span class="n">misses</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span> <span class="o">*</span> <span class="mi">255</span>
+
+
+<span class="n">corner</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                   <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+                   <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>                     <span class="c1"># top-right outer corner of a white shape</span>
+<span class="n">shapes</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">60</span><span class="p">,</span> <span class="mi">80</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+<span class="n">cv2</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">shapes</span><span class="p">,</span> <span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">),</span> <span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">),</span> <span class="mi">255</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">cv2</span><span class="o">.</span><span class="n">rectangle</span><span class="p">(</span><span class="n">shapes</span><span class="p">,</span> <span class="p">(</span><span class="mi">45</span><span class="p">,</span> <span class="mi">20</span><span class="p">),</span> <span class="p">(</span><span class="mi">70</span><span class="p">,</span> <span class="mi">50</span><span class="p">),</span> <span class="mi">255</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">found_mine</span> <span class="o">=</span> <span class="n">hit_or_miss</span><span class="p">(</span><span class="n">shapes</span><span class="p">,</span> <span class="n">corner</span><span class="p">)</span>
+<span class="n">found_cv</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">morphologyEx</span><span class="p">(</span><span class="n">shapes</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">MORPH_HITMISS</span><span class="p">,</span> <span class="n">corner</span><span class="p">)</span>
+</code></pre></div>
+<figure class="fig"><a href="img/09-hitmiss.webp" target="_blank" rel="noopener"><img src="img/09-hitmiss.webp" alt="The kernel describes a top-right outer corner; exactly the two top-right corners are found. Lesson 19 uses the same tool to find the endings of fingerprint ridges." loading="lazy"></a><figcaption markdown="span">The kernel describes a top-right outer corner; exactly the two top-right corners are found. Lesson 19 uses the same tool to find the endings of fingerprint ridges.</figcaption></figure>
+
+<h2 id="counting-objects">Counting objects<a class="headerlink" href="#counting-objects" title="Permanent link">#</a></h2>
+<p>After cleaning, <code>connectedComponentsWithStats</code> labels every white blob and returns its area, bounding box and centroid — the bridge between pixels and objects:</p>
+<div class="highlight"><pre><span></span><code><span class="n">blobs</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">morphologyEx</span><span class="p">(</span><span class="n">noisy</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">MORPH_OPEN</span><span class="p">,</span> <span class="n">k_cross</span><span class="p">)</span>
+<span class="n">n</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">stats</span><span class="p">,</span> <span class="n">centroids</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">connectedComponentsWithStats</span><span class="p">(</span><span class="n">blobs</span><span class="p">)</span>
+<span class="n">big</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="k">if</span> <span class="n">stats</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">CC_STAT_AREA</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">500</span><span class="p">]</span>     <span class="c1"># label 0 is the background</span>
+<span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">n</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2"> white components, </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">big</span><span class="p">)</span><span class="si">}</span><span class="s2"> larger than 500 px"</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="exercises">Exercises<a class="headerlink" href="#exercises" title="Permanent link">#</a></h2>
+<ol>
+<li>Find the smallest square kernel for which the QR code stops being readable. Relate it to the module size in pixels.</li>
+<li>Write <code>hit_or_miss</code> kernels for the four outer corners (use <code>np.rot90</code>) and count the corners of every rectangle in an image.</li>
+<li>Use the morphological gradient of the cleaned yin-yang and <code>cv2.findContours</code> to measure the perimeter of each half.</li>
+</ol>
+      </article>
+      <nav class="pager" aria-label="Lessons">
+        <a href="08-hough.html"><span class="mono">Previous</span><strong>08 · The Hough transform</strong></a>
+        <a href="10-color.html" class="next"><span class="mono">Next</span><strong>10 · Colour spaces and colour segmentation</strong></a>
+      </nav>
+    </main>
+    <aside class="lesson-toc" aria-label="On this page">
+      <div class="sub first">On this page</div>
+      <ul><li><a href="#shapes-not-intensities">Shapes, not intensities</a></li>
+<li><a href="#erosion-and-dilation">Erosion and dilation</a></li>
+<li><a href="#cleaning-very-noisy-shapes">Cleaning very noisy shapes</a></li>
+<li><a href="#making-a-qr-code-readable">Making a QR code readable</a></li>
+<li><a href="#hit-or-miss-finding-patterns">Hit-or-miss: finding patterns</a></li>
+<li><a href="#counting-objects">Counting objects</a></li>
+<li><a href="#exercises">Exercises</a></li></ul>
+    </aside>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container footer-inner mono wide">
+      <span>© <span id="year"></span> Henrique Corneau · course text and code under MIT</span>
+      <span><a href="https://github.com/henriquecorneau" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/henriquecorneau/" target="_blank" rel="noopener">LinkedIn</a></span>
+    </div>
+  </footer>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+  <script defer src="course.js"></script>
+</body>
+</html>

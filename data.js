@@ -36,6 +36,7 @@
       stack: ['ROS 2 Humble', 'ORB-SLAM3', 'C++', 'Docker', 'Pangolin', 'Kinect v1', 'DJI Tello'],
       links: [
         { label: 'drone-map-loc', href: ME + 'drone-map-loc', primary: true },
+        { label: { en: 'Course: visual SLAM lesson', pt: 'Curso: lição de SLAM visual' }, href: '../course/17-visual-slam.html' },
         { label: 'orbslam3-ros2-docker', href: ME + 'orbslam3-ros2-docker' },
         { label: 'kinect-ros2', href: ME + 'kinect-ros2' },
         { label: 'tello_ros', href: ZUNE + 'tello_ros' }
@@ -160,7 +161,9 @@
         pt: 'Projeto de iniciação científica (PIBIC, UFRN, 2024 – 2025) sobre navegação visual para um veleiro autônomo.'
       },
       stack: ['Python', 'YOLOv11', 'OpenCV', 'Stereo Vision', 'pyproj', 'GPS', 'IMU'],
-      links: [{ label: 'boat-vision', href: ME + 'boat-vision', primary: true }],
+      links: [{ label: 'boat-vision', href: ME + 'boat-vision', primary: true },
+        { label: { en: 'Course: stereo vision lesson', pt: 'Curso: lição de visão estéreo' }, href: '../course/15-stereo-vision.html' }
+      ],
       overview: {
         en: [
           'An autonomous surface vessel needs to know not only that there is a boat or an obstacle ahead, but where it is in the world. This project turns a detection in a stereo image into a latitude/longitude coordinate.',
@@ -789,7 +792,7 @@
 
   const strings = {
     en: {
-      'nav.projects': 'Projects', 'nav.papers': 'Papers', 'nav.about': 'About', 'nav.contact': 'Contact',
+      'nav.projects': 'Projects', 'nav.course': 'CV Course', 'nav.papers': 'Papers', 'nav.about': 'About', 'nav.contact': 'Contact',
       'hero.eyebrow': 'Robotics · Computer Vision · Embedded Systems',
       'hero.title': "Hi, I'm Henrique!",
       'hero.lead': 'Mechatronics engineering student at <strong>UFRN</strong> (Brazil), with an exchange year at <strong>INSA Rouen Normandie</strong> (France). I build autonomous drones, robot perception pipelines and embedded systems — and I document my projects here.',
@@ -797,6 +800,10 @@
       'hero.cv': 'Resume',
       'projects.title': 'Featured Projects', 'projects.all': 'See all on GitHub →',
       'filters.all': 'All', 'filters.drones': 'Drones', 'filters.vision': 'Computer Vision', 'filters.ros': 'ROS 2 / SLAM', 'filters.embedded': 'Embedded / IoT',
+      'course.eyebrow': 'Free course · 20 lessons · Python + OpenCV',
+      'course.title': 'Computer Vision, from Pixels to 3-D',
+      'course.text': 'A hands-on course built from my coursework at UFRN and INSA Rouen and my research projects: from NumPy arrays and filters to edges, features, homographies, camera calibration, stereo, Structure from Motion and ORB-SLAM3. Every method is written from scratch, then compared with OpenCV — and every figure is the real output of the code.',
+      'course.cta': 'Start the course →',
       'papers.title': 'Publications',
       'about.title': 'About',
       'about.p1': "I'm a mechatronics engineering student at the Universidade Federal do Rio Grande do Norte (UFRN), passionate about robotics, computer vision, embedded systems and edge AI.",
@@ -817,7 +824,7 @@
       metaDesc: 'Henrique Corneau — Mechatronics engineering student working on robotics, computer vision and embedded systems.'
     },
     pt: {
-      'nav.projects': 'Projetos', 'nav.papers': 'Artigos', 'nav.about': 'Sobre', 'nav.contact': 'Contato',
+      'nav.projects': 'Projetos', 'nav.course': 'Curso de Visão', 'nav.papers': 'Artigos', 'nav.about': 'Sobre', 'nav.contact': 'Contato',
       'hero.eyebrow': 'Robótica · Visão Computacional · Sistemas Embarcados',
       'hero.title': 'Olá, eu sou o Henrique!',
       'hero.lead': 'Estudante de Engenharia Mecatrônica na <strong>UFRN</strong> (Brasil), com um ano de intercâmbio no <strong>INSA Rouen Normandie</strong> (França). Desenvolvo drones autônomos, sistemas de percepção robótica e sistemas embarcados — e documento meus projetos aqui.',
@@ -825,6 +832,10 @@
       'hero.cv': 'Currículo',
       'projects.title': 'Projetos em Destaque', 'projects.all': 'Ver todos no GitHub →',
       'filters.all': 'Todos', 'filters.drones': 'Drones', 'filters.vision': 'Visão Computacional', 'filters.ros': 'ROS 2 / SLAM', 'filters.embedded': 'Embarcados / IoT',
+      'course.eyebrow': 'Curso gratuito · 20 lições · Python + OpenCV (em inglês)',
+      'course.title': 'Visão Computacional, do Pixel ao 3D',
+      'course.text': 'Um curso prático construído a partir das minhas disciplinas na UFRN e no INSA Rouen e dos meus projetos de pesquisa: de arrays NumPy e filtros a bordas, features, homografias, calibração de câmera, estéreo, Structure from Motion e ORB-SLAM3. Cada método é implementado do zero e depois comparado com o OpenCV — e cada figura é a saída real do código.',
+      'course.cta': 'Começar o curso →',
       'papers.title': 'Publicações',
       'about.title': 'Sobre',
       'about.p1': 'Sou estudante de Engenharia Mecatrônica na Universidade Federal do Rio Grande do Norte (UFRN), apaixonado por robótica, visão computacional, sistemas embarcados e Edge AI.',

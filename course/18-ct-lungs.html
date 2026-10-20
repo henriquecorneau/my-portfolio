@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>18 · Case study: lungs and vessels in CT scans · Computer Vision Course</title>
+  <meta name="description" content="Medical images are not photos. Read CT slices in Hounsfield units, choose display windows, segment the lungs with thresholds, connected components and contours, segment the vessels inside them, and screen 21 patients.">
+  <meta property="og:title" content="18 · Case study: lungs and vessels in CT scans · Computer Vision Course">
+  <meta property="og:description" content="Medical images are not photos. Read CT slices in Hounsfield units, choose display windows, segment the lungs with thresholds, connected components and contours, segment the vessels inside them, and screen 21 patients.">
+  <meta property="og:image" content="../assets/img/profile.jpg">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23111'/><text x='50' y='66' font-size='46' font-family='monospace' fill='%23fff' text-anchor='middle'>HC</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="course.css">
+  <script>
+    try { var t = localStorage.getItem('theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+</head>
+<body data-page="course">
+  <header class="site-header">
+    <div class="container header-inner wide">
+      <a href="../index.html" class="logo">henrique<span>.corneau</span></a>
+      <nav class="nav" aria-label="Main">
+        <a href="../index.html#projects">Projects</a>
+        <a href="index.html" class="current">CV Course</a>
+        <a href="../index.html#papers">Papers</a>
+        <a href="../index.html#about">About</a>
+      </nav>
+      <div class="header-actions">
+        <button type="button" class="icon-btn menu-btn" id="menu-toggle" aria-label="Lessons" aria-expanded="false" aria-controls="course-side">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <button type="button" class="icon-btn" id="theme-toggle" aria-label="Toggle theme">
+          <svg class="i-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="i-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="course-layout container wide">
+    <aside class="course-side" id="course-side" aria-label="Lessons">
+      <a class="side-home" href="index.html">← Course overview</a>
+      <div class="side-part"><span class="mono">Part I</span> Foundations</div><ol>
+<li><a href="00-setup.html"><span class="mono">00</span>Setup and how the course code works</a></li>
+<li><a href="01-images-as-arrays.html"><span class="mono">01</span>Images are arrays</a></li>
+<li><a href="02-sampling-quantization.html"><span class="mono">02</span>Sampling, quantization and interpolation</a></li>
+<li><a href="03-geometric-transforms.html"><span class="mono">03</span>Geometric transforms</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part II</span> Enhancement</div><ol>
+<li><a href="04-histograms-lut.html"><span class="mono">04</span>Histograms, point operations and LUTs</a></li>
+<li><a href="05-noise-filtering.html"><span class="mono">05</span>Noise and spatial filtering</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part III</span> Edges, shapes and colour</div><ol>
+<li><a href="06-edges.html"><span class="mono">06</span>Edge detection</a></li>
+<li><a href="07-canny.html"><span class="mono">07</span>The Canny edge detector</a></li>
+<li><a href="08-hough.html"><span class="mono">08</span>The Hough transform</a></li>
+<li><a href="09-morphology.html"><span class="mono">09</span>Mathematical morphology</a></li>
+<li><a href="10-color.html"><span class="mono">10</span>Colour spaces and colour segmentation</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part IV</span> Features</div><ol>
+<li><a href="11-corners-tracking.html"><span class="mono">11</span>Corners and tracking</a></li>
+<li><a href="12-keypoints-orb-sift.html"><span class="mono">12</span>Keypoints and descriptors — FAST, ORB and SIFT</a></li>
+<li><a href="13-homography-ransac.html"><span class="mono">13</span>Homography and RANSAC</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part V</span> Geometry and 3-D</div><ol>
+<li><a href="14-camera-calibration.html"><span class="mono">14</span>Camera model and calibration</a></li>
+<li><a href="15-stereo-vision.html"><span class="mono">15</span>Stereo vision</a></li>
+<li><a href="16-structure-from-motion.html"><span class="mono">16</span>Structure from Motion</a></li>
+<li><a href="17-visual-slam.html"><span class="mono">17</span>Visual SLAM with ORB-SLAM3</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part VI</span> Case studies</div><ol>
+<li><a href="18-ct-lungs.html" class="active" aria-current="page"><span class="mono">18</span>Case study: lungs and vessels in CT scans</a></li>
+<li><a href="19-fingerprints.html"><span class="mono">19</span>Case study: fingerprint identification</a></li>
+</ol>
+    </aside>
+    <main class="lesson" id="top">
+      <header class="lesson-head">
+        <p class="eyebrow mono">Part VI · Case studies · Lesson 18</p>
+        <h1>Case study: lungs and vessels in CT scans</h1>
+        <p class="lead">Medical images are not photos. Read CT slices in Hounsfield units, choose display windows, segment the lungs with thresholds, connected components and contours, segment the vessels inside them, and screen 21 patients.</p>
+        <p class="lesson-sources mono">Based on: INSA TIM lab 8</p>
+        <div class="run-box"><div><span class="mono label">Run this lesson</span><code>python 18_ct_lungs.py</code><code>python 18_ct_lungs.py --save out</code></div><a class="btn btn-ghost" href="code/18_ct_lungs.py" download>Download 18_ct_lungs.py</a></div>
+      </header>
+      <article class="prose">
+<div class="admonition warning">
+<p class="admonition-title">Not a medical tool</p>
+<p>This is an image-processing exercise, not a diagnostic method. The "vessel to lung ratio" below is a toy criterion chosen for the lab.</p>
+</div>
+<h2 id="computed-tomography-in-two-paragraphs">Computed tomography in two paragraphs<a class="headerlink" href="#computed-tomography-in-two-paragraphs" title="Permanent link">#</a></h2>
+<p>A CT scanner sends X-rays through the body from many angles and reconstructs, slice by slice, how much each small volume absorbs them. The result is not brightness in arbitrary units but a physical quantity on an absolute scale, the <strong>Hounsfield unit</strong> (HU): air is −1000 HU, water 0 HU, soft tissue about +20 to +80, bone +400 to +1000 and more. Lungs, full of air, sit around −900 to −500 HU; blood vessels inside them around +40.</p>
+<p>Scans are stored in medical formats (DICOM, NIfTI) that also carry the <strong>physical size of a pixel</strong>, so areas can be measured in mm². The <code>nibabel</code> library reads NIfTI:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">load_slice</span><span class="p">(</span><span class="n">path</span><span class="p">):</span>
+    <span class="n">scan</span> <span class="o">=</span> <span class="n">nib</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+    <span class="n">hu</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="n">scan</span><span class="o">.</span><span class="n">get_fdata</span><span class="p">(),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">T</span>          <span class="c1"># Hounsfield units, radiological orientation</span>
+    <span class="n">pix_mm</span> <span class="o">=</span> <span class="n">scan</span><span class="o">.</span><span class="n">header</span><span class="p">[</span><span class="s2">"pixdim"</span><span class="p">][</span><span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>               <span class="c1"># pixel size (mm) along the two image axes</span>
+    <span class="k">return</span> <span class="n">hu</span><span class="p">,</span> <span class="n">pix_mm</span>
+
+
+<span class="n">hu</span><span class="p">,</span> <span class="n">pix_mm</span> <span class="o">=</span> <span class="n">load_slice</span><span class="p">(</span><span class="n">U</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="s2">"ct/slice017.nii.gz"</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">hu</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">hu</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"HU range [</span><span class="si">{</span><span class="n">hu</span><span class="o">.</span><span class="n">min</span><span class="p">()</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="n">hu</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="si">:</span><span class="s2">.0f</span><span class="si">}</span><span class="s2">]"</span><span class="p">,</span> <span class="s2">"pixel (mm):"</span><span class="p">,</span> <span class="n">pix_mm</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>(512, 512) float64 HU range [-1024, 1554] pixel (mm): [0.76171875 0.76171875]
+</code></pre></div>
+<p>The array is <code>float64</code>, from −1024 to 1554: it cannot be shown "as is" on a 0–255 screen.</p>
+<h2 id="windowing">Windowing<a class="headerlink" href="#windowing" title="Permanent link">#</a></h2>
+<p>Radiologists display a range of HU chosen for the tissue they study: a <strong>window</strong> of width <span class="arithmatex">\(W\)</span> centred on a <strong>level</strong> <span class="arithmatex">\(L\)</span>, mapped linearly to 0–255 and clipped outside. It is the dynamic expansion of lesson 04, in physical units:</p>
+<div class="arithmatex">\[\text{display} = 255 \cdot \frac{\operatorname{clip}(HU,\, L - W/2,\, L + W/2) - (L - W/2)}{W}\]</div>
+<table>
+<thead>
+<tr>
+<th>Region</th>
+<th>Level</th>
+<th>Width</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Lungs</td>
+<td>−600</td>
+<td>1500</td>
+</tr>
+<tr>
+<td>Soft tissue</td>
+<td>50</td>
+<td>350</td>
+</tr>
+<tr>
+<td>Brain</td>
+<td>40</td>
+<td>80</td>
+</tr>
+<tr>
+<td>Bone</td>
+<td>400</td>
+<td>1800</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">window</span><span class="p">(</span><span class="n">hu</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">width</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Map [level - width/2, level + width/2] HU to [0, 255]; clip everything else."""</span>
+    <span class="n">lo</span><span class="p">,</span> <span class="n">hi</span> <span class="o">=</span> <span class="n">level</span> <span class="o">-</span> <span class="n">width</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">level</span> <span class="o">+</span> <span class="n">width</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">255</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">hu</span><span class="p">,</span> <span class="n">lo</span><span class="p">,</span> <span class="n">hi</span><span class="p">)</span> <span class="o">-</span> <span class="n">lo</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">hi</span> <span class="o">-</span> <span class="n">lo</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+
+
+<span class="n">lung_view</span> <span class="o">=</span> <span class="n">window</span><span class="p">(</span><span class="n">hu</span><span class="p">,</span> <span class="n">level</span><span class="o">=-</span><span class="mi">600</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1500</span><span class="p">)</span>
+<span class="n">soft_tissue</span> <span class="o">=</span> <span class="n">window</span><span class="p">(</span><span class="n">hu</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">350</span><span class="p">)</span>
+<span class="n">bone</span> <span class="o">=</span> <span class="n">window</span><span class="p">(</span><span class="n">hu</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="mi">400</span><span class="p">,</span> <span class="n">width</span><span class="o">=</span><span class="mi">1800</span><span class="p">)</span>
+</code></pre></div>
+<figure class="fig"><a href="img/18-windows.webp" target="_blank" rel="noopener"><img src="img/18-windows.webp" alt="The same slice with four windows. The full range wastes the screen&#x27;s 256 levels; the lung window shows the airways and vessels, the soft-tissue window the heart and muscles." loading="lazy"></a><figcaption markdown="span">The same slice with four windows. The full range wastes the screen's 256 levels; the lung window shows the airways and vessels, the soft-tissue window the heart and muscles.</figcaption></figure>
+
+<h2 id="segmenting-the-lungs">Segmenting the lungs<a class="headerlink" href="#segmenting-the-lungs" title="Permanent link">#</a></h2>
+<p>The plan, one idea per line:</p>
+<ol>
+<li><strong>Air</strong> is everything below about −320 HU — but that includes the air <em>around</em> the patient.</li>
+<li>The outside air <strong>touches the image border</strong>; the lungs don't. Label the connected components (lesson 09) and drop those that touch the border, and the tiny ones (bowel gas, noise).</li>
+<li>The vessels inside the lungs are <em>not</em> air, so they are holes in the mask. Find the outer contour of each lung and <strong>fill</strong> it.</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">segment_lungs</span><span class="p">(</span><span class="n">hu</span><span class="p">,</span> <span class="n">air_hu</span><span class="o">=-</span><span class="mi">320</span><span class="p">,</span> <span class="n">min_area_px</span><span class="o">=</span><span class="mi">2000</span><span class="p">):</span>
+    <span class="n">air</span> <span class="o">=</span> <span class="p">(</span><span class="n">hu</span> <span class="o">&lt;</span> <span class="n">air_hu</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>                  <span class="c1"># air and lungs are both below ~-320 HU</span>
+    <span class="c1"># the air *around* the patient touches the image border: remove it</span>
+    <span class="n">n</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">stats</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">connectedComponentsWithStats</span><span class="p">(</span><span class="n">air</span><span class="p">,</span> <span class="n">connectivity</span><span class="o">=</span><span class="mi">4</span><span class="p">)</span>
+    <span class="n">border</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">r_</span><span class="p">[</span><span class="n">labels</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">labels</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">labels</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">labels</span><span class="p">[:,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]]))</span>
+    <span class="n">keep</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span> <span class="k">if</span> <span class="n">i</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">border</span> <span class="ow">and</span> <span class="n">stats</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">CC_STAT_AREA</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">min_area_px</span><span class="p">]</span>
+    <span class="n">candidates</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">keep</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span> <span class="o">*</span> <span class="mi">255</span>
+    <span class="c1"># vessels are *not* air, so they are holes in the candidates: fill each outer contour</span>
+    <span class="n">contours</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">findContours</span><span class="p">(</span><span class="n">candidates</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">RETR_EXTERNAL</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">CHAIN_APPROX_NONE</span><span class="p">)</span>
+    <span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">candidates</span><span class="p">)</span>
+    <span class="n">cv2</span><span class="o">.</span><span class="n">drawContours</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">contours</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="n">thickness</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">FILLED</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">mask</span><span class="p">,</span> <span class="n">contours</span>
+</code></pre></div>
+<p>My lab version selected contours by length and then took "the 2nd to 4th largest" (to skip the body outline). It worked on most slices but depended on the order of the contours. Removing everything that touches the border expresses the intent directly and works on all 21 slices — including those where the scanner padded the image with −8192 HU outside the field of view.</p>
+<h2 id="segmenting-the-vessels">Segmenting the vessels<a class="headerlink" href="#segmenting-the-vessels" title="Permanent link">#</a></h2>
+<p>Inside the lungs, a vessel is a pixel above −500 HU. But the lung <em>wall</em> is also above −500 HU, and the filled mask includes it. Eroding the mask a few pixels first keeps only the inside:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">segment_vessels</span><span class="p">(</span><span class="n">hu</span><span class="p">,</span> <span class="n">lung_mask</span><span class="p">,</span> <span class="n">vessel_hu</span><span class="o">=-</span><span class="mi">500</span><span class="p">,</span> <span class="n">erode_iter</span><span class="o">=</span><span class="mi">3</span><span class="p">):</span>
+    <span class="c1"># erode the lung mask so the dense lung wall is not counted as a vessel</span>
+    <span class="n">inner</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">erode</span><span class="p">(</span><span class="n">lung_mask</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">),</span> <span class="n">iterations</span><span class="o">=</span><span class="n">erode_iter</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">((</span><span class="n">hu</span> <span class="o">&gt;</span> <span class="n">vessel_hu</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">inner</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span> <span class="o">*</span> <span class="mi">255</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">areas_mm2</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">pix_mm</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">count_nonzero</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span> <span class="o">*</span> <span class="n">pix_mm</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">pix_mm</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+</code></pre></div>
+<figure class="fig"><a href="img/18-pipeline.webp" target="_blank" rel="noopener"><img src="img/18-pipeline.webp" alt="Air below −320 HU; the lungs (no border contact, large, filled); dense pixels inside them — the wall is included; with the eroded mask, only vessels remain; final overlay." loading="lazy"></a><figcaption markdown="span">Air below −320 HU; the lungs (no border contact, large, filled); dense pixels inside them — the wall is included; with the eroded mask, only vessels remain; final overlay.</figcaption></figure>
+
+<div class="highlight"><pre><span></span><code>lungs 153.2 cm², vessels 6.1 cm², ratio 0.040
+</code></pre></div>
+<h2 id="screening-all-the-patients">Screening all the patients<a class="headerlink" href="#screening-all-the-patients" title="Permanent link">#</a></h2>
+<div class="highlight"><pre><span></span><code><span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">path</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">U</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="s2">"ct/*.nii.gz"</span><span class="p">)))):</span>
+    <span class="n">hu</span><span class="p">,</span> <span class="n">pix_mm</span> <span class="o">=</span> <span class="n">load_slice</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="n">lungs</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">segment_lungs</span><span class="p">(</span><span class="n">hu</span><span class="p">)</span>
+    <span class="n">vessels</span> <span class="o">=</span> <span class="n">segment_vessels</span><span class="p">(</span><span class="n">hu</span><span class="p">,</span> <span class="n">lungs</span><span class="p">)</span>
+    <span class="n">ratio</span> <span class="o">=</span> <span class="n">areas_mm2</span><span class="p">(</span><span class="n">vessels</span><span class="p">,</span> <span class="n">pix_mm</span><span class="p">)</span> <span class="o">/</span> <span class="n">areas_mm2</span><span class="p">(</span><span class="n">lungs</span><span class="p">,</span> <span class="n">pix_mm</span><span class="p">)</span>
+    <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">Path</span><span class="p">(</span><span class="n">path</span><span class="p">)</span><span class="o">.</span><span class="n">name</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">"."</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="n">ratio</span><span class="p">,</span> <span class="n">hu</span><span class="p">,</span> <span class="n">lungs</span><span class="p">,</span> <span class="n">vessels</span><span class="p">))</span>
+
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">ratio</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+    <span class="n">flag</span> <span class="o">=</span> <span class="s2">"  &lt;- suspicious (&gt;= 5%)"</span> <span class="k">if</span> <span class="n">ratio</span> <span class="o">&gt;=</span> <span class="mf">0.05</span> <span class="k">else</span> <span class="s2">""</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">}</span><span class="s2">: vessel/lung = </span><span class="si">{</span><span class="mi">100</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">ratio</span><span class="si">:</span><span class="s2">4.1f</span><span class="si">}</span><span class="s2">%</span><span class="si">{</span><span class="n">flag</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</code></pre></div>
+<div class="admonition bug">
+<p class="admonition-title">Sort your file lists</p>
+<p><code>os.listdir</code> and <code>glob</code> return files in an <strong>arbitrary</strong> order. In my lab report I numbered patients by their position in the list and then reloaded <code>slice{i+1}</code> — so the flagged "patients" were not the ones whose ratios I had computed. <code>sorted(glob.glob(...))</code> and keeping the name with the result avoid that.</p>
+</div>
+<figure class="fig"><a href="img/18-ratios.webp" target="_blank" rel="noopener"><img src="img/18-ratios.webp" alt="Vessel-to-lung area ratio per slice. Four slices reach the (arbitrary) 5% threshold." loading="lazy"></a><figcaption markdown="span">Vessel-to-lung area ratio per slice. Four slices reach the (arbitrary) 5% threshold.</figcaption></figure>
+
+<figure class="fig"><a href="img/18-all-slices.webp" target="_blank" rel="noopener"><img src="img/18-all-slices.webp" alt="Eight of the 21 segmentations. Slices 010, 012, 020 and 021 contain dense regions inside the lungs, which is what pushes their ratio up." loading="lazy"></a><figcaption markdown="span">Eight of the 21 segmentations. Slices 010, 012, 020 and 021 contain dense regions inside the lungs, which is what pushes their ratio up.</figcaption></figure>
+
+<p><strong>Limitations.</strong> The trachea and main bronchi are air too, and in a few slices they are counted in the lung area. A threshold of −500 HU also catches any dense tissue (scars, consolidations), not only vessels. Real pipelines work in 3-D (the airway is one connected tube across slices) and increasingly with neural networks — but they still start with Hounsfield windows and connected components.</p>
+<h2 id="exercises">Exercises<a class="headerlink" href="#exercises" title="Permanent link">#</a></h2>
+<ol>
+<li>Remove the trachea: it is the round air component closest to the image centre in the upper slices. Add a circularity test, <span class="arithmatex">\(4\pi A / P^2 &gt; 0.7\)</span>, with <code>cv2.contourArea</code> and <code>cv2.arcLength</code>.</li>
+<li>Save the lung and vessel masks of every slice as PNG files next to the windowed image, for a radiologist to review.</li>
+<li>Separate the left and right lung (the two largest components) and report the ratio for each one.</li>
+</ol>
+      </article>
+      <nav class="pager" aria-label="Lessons">
+        <a href="17-visual-slam.html"><span class="mono">Previous</span><strong>17 · Visual SLAM with ORB-SLAM3</strong></a>
+        <a href="19-fingerprints.html" class="next"><span class="mono">Next</span><strong>19 · Case study: fingerprint identification</strong></a>
+      </nav>
+    </main>
+    <aside class="lesson-toc" aria-label="On this page">
+      <div class="sub first">On this page</div>
+      <ul><li><a href="#computed-tomography-in-two-paragraphs">Computed tomography in two paragraphs</a></li>
+<li><a href="#windowing">Windowing</a></li>
+<li><a href="#segmenting-the-lungs">Segmenting the lungs</a></li>
+<li><a href="#segmenting-the-vessels">Segmenting the vessels</a></li>
+<li><a href="#screening-all-the-patients">Screening all the patients</a></li>
+<li><a href="#exercises">Exercises</a></li></ul>
+    </aside>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container footer-inner mono wide">
+      <span>© <span id="year"></span> Henrique Corneau · course text and code under MIT</span>
+      <span><a href="https://github.com/henriquecorneau" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/henriquecorneau/" target="_blank" rel="noopener">LinkedIn</a></span>
+    </div>
+  </footer>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+  <script defer src="course.js"></script>
+</body>
+</html>

@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>16 · Structure from Motion · Computer Vision Course</title>
+  <meta name="description" content="Recover the camera&#x27;s motion and a 3-D map of the scene from a single moving camera — essential matrix, cheirality, triangulation and PnP — on 15 frames of the KITTI driving dataset.">
+  <meta property="og:title" content="16 · Structure from Motion · Computer Vision Course">
+  <meta property="og:description" content="Recover the camera&#x27;s motion and a 3-D map of the scene from a single moving camera — essential matrix, cheirality, triangulation and PnP — on 15 frames of the KITTI driving dataset.">
+  <meta property="og:image" content="../assets/img/profile.jpg">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23111'/><text x='50' y='66' font-size='46' font-family='monospace' fill='%23fff' text-anchor='middle'>HC</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="course.css">
+  <script>
+    try { var t = localStorage.getItem('theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+</head>
+<body data-page="course">
+  <header class="site-header">
+    <div class="container header-inner wide">
+      <a href="../index.html" class="logo">henrique<span>.corneau</span></a>
+      <nav class="nav" aria-label="Main">
+        <a href="../index.html#projects">Projects</a>
+        <a href="index.html" class="current">CV Course</a>
+        <a href="../index.html#papers">Papers</a>
+        <a href="../index.html#about">About</a>
+      </nav>
+      <div class="header-actions">
+        <button type="button" class="icon-btn menu-btn" id="menu-toggle" aria-label="Lessons" aria-expanded="false" aria-controls="course-side">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <button type="button" class="icon-btn" id="theme-toggle" aria-label="Toggle theme">
+          <svg class="i-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="i-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="course-layout container wide">
+    <aside class="course-side" id="course-side" aria-label="Lessons">
+      <a class="side-home" href="index.html">← Course overview</a>
+      <div class="side-part"><span class="mono">Part I</span> Foundations</div><ol>
+<li><a href="00-setup.html"><span class="mono">00</span>Setup and how the course code works</a></li>
+<li><a href="01-images-as-arrays.html"><span class="mono">01</span>Images are arrays</a></li>
+<li><a href="02-sampling-quantization.html"><span class="mono">02</span>Sampling, quantization and interpolation</a></li>
+<li><a href="03-geometric-transforms.html"><span class="mono">03</span>Geometric transforms</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part II</span> Enhancement</div><ol>
+<li><a href="04-histograms-lut.html"><span class="mono">04</span>Histograms, point operations and LUTs</a></li>
+<li><a href="05-noise-filtering.html"><span class="mono">05</span>Noise and spatial filtering</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part III</span> Edges, shapes and colour</div><ol>
+<li><a href="06-edges.html"><span class="mono">06</span>Edge detection</a></li>
+<li><a href="07-canny.html"><span class="mono">07</span>The Canny edge detector</a></li>
+<li><a href="08-hough.html"><span class="mono">08</span>The Hough transform</a></li>
+<li><a href="09-morphology.html"><span class="mono">09</span>Mathematical morphology</a></li>
+<li><a href="10-color.html"><span class="mono">10</span>Colour spaces and colour segmentation</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part IV</span> Features</div><ol>
+<li><a href="11-corners-tracking.html"><span class="mono">11</span>Corners and tracking</a></li>
+<li><a href="12-keypoints-orb-sift.html"><span class="mono">12</span>Keypoints and descriptors — FAST, ORB and SIFT</a></li>
+<li><a href="13-homography-ransac.html"><span class="mono">13</span>Homography and RANSAC</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part V</span> Geometry and 3-D</div><ol>
+<li><a href="14-camera-calibration.html"><span class="mono">14</span>Camera model and calibration</a></li>
+<li><a href="15-stereo-vision.html"><span class="mono">15</span>Stereo vision</a></li>
+<li><a href="16-structure-from-motion.html" class="active" aria-current="page"><span class="mono">16</span>Structure from Motion</a></li>
+<li><a href="17-visual-slam.html"><span class="mono">17</span>Visual SLAM with ORB-SLAM3</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part VI</span> Case studies</div><ol>
+<li><a href="18-ct-lungs.html"><span class="mono">18</span>Case study: lungs and vessels in CT scans</a></li>
+<li><a href="19-fingerprints.html"><span class="mono">19</span>Case study: fingerprint identification</a></li>
+</ol>
+    </aside>
+    <main class="lesson" id="top">
+      <header class="lesson-head">
+        <p class="eyebrow mono">Part V · Geometry and 3-D · Lesson 16</p>
+        <h1>Structure from Motion</h1>
+        <p class="lead">Recover the camera's motion and a 3-D map of the scene from a single moving camera — essential matrix, cheirality, triangulation and PnP — on 15 frames of the KITTI driving dataset.</p>
+        <p class="lesson-sources mono">Based on: UFRN activity 07</p>
+        <div class="run-box"><div><span class="mono label">Run this lesson</span><code>python 16_structure_from_motion.py</code><code>python 16_structure_from_motion.py --save out</code></div><a class="btn btn-ghost" href="code/16_structure_from_motion.py" download>Download 16_structure_from_motion.py</a></div>
+      </header>
+      <article class="prose">
+<h2 id="one-camera-two-positions">One camera, two positions<a class="headerlink" href="#one-camera-two-positions" title="Permanent link">#</a></h2>
+<p>Stereo needs two cameras at a known distance. A single <em>moving</em> camera also sees the scene from two positions — we just don't know the motion between them. <strong>Structure from Motion</strong> (SfM) estimates both at once: the camera poses (<em>motion</em>) and the 3-D points (<em>structure</em>). Run frame after frame, it is <strong>visual odometry</strong>, the core of visual SLAM (lesson 17).</p>
+<p>Our data: the first 15 frames of KITTI sequence 00, a car driving down a street, with the camera's calibration.</p>
+<div class="admonition bug">
+<p class="admonition-title">The calibration has to be the right one</p>
+<p>In my original activity I loaded <code>intrinsics.yml</code>, which was in fact the calibration of OpenCV's 640×480 stereo samples (<span class="arithmatex">\(f = 535\)</span>), not of KITTI (<span class="arithmatex">\(f = 718.9\)</span>, images 1241×376). The reconstruction "worked" but its geometry was distorted. Everything downstream depends on <span class="arithmatex">\(K\)</span>.</p>
+</div>
+<div class="highlight"><pre><span></span><code><span class="n">fs</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">FileStorage</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">U</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="s2">"kitti/calib.yml"</span><span class="p">)),</span> <span class="n">cv2</span><span class="o">.</span><span class="n">FILE_STORAGE_READ</span><span class="p">)</span>
+<span class="n">K</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">getNode</span><span class="p">(</span><span class="s2">"K"</span><span class="p">)</span><span class="o">.</span><span class="n">mat</span><span class="p">()</span>                      <span class="c1"># fx = fy = 718.856, cx = 607.19, cy = 185.22</span>
+<span class="n">fs</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+<span class="n">frames</span> <span class="o">=</span> <span class="p">[</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">IMREAD_GRAYSCALE</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">U</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="s2">"kitti/*.png"</span><span class="p">))))]</span>
+
+<span class="n">sift</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">SIFT_create</span><span class="p">(</span><span class="n">nfeatures</span><span class="o">=</span><span class="mi">3000</span><span class="p">)</span>
+<span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="n">sift</span><span class="o">.</span><span class="n">detectAndCompute</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span> <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">frames</span><span class="p">]</span>   <span class="c1"># (keypoints, descriptors) per frame</span>
+<span class="n">flann</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">FlannBasedMatcher</span><span class="p">(</span><span class="nb">dict</span><span class="p">(</span><span class="n">algorithm</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">trees</span><span class="o">=</span><span class="mi">5</span><span class="p">),</span> <span class="nb">dict</span><span class="p">(</span><span class="n">checks</span><span class="o">=</span><span class="mi">50</span><span class="p">))</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">match</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">ratio</span><span class="o">=</span><span class="mf">0.7</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Indices (qi, tj) of ratio-test matches between frames i and j."""</span>
+    <span class="n">knn</span> <span class="o">=</span> <span class="n">flann</span><span class="o">.</span><span class="n">knnMatch</span><span class="p">(</span><span class="n">features</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">features</span><span class="p">[</span><span class="n">j</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span> <span class="n">k</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[(</span><span class="n">m</span><span class="o">.</span><span class="n">queryIdx</span><span class="p">,</span> <span class="n">m</span><span class="o">.</span><span class="n">trainIdx</span><span class="p">)</span> <span class="k">for</span> <span class="n">m</span><span class="p">,</span> <span class="n">n</span> <span class="ow">in</span> <span class="n">knn</span> <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">distance</span> <span class="o">&lt;</span> <span class="n">ratio</span> <span class="o">*</span> <span class="n">n</span><span class="o">.</span><span class="n">distance</span><span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">pts</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">idx</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">([</span><span class="n">features</span><span class="p">[</span><span class="n">i</span><span class="p">][</span><span class="mi">0</span><span class="p">][</span><span class="n">k</span><span class="p">]</span><span class="o">.</span><span class="n">pt</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">idx</span><span class="p">])</span>
+</code></pre></div>
+<h2 id="the-essential-matrix">The essential matrix<a class="headerlink" href="#the-essential-matrix" title="Permanent link">#</a></h2>
+<p>For two views of the same calibrated camera, with relative rotation <span class="arithmatex">\(R\)</span> and translation <span class="arithmatex">\(\mathbf{t}\)</span>, corresponding points in normalised coordinates <span class="arithmatex">\(\hat{\mathbf{x}} = K^{-1}\mathbf{x}\)</span> satisfy the <strong>epipolar constraint</strong></p>
+<div class="arithmatex">\[\hat{\mathbf{x}}_2^\top E\, \hat{\mathbf{x}}_1 = 0, \qquad E = [\mathbf{t}]_\times R\]</div>
+<p><span class="arithmatex">\(E\)</span> (5 degrees of freedom) can be estimated from 5 matches; <code>findEssentialMat</code> runs Nistér's 5-point algorithm inside RANSAC.</p>
+<p>Decomposing <span class="arithmatex">\(E\)</span> gives <strong>four</strong> possible <span class="arithmatex">\((R, \mathbf{t})\)</span>: two rotations × two signs of <span class="arithmatex">\(\mathbf{t}\)</span>. Only one places the scene <strong>in front of both cameras</strong> (the <em>cheirality</em> condition). <code>recoverPose</code> triangulates the points for each candidate and keeps the right one:</p>
+<div class="highlight"><pre><span></span><code><span class="n">pairs</span> <span class="o">=</span> <span class="n">match</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">p0</span><span class="p">,</span> <span class="n">p1</span> <span class="o">=</span> <span class="n">pts</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="n">a</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">pairs</span><span class="p">]),</span> <span class="n">pts</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="n">b</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">pairs</span><span class="p">])</span>
+
+<span class="n">E</span><span class="p">,</span> <span class="n">inl</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">findEssentialMat</span><span class="p">(</span><span class="n">p0</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">RANSAC</span><span class="p">,</span> <span class="n">prob</span><span class="o">=</span><span class="mf">0.999</span><span class="p">,</span> <span class="n">threshold</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
+<span class="c1"># E has 4 possible (R, t) decompositions; recoverPose keeps the one that puts the</span>
+<span class="c1"># triangulated points *in front of both cameras* (the cheirality check).</span>
+<span class="n">n_good</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">inl</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">recoverPose</span><span class="p">(</span><span class="n">E</span><span class="p">,</span> <span class="n">p0</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">mask</span><span class="o">=</span><span class="n">inl</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>init: 1209 matches, 912 pass RANSAC + cheirality
+R ~ I (small rotation): [-0.0023  0.0041 -0.0019] | t direction: [-0.021 -0.016 -1.   ]
+the 4 candidates: (R1, t), (R1, -t), (R2, t), (R2, -t); R1 angle 0.3 deg, R2 angle 179.9 deg
+</code></pre></div>
+<div class="admonition bug">
+<p class="admonition-title">decomposeEssentialMat is not enough</p>
+<p>My first version took <code>R, _, t = cv2.decomposeEssentialMat(E)</code>: the first rotation and the translation, without checking which of the four combinations is physical. Here one of the rotations is a 180° flip — picking it puts the whole scene behind the camera.</p>
+</div>
+<p>Note that <span class="arithmatex">\(\|\mathbf{t}\| = 1\)</span>: from images alone, <strong>the scale is unknown</strong>. A street seen from 1 m of motion looks exactly like a twice larger street seen from 2 m. Monocular reconstructions are only defined up to scale; we will measure everything in units of the first baseline. (Stereo, an IMU, or a known object size fixes the scale.)</p>
+<h2 id="triangulation">Triangulation<a class="headerlink" href="#triangulation" title="Permanent link">#</a></h2>
+<p>Each camera <span class="arithmatex">\(k\)</span> has a projection matrix <span class="arithmatex">\(P_k = K\,[R_k \mid \mathbf{t}_k]\)</span>. A point seen at <span class="arithmatex">\(\mathbf{x}_a\)</span> and <span class="arithmatex">\(\mathbf{x}_b\)</span> lies at the intersection of two rays; <code>triangulatePoints</code> solves the linear system <span class="arithmatex">\(\mathbf{x} \times P\mathbf{X} = \mathbf{0}\)</span> for both views with the SVD (a DLT, like lesson 13). Rays never meet exactly, so we keep only points in front of both cameras with a small reprojection error:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">triangulate</span><span class="p">(</span><span class="n">Ra</span><span class="p">,</span> <span class="n">ta</span><span class="p">,</span> <span class="n">Rb</span><span class="p">,</span> <span class="n">tb</span><span class="p">,</span> <span class="n">xa</span><span class="p">,</span> <span class="n">xb</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Linear triangulation; returns N x 3 world points and a validity mask."""</span>
+    <span class="n">Pa</span> <span class="o">=</span> <span class="n">K</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">Ra</span><span class="p">,</span> <span class="n">ta</span><span class="p">])</span>                  <span class="c1"># 3 x 4 projection matrices</span>
+    <span class="n">Pb</span> <span class="o">=</span> <span class="n">K</span> <span class="o">@</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">Rb</span><span class="p">,</span> <span class="n">tb</span><span class="p">])</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">triangulatePoints</span><span class="p">(</span><span class="n">Pa</span><span class="p">,</span> <span class="n">Pb</span><span class="p">,</span> <span class="n">xa</span><span class="o">.</span><span class="n">T</span><span class="p">,</span> <span class="n">xb</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>  <span class="c1"># 4 x N, homogeneous</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span><span class="p">[:</span><span class="mi">3</span><span class="p">]</span> <span class="o">/</span> <span class="n">X</span><span class="p">[</span><span class="mi">3</span><span class="p">])</span><span class="o">.</span><span class="n">T</span>
+    <span class="c1"># keep points in front of both cameras, not absurdly far, with small reprojection error</span>
+    <span class="n">za</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span> <span class="o">@</span> <span class="n">Ra</span><span class="o">.</span><span class="n">T</span> <span class="o">+</span> <span class="n">ta</span><span class="o">.</span><span class="n">T</span><span class="p">)[:,</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="n">zb</span> <span class="o">=</span> <span class="p">(</span><span class="n">X</span> <span class="o">@</span> <span class="n">Rb</span><span class="o">.</span><span class="n">T</span> <span class="o">+</span> <span class="n">tb</span><span class="o">.</span><span class="n">T</span><span class="p">)[:,</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="n">proj</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">projectPoints</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">Rodrigues</span><span class="p">(</span><span class="n">Rb</span><span class="p">)[</span><span class="mi">0</span><span class="p">],</span> <span class="n">tb</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="kc">None</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">ok</span> <span class="o">=</span> <span class="p">(</span><span class="n">za</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">zb</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">za</span> <span class="o">&lt;</span> <span class="mi">80</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">proj</span> <span class="o">-</span> <span class="n">xb</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mf">2.0</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">ok</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="n">poses</span> <span class="o">=</span> <span class="p">[(</span><span class="n">np</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="mi">3</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">))),</span> <span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="n">t</span><span class="p">)]</span>   <span class="c1"># world = camera 0; |t| = 1 sets the scale</span>
+<span class="n">points</span><span class="p">,</span> <span class="n">colors</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+<span class="n">track</span> <span class="o">=</span> <span class="p">[</span><span class="nb">dict</span><span class="p">(),</span> <span class="nb">dict</span><span class="p">()]</span>                           <span class="c1"># per frame: keypoint index -&gt; 3-D point index</span>
+
+<span class="n">inl</span> <span class="o">=</span> <span class="n">inl</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span>
+<span class="n">good_pairs</span> <span class="o">=</span> <span class="p">[</span><span class="n">p</span> <span class="k">for</span> <span class="n">p</span><span class="p">,</span> <span class="n">ok</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">pairs</span><span class="p">,</span> <span class="n">inl</span><span class="p">)</span> <span class="k">if</span> <span class="n">ok</span><span class="p">]</span>
+<span class="n">X</span><span class="p">,</span> <span class="n">ok</span> <span class="o">=</span> <span class="n">triangulate</span><span class="p">(</span><span class="o">*</span><span class="n">poses</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">*</span><span class="n">poses</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">pts</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="n">a</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">good_pairs</span><span class="p">]),</span> <span class="n">pts</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="n">b</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">good_pairs</span><span class="p">]))</span>
+<span class="k">for</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="n">x</span><span class="p">,</span> <span class="n">valid</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">good_pairs</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">ok</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">valid</span><span class="p">:</span>
+        <span class="n">track</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">a</span><span class="p">]</span> <span class="o">=</span> <span class="n">track</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">b</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+        <span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</code></pre></div>
+<h2 id="adding-frames-with-pnp">Adding frames with PnP<a class="headerlink" href="#adding-frames-with-pnp" title="Permanent link">#</a></h2>
+<p>For a new frame we should <strong>not</strong> estimate a new essential matrix: its translation would again have length 1, and the scale would drift at every frame. Instead we use the map: the new frame sees points we have already triangulated, so its pose is a <strong>Perspective-n-Point</strong> problem (lesson 14), solved robustly with RANSAC, and its scale is automatically consistent with the map.</p>
+<p>The key is the bookkeeping: for each frame, a dictionary <em>keypoint index → map point index</em>. A match between frame <span class="arithmatex">\(k-1\)</span> and frame <span class="arithmatex">\(k\)</span> whose keypoint in <span class="arithmatex">\(k-1\)</span> is in the map gives a 2-D/3-D correspondence for frame <span class="arithmatex">\(k\)</span>.</p>
+<div class="highlight"><pre><span></span><code><span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">frames</span><span class="p">)):</span>
+    <span class="n">pairs</span> <span class="o">=</span> <span class="n">match</span><span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">k</span><span class="p">)</span>
+    <span class="n">track</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">dict</span><span class="p">())</span>
+    <span class="c1"># 2-D/3-D correspondences: keypoints of frame k whose partner in frame k-1 is already a map point</span>
+    <span class="n">known</span> <span class="o">=</span> <span class="p">[(</span><span class="n">track</span><span class="p">[</span><span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="n">a</span><span class="p">],</span> <span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">pairs</span> <span class="k">if</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">track</span><span class="p">[</span><span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]]</span>
+    <span class="n">obj</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">([</span><span class="n">points</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">known</span><span class="p">])</span>
+    <span class="n">img</span> <span class="o">=</span> <span class="n">pts</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="p">[</span><span class="n">b</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">known</span><span class="p">])</span>
+    <span class="n">ok</span><span class="p">,</span> <span class="n">rvec</span><span class="p">,</span> <span class="n">tvec</span><span class="p">,</span> <span class="n">inliers</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">solvePnPRansac</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">reprojectionError</span><span class="o">=</span><span class="mf">2.0</span><span class="p">,</span>
+                                                 <span class="n">iterationsCount</span><span class="o">=</span><span class="mi">200</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">SOLVEPNP_ITERATIVE</span><span class="p">)</span>
+    <span class="n">Rk</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">Rodrigues</span><span class="p">(</span><span class="n">rvec</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">poses</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">Rk</span><span class="p">,</span> <span class="n">tvec</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="n">inliers</span><span class="o">.</span><span class="n">ravel</span><span class="p">():</span>                  <span class="c1"># the map point is seen again in frame k</span>
+        <span class="n">track</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">known</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">known</span><span class="p">[</span><span class="n">idx</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="c1"># triangulate the matches that are not in the map yet</span>
+    <span class="n">new</span> <span class="o">=</span> <span class="p">[(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">)</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">pairs</span> <span class="k">if</span> <span class="n">a</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">track</span><span class="p">[</span><span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]]</span>
+    <span class="n">X</span><span class="p">,</span> <span class="n">ok</span> <span class="o">=</span> <span class="n">triangulate</span><span class="p">(</span><span class="o">*</span><span class="n">poses</span><span class="p">[</span><span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">],</span> <span class="n">Rk</span><span class="p">,</span> <span class="n">tvec</span><span class="p">,</span> <span class="n">pts</span><span class="p">(</span><span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="p">[</span><span class="n">a</span> <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="n">new</span><span class="p">]),</span> <span class="n">pts</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="p">[</span><span class="n">b</span> <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">new</span><span class="p">]))</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">),</span> <span class="n">x</span><span class="p">,</span> <span class="n">valid</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">new</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">ok</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">valid</span><span class="p">:</span>
+            <span class="n">track</span><span class="p">[</span><span class="n">k</span> <span class="o">-</span> <span class="mi">1</span><span class="p">][</span><span class="n">a</span><span class="p">]</span> <span class="o">=</span> <span class="n">track</span><span class="p">[</span><span class="n">k</span><span class="p">][</span><span class="n">b</span><span class="p">]</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+            <span class="n">points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"frame </span><span class="si">{</span><span class="n">k</span><span class="si">:</span><span class="s2">2d</span><span class="si">}</span><span class="s2">: PnP on </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">known</span><span class="p">)</span><span class="si">:</span><span class="s2">4d</span><span class="si">}</span><span class="s2"> points (</span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">inliers</span><span class="p">)</span><span class="si">:</span><span class="s2">4d</span><span class="si">}</span><span class="s2"> inliers), "</span>
+          <span class="sa">f</span><span class="s2">"map size </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">points</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</code></pre></div>
+<div class="admonition bug">
+<p class="admonition-title">And the bug that made my first version wrong</p>
+<p>My first <code>align_points</code> used <code>points_3D[match.queryIdx]</code>, assuming the <span class="arithmatex">\(i\)</span>-th 3-D point belonged to the <span class="arithmatex">\(i\)</span>-th keypoint of the new match list. It does not: the indices of different match lists are unrelated. Without explicit tracks, PnP receives random 2-D/3-D pairs.</p>
+</div>
+<div class="highlight"><pre><span></span><code>frame  2: PnP on  559 points ( 546 inliers), map size 1462
+...
+frame 14: PnP on  627 points ( 573 inliers), map size 6981
+</code></pre></div>
+<p>The camera centre is <span class="arithmatex">\(C = -R^\top \mathbf{t}\)</span> (the point that <span class="arithmatex">\([R \mid \mathbf{t}]\)</span> sends to the origin):</p>
+<div class="highlight"><pre><span></span><code><span class="n">centres</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([(</span><span class="o">-</span><span class="n">Rk</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="n">tk</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="k">for</span> <span class="n">Rk</span><span class="p">,</span> <span class="n">tk</span> <span class="ow">in</span> <span class="n">poses</span><span class="p">])</span>   <span class="c1"># camera centre C = -R^T t</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>camera centres (x, z): [[0.0, 0.0], [0.02, 1.0], [0.01, 2.02], ... [-0.45, 14.54], [-0.52, 15.76]]
+step length relative to the first one: mean 1.13, std 0.07
+</code></pre></div>
+<p>The trajectory is a straight line forward along <span class="arithmatex">\(Z\)</span>, as it should be for a car driving down a street, with steps of consistent length (the car accelerating slightly).</p>
+<figure class="fig"><a href="img/16-reconstruction.webp" target="_blank" rel="noopener"><img src="img/16-reconstruction.webp" alt="Top: the map points (building façades, parked cars, trees) and the 15 camera positions. Right: the same in 3-D." loading="lazy"></a><figcaption markdown="span">Top: the map points (building façades, parked cars, trees) and the 15 camera positions. Right: the same in 3-D.</figcaption></figure>
+
+<figure class="fig"><a href="img/16-reprojection.webp" target="_blank" rel="noopener"><img src="img/16-reprojection.webp" alt="Validation: the map points re-projected into the last frame (red lines) land on the observed keypoints (green). Median reprojection error: 0.23 px." loading="lazy"></a><figcaption markdown="span">Validation: the map points re-projected into the last frame (red lines) land on the observed keypoints (green). Median reprojection error: 0.23 px.</figcaption></figure>
+
+<h2 id="what-is-missing-for-a-real-system">What is missing for a real system<a class="headerlink" href="#what-is-missing-for-a-real-system" title="Permanent link">#</a></h2>
+<p>This is a working visual odometry, but a real one adds:</p>
+<ul>
+<li><strong>Bundle adjustment</strong> — jointly refine all poses and points to minimise every reprojection error (Ceres, g2o, GTSAM).</li>
+<li><strong>Keyframes</strong> — skip frames with too little motion (small baseline = bad triangulation).</li>
+<li><strong>Loop closure</strong> — recognise a place seen before and correct the accumulated drift.</li>
+<li><strong>Relocalisation</strong> — recover when tracking is lost.</li>
+</ul>
+<p>That is what ORB-SLAM does, in the next lesson.</p>
+<h2 id="exercises">Exercises<a class="headerlink" href="#exercises" title="Permanent link">#</a></h2>
+<ol>
+<li>Initialise with frames 0 and 2 instead of 0 and 1 (twice the baseline). Do you get more map points? A different scale?</li>
+<li>Replace SIFT by ORB (<code>cv2.ORB_create(3000)</code> + Hamming matcher with the ratio test). How do the reprojection errors compare?</li>
+<li>Download the KITTI ground-truth poses for sequence 00, align the scale with the first step, and plot the error over the 15 frames.</li>
+</ol>
+      </article>
+      <nav class="pager" aria-label="Lessons">
+        <a href="15-stereo-vision.html"><span class="mono">Previous</span><strong>15 · Stereo vision</strong></a>
+        <a href="17-visual-slam.html" class="next"><span class="mono">Next</span><strong>17 · Visual SLAM with ORB-SLAM3</strong></a>
+      </nav>
+    </main>
+    <aside class="lesson-toc" aria-label="On this page">
+      <div class="sub first">On this page</div>
+      <ul><li><a href="#one-camera-two-positions">One camera, two positions</a></li>
+<li><a href="#the-essential-matrix">The essential matrix</a></li>
+<li><a href="#triangulation">Triangulation</a></li>
+<li><a href="#adding-frames-with-pnp">Adding frames with PnP</a></li>
+<li><a href="#what-is-missing-for-a-real-system">What is missing for a real system</a></li>
+<li><a href="#exercises">Exercises</a></li></ul>
+    </aside>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container footer-inner mono wide">
+      <span>© <span id="year"></span> Henrique Corneau · course text and code under MIT</span>
+      <span><a href="https://github.com/henriquecorneau" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/henriquecorneau/" target="_blank" rel="noopener">LinkedIn</a></span>
+    </div>
+  </footer>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+  <script defer src="course.js"></script>
+</body>
+</html>

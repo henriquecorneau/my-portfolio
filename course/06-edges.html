@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>06 · Edge detection · Computer Vision Course</title>
+  <meta name="description" content="Edges are where the intensity changes fast. Find them with first derivatives (Sobel, Prewitt) or second derivatives (Laplacian, difference of Gaussians), and turn the result into a clean edge map.">
+  <meta property="og:title" content="06 · Edge detection · Computer Vision Course">
+  <meta property="og:description" content="Edges are where the intensity changes fast. Find them with first derivatives (Sobel, Prewitt) or second derivatives (Laplacian, difference of Gaussians), and turn the result into a clean edge map.">
+  <meta property="og:image" content="../assets/img/profile.jpg">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23111'/><text x='50' y='66' font-size='46' font-family='monospace' fill='%23fff' text-anchor='middle'>HC</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="course.css">
+  <script>
+    try { var t = localStorage.getItem('theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+</head>
+<body data-page="course">
+  <header class="site-header">
+    <div class="container header-inner wide">
+      <a href="../index.html" class="logo">henrique<span>.corneau</span></a>
+      <nav class="nav" aria-label="Main">
+        <a href="../index.html#projects">Projects</a>
+        <a href="index.html" class="current">CV Course</a>
+        <a href="../index.html#papers">Papers</a>
+        <a href="../index.html#about">About</a>
+      </nav>
+      <div class="header-actions">
+        <button type="button" class="icon-btn menu-btn" id="menu-toggle" aria-label="Lessons" aria-expanded="false" aria-controls="course-side">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <button type="button" class="icon-btn" id="theme-toggle" aria-label="Toggle theme">
+          <svg class="i-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="i-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="course-layout container wide">
+    <aside class="course-side" id="course-side" aria-label="Lessons">
+      <a class="side-home" href="index.html">← Course overview</a>
+      <div class="side-part"><span class="mono">Part I</span> Foundations</div><ol>
+<li><a href="00-setup.html"><span class="mono">00</span>Setup and how the course code works</a></li>
+<li><a href="01-images-as-arrays.html"><span class="mono">01</span>Images are arrays</a></li>
+<li><a href="02-sampling-quantization.html"><span class="mono">02</span>Sampling, quantization and interpolation</a></li>
+<li><a href="03-geometric-transforms.html"><span class="mono">03</span>Geometric transforms</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part II</span> Enhancement</div><ol>
+<li><a href="04-histograms-lut.html"><span class="mono">04</span>Histograms, point operations and LUTs</a></li>
+<li><a href="05-noise-filtering.html"><span class="mono">05</span>Noise and spatial filtering</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part III</span> Edges, shapes and colour</div><ol>
+<li><a href="06-edges.html" class="active" aria-current="page"><span class="mono">06</span>Edge detection</a></li>
+<li><a href="07-canny.html"><span class="mono">07</span>The Canny edge detector</a></li>
+<li><a href="08-hough.html"><span class="mono">08</span>The Hough transform</a></li>
+<li><a href="09-morphology.html"><span class="mono">09</span>Mathematical morphology</a></li>
+<li><a href="10-color.html"><span class="mono">10</span>Colour spaces and colour segmentation</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part IV</span> Features</div><ol>
+<li><a href="11-corners-tracking.html"><span class="mono">11</span>Corners and tracking</a></li>
+<li><a href="12-keypoints-orb-sift.html"><span class="mono">12</span>Keypoints and descriptors — FAST, ORB and SIFT</a></li>
+<li><a href="13-homography-ransac.html"><span class="mono">13</span>Homography and RANSAC</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part V</span> Geometry and 3-D</div><ol>
+<li><a href="14-camera-calibration.html"><span class="mono">14</span>Camera model and calibration</a></li>
+<li><a href="15-stereo-vision.html"><span class="mono">15</span>Stereo vision</a></li>
+<li><a href="16-structure-from-motion.html"><span class="mono">16</span>Structure from Motion</a></li>
+<li><a href="17-visual-slam.html"><span class="mono">17</span>Visual SLAM with ORB-SLAM3</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part VI</span> Case studies</div><ol>
+<li><a href="18-ct-lungs.html"><span class="mono">18</span>Case study: lungs and vessels in CT scans</a></li>
+<li><a href="19-fingerprints.html"><span class="mono">19</span>Case study: fingerprint identification</a></li>
+</ol>
+    </aside>
+    <main class="lesson" id="top">
+      <header class="lesson-head">
+        <p class="eyebrow mono">Part III · Edges, shapes and colour · Lesson 06</p>
+        <h1>Edge detection</h1>
+        <p class="lead">Edges are where the intensity changes fast. Find them with first derivatives (Sobel, Prewitt) or second derivatives (Laplacian, difference of Gaussians), and turn the result into a clean edge map.</p>
+        <p class="lesson-sources mono">Based on: INSA TIM lab 4, UFRN lecture 08</p>
+        <div class="run-box"><div><span class="mono label">Run this lesson</span><code>python 06_edges.py</code><code>python 06_edges.py --save out</code></div><a class="btn btn-ghost" href="code/06_edges.py" download>Download 06_edges.py</a></div>
+      </header>
+      <article class="prose">
+<h2 id="edges-in-one-dimension">Edges in one dimension<a class="headerlink" href="#edges-in-one-dimension" title="Permanent link">#</a></h2>
+<p>Take one row of an image. An edge is a jump in intensity. Its derivative — for discrete signals, the difference between neighbours, <code>np.diff</code> — is:</p>
+<ul>
+<li>a <strong>peak</strong> at the edge, for the first derivative;</li>
+<li>a <strong>positive/negative pair that crosses zero</strong> at the edge, for the second derivative.</li>
+</ul>
+<div class="highlight"><pre><span></span><code><span class="n">step</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">r_</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">50</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="mi">255</span><span class="p">)]</span>                  <span class="c1"># sharp edge</span>
+<span class="n">ramp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">r_</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">48</span><span class="p">),</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">175</span><span class="p">,</span> <span class="mi">225</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="mi">48</span><span class="p">,</span> <span class="mi">250</span><span class="p">)]</span>  <span class="c1"># smooth edge</span>
+<span class="n">line</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">r_</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">47</span><span class="p">),</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">175</span><span class="p">,</span> <span class="mi">250</span><span class="p">,</span> <span class="mi">175</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">25</span><span class="p">],</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">46</span><span class="p">)]</span>  <span class="c1"># thin line</span>
+
+<span class="n">d1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">ramp</span><span class="p">)</span>         <span class="c1"># first derivative: a peak on the edge</span>
+<span class="n">d2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">ramp</span><span class="p">,</span> <span class="n">n</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>    <span class="c1"># second derivative: + then -, crossing zero on the edge</span>
+</code></pre></div>
+<figure class="fig"><a href="img/06-signals.webp" target="_blank" rel="noopener"><img src="img/06-signals.webp" alt="A sharp step, a smooth ramp and a thin line, with their first and second derivatives. Note that a thin *line* gives two first-derivative peaks of opposite sign." loading="lazy"></a><figcaption markdown="span">A sharp step, a smooth ramp and a thin line, with their first and second derivatives. Note that a thin *line* gives two first-derivative peaks of opposite sign.</figcaption></figure>
+
+<p>So there are two families of edge detectors: look for <strong>maxima of the first derivative</strong>, or for <strong>zero crossings of the second</strong>.</p>
+<h2 id="the-gradient">The gradient<a class="headerlink" href="#the-gradient" title="Permanent link">#</a></h2>
+<p>In 2-D, the first derivative becomes the <strong>gradient</strong>, a vector of two partial derivatives:</p>
+<div class="arithmatex">\[\nabla I = \left(\frac{\partial I}{\partial x}, \frac{\partial I}{\partial y}\right), \qquad
+|\nabla I| = \sqrt{G_x^2 + G_y^2}, \qquad \theta = \operatorname{atan2}(G_y, G_x)\]</div>
+<p>The magnitude says <em>how strong</em> the edge is, the direction is perpendicular to the edge. Plain differences <span class="arithmatex">\(I(x+1) - I(x)\)</span> are very sensitive to noise, so practical operators combine a derivative in one direction with a smoothing in the other. <strong>Prewitt</strong> smooths with <span class="arithmatex">\([1, 1, 1]\)</span>, <strong>Sobel</strong> with <span class="arithmatex">\([1, 2, 1]\)</span>:</p>
+<div class="arithmatex">\[S_x = \begin{bmatrix} -1 &amp; 0 &amp; 1 \\ -2 &amp; 0 &amp; 2 \\ -1 &amp; 0 &amp; 1 \end{bmatrix}, \qquad S_y = S_x^\top\]</div>
+<div class="highlight"><pre><span></span><code><span class="n">f</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>          <span class="c1"># derivatives are signed: never compute them in uint8</span>
+
+<span class="n">dx</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<span class="n">dy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<span class="n">dx</span><span class="p">[:,</span> <span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>     <span class="c1"># I(x+1, y) - I(x, y)</span>
+<span class="n">dy</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>     <span class="c1"># I(x, y+1) - I(x, y)</span>
+
+<span class="n">sobel_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">prewitt_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+
+<span class="n">gx</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">filter2D</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">CV_32F</span><span class="p">,</span> <span class="n">sobel_x</span><span class="p">)</span>      <span class="c1"># ddepth=CV_32F keeps negative values</span>
+<span class="n">gy</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">filter2D</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">CV_32F</span><span class="p">,</span> <span class="n">sobel_x</span><span class="o">.</span><span class="n">T</span><span class="p">)</span>
+<span class="n">magnitude</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">gx</span><span class="p">,</span> <span class="n">gy</span><span class="p">)</span>                   <span class="c1"># sqrt(gx² + gy²); |gx| + |gy| is a cheaper variant</span>
+<span class="n">direction</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">gy</span><span class="p">,</span> <span class="n">gx</span><span class="p">)</span>                 <span class="c1"># radians, perpendicular to the edge</span>
+
+<span class="c1"># OpenCV shortcut, same numbers:</span>
+<span class="n">gx_cv</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">Sobel</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">CV_32F</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">ksize</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+</code></pre></div>
+<div class="admonition danger">
+<p class="admonition-title">The classic bug</p>
+<p><code>cv2.filter2D(img, -1, kernel)</code> on a <code>uint8</code> image returns <code>uint8</code>: every negative response is clipped to 0. Half of the edges (those going from bright to dark) disappear. Always ask for a float output (<code>cv2.CV_32F</code>, or <code>cv2.CV_64F</code> with <code>cv2.Sobel</code>).</p>
+</div>
+<figure class="fig"><a href="img/06-gradient.webp" target="_blank" rel="noopener"><img src="img/06-gradient.webp" alt="$|G_x|$ responds to vertical edges, $|G_y|$ to horizontal ones, the magnitude to both. The last panel is the clipped `uint8` version: only one side of each edge survives." loading="lazy"></a><figcaption markdown="span">$|G_x|$ responds to vertical edges, $|G_y|$ to horizontal ones, the magnitude to both. The last panel is the clipped `uint8` version: only one side of each edge survives.</figcaption></figure>
+
+<figure class="fig"><a href="img/06-direction.webp" target="_blank" rel="noopener"><img src="img/06-direction.webp" alt="Left: gradient direction as colour, magnitude as brightness — the two sides of the coat have opposite colours (opposite directions). Prewitt is visually almost identical to Sobel; plain differences are noisier." loading="lazy"></a><figcaption markdown="span">Left: gradient direction as colour, magnitude as brightness — the two sides of the coat have opposite colours (opposite directions). Prewitt is visually almost identical to Sobel; plain differences are noisier.</figcaption></figure>
+
+<h2 id="second-derivatives-the-laplacian">Second derivatives: the Laplacian<a class="headerlink" href="#second-derivatives-the-laplacian" title="Permanent link">#</a></h2>
+<p>The Laplacian sums the two second derivatives, <span class="arithmatex">\(\nabla^2 I = \partial^2 I/\partial x^2 + \partial^2 I/\partial y^2\)</span>, and is approximated by</p>
+<div class="arithmatex">\[L_4 = \begin{bmatrix} 0 &amp; -1 &amp; 0 \\ -1 &amp; 4 &amp; -1 \\ 0 &amp; -1 &amp; 0 \end{bmatrix} \quad\text{or}\quad L_8 = \begin{bmatrix} -1 &amp; -1 &amp; -1 \\ -1 &amp; 8 &amp; -1 \\ -1 &amp; -1 &amp; -1 \end{bmatrix}\]</div>
+<p>(sign conventions vary; only the zero crossings matter). It is isotropic — one kernel, no direction — but differentiating twice amplifies noise twice. The fix is to smooth first: the <strong>Laplacian of Gaussian</strong> (LoG), well approximated by the <strong>Difference of Gaussians</strong> (DoG), the same band-pass filter SIFT uses to find blobs in lesson 12.</p>
+<div class="highlight"><pre><span></span><code><span class="n">lap4</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]],</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">lap8</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]],</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">laplacian</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">filter2D</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">CV_32F</span><span class="p">,</span> <span class="n">lap4</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">gaussian_kernel</span><span class="p">(</span><span class="n">size</span><span class="p">,</span> <span class="n">sigma</span><span class="p">):</span>
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="n">size</span><span class="p">)</span> <span class="o">-</span> <span class="n">size</span> <span class="o">//</span> <span class="mi">2</span>
+    <span class="n">xx</span><span class="p">,</span> <span class="n">yy</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">meshgrid</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">ax</span><span class="p">)</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">xx</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">yy</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">sigma</span> <span class="o">**</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">k</span> <span class="o">/</span> <span class="n">k</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+
+<span class="c1"># Difference of Gaussians: a band-pass filter that approximates the Laplacian of Gaussian</span>
+<span class="n">dog</span> <span class="o">=</span> <span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">filter2D</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">CV_32F</span><span class="p">,</span> <span class="n">gaussian_kernel</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">))</span>
+       <span class="o">-</span> <span class="n">cv2</span><span class="o">.</span><span class="n">filter2D</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">CV_32F</span><span class="p">,</span> <span class="n">gaussian_kernel</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mf">1.6</span><span class="p">)))</span>
+</code></pre></div>
+<h2 id="finding-zero-crossings">Finding zero crossings<a class="headerlink" href="#finding-zero-crossings" title="Permanent link">#</a></h2>
+<p>A pixel is on an edge if one of its 4 neighbours has the opposite sign <strong>and</strong> the jump between them is large enough — without that second condition, every tiny ripple of noise around zero becomes an "edge".</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">zero_crossings</span><span class="p">(</span><span class="n">resp</span><span class="p">,</span> <span class="n">min_jump</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Edge where the sign changes between 4-neighbours AND the jump is large enough."""</span>
+    <span class="n">edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">resp</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">resp</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="p">(</span><span class="n">resp</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">resp</span><span class="p">[</span><span class="mi">2</span><span class="p">:,</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">],</span> <span class="n">resp</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">:</span><span class="o">-</span><span class="mi">2</span><span class="p">],</span> <span class="n">resp</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">:]):</span>
+        <span class="n">edges</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">|=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">c</span><span class="p">)</span> <span class="o">!=</span> <span class="n">np</span><span class="o">.</span><span class="n">sign</span><span class="p">(</span><span class="n">n</span><span class="p">))</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">c</span> <span class="o">-</span> <span class="n">n</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">min_jump</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">edges</span>
+</code></pre></div>
+<figure class="fig"><a href="img/06-second-order.webp" target="_blank" rel="noopener"><img src="img/06-second-order.webp" alt="Without a threshold on the jump, the zero crossings of the Laplacian are everywhere. With it, the outlines appear, closed and one pixel thin. The DoG (smoothed first) gives cleaner contours." loading="lazy"></a><figcaption markdown="span">Without a threshold on the jump, the zero crossings of the Laplacian are everywhere. With it, the outlines appear, closed and one pixel thin. The DoG (smoothed first) gives cleaner contours.</figcaption></figure>
+
+<h2 id="first-order-edges-threshold-the-magnitude">First-order edges: threshold the magnitude<a class="headerlink" href="#first-order-edges-threshold-the-magnitude" title="Permanent link">#</a></h2>
+<p>For first-order operators, edges are bright ridges of the magnitude, so a threshold is enough; Otsu's method picks it automatically by splitting the histogram into two classes with minimal variance.</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">threshold</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">x</span> <span class="o">&gt;=</span> <span class="n">t</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span> <span class="o">*</span> <span class="mi">255</span>
+
+
+<span class="n">mag_u8</span> <span class="o">=</span> <span class="n">to_u8</span><span class="p">(</span><span class="n">magnitude</span><span class="p">)</span>
+<span class="n">edges_sobel</span> <span class="o">=</span> <span class="n">threshold</span><span class="p">(</span><span class="n">mag_u8</span><span class="p">,</span> <span class="mi">60</span><span class="p">)</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">edges_otsu</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">threshold</span><span class="p">(</span><span class="n">mag_u8</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">THRESH_BINARY</span> <span class="o">+</span> <span class="n">cv2</span><span class="o">.</span><span class="n">THRESH_OTSU</span><span class="p">)</span>
+</code></pre></div>
+<figure class="fig"><a href="img/06-threshold.webp" target="_blank" rel="noopener"><img src="img/06-threshold.webp" alt="Thresholded Sobel magnitude. The edges are thick (several pixels across) — lesson 07 thins them to exactly one pixel." loading="lazy"></a><figcaption markdown="span">Thresholded Sobel magnitude. The edges are thick (several pixels across) — lesson 07 thins them to exactly one pixel.</figcaption></figure>
+
+<table>
+<thead>
+<tr>
+<th></th>
+<th>First order (Sobel, Prewitt)</th>
+<th>Second order (Laplacian, DoG)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Edge =</td>
+<td>maximum of $</td>
+<td>\nabla I</td>
+</tr>
+<tr>
+<td>Gives</td>
+<td>magnitude <strong>and</strong> direction</td>
+<td>position only, no direction</td>
+</tr>
+<tr>
+<td>Edges are</td>
+<td>thick, need thinning</td>
+<td>thin and closed</td>
+</tr>
+<tr>
+<td>Noise</td>
+<td>sensitive</td>
+<td>very sensitive (smooth first)</td>
+</tr>
+</tbody>
+</table>
+<h2 id="a-complete-pipeline-noisy-ct-scan">A complete pipeline: noisy CT scan<a class="headerlink" href="#a-complete-pipeline-noisy-ct-scan" title="Permanent link">#</a></h2>
+<p>A real processing chain has three parts: <strong>pre-processing</strong> (fix the image), <strong>processing</strong> (extract the information), <strong>display</strong>. The CT slice below has salt-and-pepper noise, so lesson 05 tells us to start with a median filter:</p>
+<div class="highlight"><pre><span></span><code><span class="n">brain</span> <span class="o">=</span> <span class="n">U</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s2">"noise/noisy_brain.png"</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">IMREAD_GRAYSCALE</span><span class="p">)</span>
+<span class="n">den</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">medianBlur</span><span class="p">(</span><span class="n">brain</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>                                   <span class="c1"># 1. pre-processing: S&amp;P noise</span>
+<span class="n">gx</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">Sobel</span><span class="p">(</span><span class="n">den</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">CV_32F</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>                            <span class="c1"># 2. processing: gradient</span>
+<span class="n">gy</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">Sobel</span><span class="p">(</span><span class="n">den</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">CV_32F</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">mag</span> <span class="o">=</span> <span class="n">to_u8</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">gx</span><span class="p">,</span> <span class="n">gy</span><span class="p">))</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">edges</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">threshold</span><span class="p">(</span><span class="n">mag</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">THRESH_BINARY</span> <span class="o">+</span> <span class="n">cv2</span><span class="o">.</span><span class="n">THRESH_OTSU</span><span class="p">)</span>
+<span class="n">overlay</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">brain</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_GRAY2BGR</span><span class="p">)</span>                <span class="c1"># 3. display: edges in red</span>
+<span class="n">overlay</span><span class="p">[</span><span class="n">edges</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span>
+</code></pre></div>
+<figure class="fig"><a href="img/06-pipeline.webp" target="_blank" rel="noopener"><img src="img/06-pipeline.webp" alt="Without denoising, every impulse becomes a small ring of edges. After a 5×5 median, the Sobel magnitude shows the lungs, the heart and the vessels, and the thresholded edges are drawn in red on the input." loading="lazy"></a><figcaption markdown="span">Without denoising, every impulse becomes a small ring of edges. After a 5×5 median, the Sobel magnitude shows the lungs, the heart and the vessels, and the thresholded edges are drawn in red on the input.</figcaption></figure>
+
+<h2 id="exercises">Exercises<a class="headerlink" href="#exercises" title="Permanent link">#</a></h2>
+<ol>
+<li>Compare <span class="arithmatex">\(|G_x| + |G_y|\)</span> and <span class="arithmatex">\(\sqrt{G_x^2 + G_y^2}\)</span>: where do they differ most? (Hint: diagonal edges.)</li>
+<li>Replace the DoG with <code>cv2.Laplacian(cv2.GaussianBlur(f, (0, 0), 1.5), cv2.CV_32F)</code> and tune the zero-crossing jump.</li>
+<li>Draw the edges of <code>noisy_brain.png</code> in a different colour depending on the gradient direction (4 bins).</li>
+</ol>
+      </article>
+      <nav class="pager" aria-label="Lessons">
+        <a href="05-noise-filtering.html"><span class="mono">Previous</span><strong>05 · Noise and spatial filtering</strong></a>
+        <a href="07-canny.html" class="next"><span class="mono">Next</span><strong>07 · The Canny edge detector</strong></a>
+      </nav>
+    </main>
+    <aside class="lesson-toc" aria-label="On this page">
+      <div class="sub first">On this page</div>
+      <ul><li><a href="#edges-in-one-dimension">Edges in one dimension</a></li>
+<li><a href="#the-gradient">The gradient</a></li>
+<li><a href="#second-derivatives-the-laplacian">Second derivatives: the Laplacian</a></li>
+<li><a href="#finding-zero-crossings">Finding zero crossings</a></li>
+<li><a href="#first-order-edges-threshold-the-magnitude">First-order edges: threshold the magnitude</a></li>
+<li><a href="#a-complete-pipeline-noisy-ct-scan">A complete pipeline: noisy CT scan</a></li>
+<li><a href="#exercises">Exercises</a></li></ul>
+    </aside>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container footer-inner mono wide">
+      <span>© <span id="year"></span> Henrique Corneau · course text and code under MIT</span>
+      <span><a href="https://github.com/henriquecorneau" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/henriquecorneau/" target="_blank" rel="noopener">LinkedIn</a></span>
+    </div>
+  </footer>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+  <script defer src="course.js"></script>
+</body>
+</html>

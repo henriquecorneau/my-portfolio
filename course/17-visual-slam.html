@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>17 · Visual SLAM with ORB-SLAM3 · Computer Vision Course</title>
+  <meta name="description" content="Everything from lessons 11–16 assembled into a real-time system. Understand ORB-SLAM3&#x27;s three threads, run it in Docker with ROS 2 on a recorded bag, and use a saved map to localise a drone.">
+  <meta property="og:title" content="17 · Visual SLAM with ORB-SLAM3 · Computer Vision Course">
+  <meta property="og:description" content="Everything from lessons 11–16 assembled into a real-time system. Understand ORB-SLAM3&#x27;s three threads, run it in Docker with ROS 2 on a recorded bag, and use a saved map to localise a drone.">
+  <meta property="og:image" content="../assets/img/profile.jpg">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23111'/><text x='50' y='66' font-size='46' font-family='monospace' fill='%23fff' text-anchor='middle'>HC</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="course.css">
+  <script>
+    try { var t = localStorage.getItem('theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+</head>
+<body data-page="course">
+  <header class="site-header">
+    <div class="container header-inner wide">
+      <a href="../index.html" class="logo">henrique<span>.corneau</span></a>
+      <nav class="nav" aria-label="Main">
+        <a href="../index.html#projects">Projects</a>
+        <a href="index.html" class="current">CV Course</a>
+        <a href="../index.html#papers">Papers</a>
+        <a href="../index.html#about">About</a>
+      </nav>
+      <div class="header-actions">
+        <button type="button" class="icon-btn menu-btn" id="menu-toggle" aria-label="Lessons" aria-expanded="false" aria-controls="course-side">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <button type="button" class="icon-btn" id="theme-toggle" aria-label="Toggle theme">
+          <svg class="i-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="i-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="course-layout container wide">
+    <aside class="course-side" id="course-side" aria-label="Lessons">
+      <a class="side-home" href="index.html">← Course overview</a>
+      <div class="side-part"><span class="mono">Part I</span> Foundations</div><ol>
+<li><a href="00-setup.html"><span class="mono">00</span>Setup and how the course code works</a></li>
+<li><a href="01-images-as-arrays.html"><span class="mono">01</span>Images are arrays</a></li>
+<li><a href="02-sampling-quantization.html"><span class="mono">02</span>Sampling, quantization and interpolation</a></li>
+<li><a href="03-geometric-transforms.html"><span class="mono">03</span>Geometric transforms</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part II</span> Enhancement</div><ol>
+<li><a href="04-histograms-lut.html"><span class="mono">04</span>Histograms, point operations and LUTs</a></li>
+<li><a href="05-noise-filtering.html"><span class="mono">05</span>Noise and spatial filtering</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part III</span> Edges, shapes and colour</div><ol>
+<li><a href="06-edges.html"><span class="mono">06</span>Edge detection</a></li>
+<li><a href="07-canny.html"><span class="mono">07</span>The Canny edge detector</a></li>
+<li><a href="08-hough.html"><span class="mono">08</span>The Hough transform</a></li>
+<li><a href="09-morphology.html"><span class="mono">09</span>Mathematical morphology</a></li>
+<li><a href="10-color.html"><span class="mono">10</span>Colour spaces and colour segmentation</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part IV</span> Features</div><ol>
+<li><a href="11-corners-tracking.html"><span class="mono">11</span>Corners and tracking</a></li>
+<li><a href="12-keypoints-orb-sift.html"><span class="mono">12</span>Keypoints and descriptors — FAST, ORB and SIFT</a></li>
+<li><a href="13-homography-ransac.html"><span class="mono">13</span>Homography and RANSAC</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part V</span> Geometry and 3-D</div><ol>
+<li><a href="14-camera-calibration.html"><span class="mono">14</span>Camera model and calibration</a></li>
+<li><a href="15-stereo-vision.html"><span class="mono">15</span>Stereo vision</a></li>
+<li><a href="16-structure-from-motion.html"><span class="mono">16</span>Structure from Motion</a></li>
+<li><a href="17-visual-slam.html" class="active" aria-current="page"><span class="mono">17</span>Visual SLAM with ORB-SLAM3</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part VI</span> Case studies</div><ol>
+<li><a href="18-ct-lungs.html"><span class="mono">18</span>Case study: lungs and vessels in CT scans</a></li>
+<li><a href="19-fingerprints.html"><span class="mono">19</span>Case study: fingerprint identification</a></li>
+</ol>
+    </aside>
+    <main class="lesson" id="top">
+      <header class="lesson-head">
+        <p class="eyebrow mono">Part V · Geometry and 3-D · Lesson 17</p>
+        <h1>Visual SLAM with ORB-SLAM3</h1>
+        <p class="lead">Everything from lessons 11–16 assembled into a real-time system. Understand ORB-SLAM3's three threads, run it in Docker with ROS 2 on a recorded bag, and use a saved map to localise a drone.</p>
+        <p class="lesson-sources mono">Based on: INSA ORB project, my drone research (PIBIC UFRN)</p>
+        
+      </header>
+      <article class="prose">
+<h2 id="slam-in-one-paragraph">SLAM in one paragraph<a class="headerlink" href="#slam-in-one-paragraph" title="Permanent link">#</a></h2>
+<p><strong>SLAM</strong> — Simultaneous Localisation And Mapping — is the problem of building a map of an unknown place while tracking your position in it. Visual SLAM does it with cameras. Lesson 16 already did a tiny version: estimate motion with PnP, extend the map by triangulation. A real system has to run at camera rate, for hours, and correct its own drift.</p>
+<p><a href="https://github.com/UZ-SLAMLab/ORB_SLAM3">ORB-SLAM</a> (Mur-Artal, Tardós et al.) is the reference open-source system. Version 3 supports monocular, stereo and RGB-D cameras, with or without an IMU, and multiple maps.</p>
+<h2 id="how-it-works-three-threads">How it works: three threads<a class="headerlink" href="#how-it-works-three-threads" title="Permanent link">#</a></h2>
+<p><strong>1. Tracking</strong> (every frame). Extract ORB features (lesson 12) on an 8-level pyramid. Predict the pose with a motion model, project the local map into the image, match, and refine the pose by minimising the reprojection error (motion-only bundle adjustment — PnP, lesson 14/16). Decide whether this frame should become a <strong>keyframe</strong>.</p>
+<p><strong>2. Local mapping</strong> (every keyframe). Triangulate new points with neighbouring keyframes (lesson 16), cull bad points and redundant keyframes, and run <strong>local bundle adjustment</strong>: jointly optimise the poses of nearby keyframes and the points they see.</p>
+<p><strong>3. Loop closing.</strong> Every keyframe is converted into a <strong>bag of visual words</strong>: each ORB descriptor is mapped to a word of a pre-trained vocabulary (<code>ORBvoc.txt</code>), and the keyframe becomes a word histogram. Similar histograms = probably the same place. A candidate loop is verified geometrically (RANSAC on a similarity transform, lesson 13), and then the accumulated drift is spread along the whole trajectory with a <strong>pose-graph optimisation</strong>.</p>
+<p>The same vocabulary gives <strong>relocalisation</strong>: when tracking is lost, the current frame is searched in the database of keyframes.</p>
+<table>
+<thead>
+<tr>
+<th>Course lesson</th>
+<th>Where it lives in ORB-SLAM3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>11 – corners, NMS</td>
+<td>FAST detection, grid-based keypoint distribution</td>
+</tr>
+<tr>
+<td>12 – ORB descriptors</td>
+<td>features of every frame, matching by Hamming distance</td>
+</tr>
+<tr>
+<td>13 – RANSAC</td>
+<td>initialisation and loop verification</td>
+</tr>
+<tr>
+<td>14 – camera model, PnP</td>
+<td>the calibration YAML, pose tracking</td>
+</tr>
+<tr>
+<td>16 – essential matrix, triangulation</td>
+<td>monocular initialisation, local mapping</td>
+</tr>
+</tbody>
+</table>
+<h2 id="running-it-docker-ros-2">Running it: Docker + ROS 2<a class="headerlink" href="#running-it-docker-ros-2" title="Permanent link">#</a></h2>
+<p>Building ORB-SLAM3 with Pangolin, OpenCV and ROS 2 on your own machine is a dependency nightmare; a container makes it reproducible. These are the steps from my INSA project (ROS 2 Humble), with the ORB-SLAM3 fork of the Natalnet lab:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># build the image and start a container that can open windows (X11)</span>
+docker<span class="w"> </span>build<span class="w"> </span>-t<span class="w"> </span>ros2_orbslam_dev<span class="w"> </span>.
+xhost<span class="w"> </span>+local:docker
+docker<span class="w"> </span>run<span class="w"> </span>-it<span class="w"> </span>--name<span class="w"> </span>orbslam_container<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--env<span class="o">=</span><span class="s2">"DISPLAY=</span><span class="nv">$DISPLAY</span><span class="s2">"</span><span class="w"> </span>--env<span class="o">=</span><span class="s2">"QT_X11_NO_MITSHM=1"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--volume<span class="o">=</span><span class="s2">"/tmp/.X11-unix:/tmp/.X11-unix:rw"</span><span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>--network<span class="o">=</span>host<span class="w"> </span>--privileged<span class="w"> </span><span class="se">\</span>
+<span class="w">    </span>ros2_orbslam_dev
+
+<span class="c1"># later sessions</span>
+docker<span class="w"> </span>start<span class="w"> </span>orbslam_container
+docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>orbslam_container<span class="w"> </span>bash
+</code></pre></div>
+<p>Inside the container: Pangolin (the 3-D viewer), ORB-SLAM3 and the ROS 2 wrapper.</p>
+<div class="highlight"><pre><span></span><code>git<span class="w"> </span>clone<span class="w"> </span>https://github.com/natalnet-lpr/ORB_SLAM3_Modular.git
+cp<span class="w"> </span>-R<span class="w"> </span>Vocabulary<span class="w"> </span>ORB_SLAM3_Modular/
+
+git<span class="w"> </span>clone<span class="w"> </span>--recursive<span class="w"> </span>https://github.com/stevenlovegrove/Pangolin.git
+<span class="nb">cd</span><span class="w"> </span>Pangolin<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>./scripts/install_prerequisites.sh<span class="w"> </span>recommended
+cmake<span class="w"> </span>-B<span class="w"> </span>build<span class="w"> </span>-GNinja<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>cmake<span class="w"> </span>--build<span class="w"> </span>build<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>cmake<span class="w"> </span>--install<span class="w"> </span>build<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>sudo<span class="w"> </span>ldconfig
+
+<span class="nb">cd</span><span class="w"> </span>~/ORB_SLAM3_Modular<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>chmod<span class="w"> </span>+x<span class="w"> </span>build.sh<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>./build.sh
+<span class="nb">cd</span><span class="w"> </span>~/ros2_ws<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>colcon<span class="w"> </span>build<span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nb">source</span><span class="w"> </span>install/setup.bash
+</code></pre></div>
+<p>Run the monocular node with the vocabulary and a camera calibration file (lesson 14), then play a recorded ROS 2 bag in a second terminal:</p>
+<div class="highlight"><pre><span></span><code>ros2<span class="w"> </span>run<span class="w"> </span>ros2_orbslam3<span class="w"> </span>mono<span class="w"> </span>Vocabulary/ORBvoc.txt<span class="w"> </span>camera_calibration.yaml
+
+<span class="c1"># second terminal</span>
+docker<span class="w"> </span><span class="nb">exec</span><span class="w"> </span>-it<span class="w"> </span>orbslam_container<span class="w"> </span>bash
+ros2<span class="w"> </span>bag<span class="w"> </span>play<span class="w"> </span>insa_04/
+</code></pre></div>
+<div class="admonition note">
+<p class="admonition-title">The calibration file matters</p>
+<p>ORB-SLAM3 reads <span class="arithmatex">\(f_x, f_y, c_x, c_y\)</span>, the distortion coefficients, the image size and the frame rate from the YAML. A wrong calibration does not crash anything: the map is just bent, the scale drifts, and loops fail to close.</p>
+</div>
+<h2 id="from-mapping-to-localisation-my-drone-project">From mapping to localisation: my drone project<a class="headerlink" href="#from-mapping-to-localisation-my-drone-project" title="Permanent link">#</a></h2>
+<p>In my current research I use this split to fly a small drone (DJI Tello) through a known room:</p>
+<ol>
+<li><strong>Map once with a good sensor.</strong> An RGB-D camera (Kinect) gives metric depth, so the map has the right scale. ORB-SLAM3 saves the atlas to disk at shutdown.</li>
+<li><strong>Localise with the drone's camera.</strong> A monocular node loads the atlas and runs in <strong>localisation-only</strong> mode: no new map points, only tracking and relocalisation against the saved keyframes — a different camera finding itself in someone else's map.</li>
+<li><strong>Navigate.</strong> The pose is published on ROS 2 topics for a planner (Nav2).</li>
+</ol>
+<figure class="fig"><a href="img/drone-loc.webp" target="_blank" rel="noopener"><img src="img/drone-loc.webp" alt="Localising a monocular camera inside a previously built ORB-SLAM3 map. More on the [project page](../projects/drone-map-localization.html)." loading="lazy"></a><figcaption markdown="span">Localising a monocular camera inside a previously built ORB-SLAM3 map. More on the [project page](../projects/drone-map-localization.html).</figcaption></figure>
+
+<p>Code: <a href="https://github.com/henriquecorneau/drone-map-loc">drone-map-loc</a> and <a href="https://github.com/henriquecorneau/orbslam3-ros2-docker">orbslam3-ros2-docker</a>.</p>
+<h2 id="exercises">Exercises<a class="headerlink" href="#exercises" title="Permanent link">#</a></h2>
+<ol>
+<li>Run ORB-SLAM3 on a public sequence (the EuRoC or TUM RGB-D datasets have ready-made YAML files) and compare the monocular and stereo trajectories.</li>
+<li>Calibrate your phone (lesson 14), record a video walking around a room, convert it to a ROS 2 bag and map the room.</li>
+<li>Turn off loop closing and walk a closed loop. How large is the drift when you come back to the start?</li>
+</ol>
+      </article>
+      <nav class="pager" aria-label="Lessons">
+        <a href="16-structure-from-motion.html"><span class="mono">Previous</span><strong>16 · Structure from Motion</strong></a>
+        <a href="18-ct-lungs.html" class="next"><span class="mono">Next</span><strong>18 · Case study: lungs and vessels in CT scans</strong></a>
+      </nav>
+    </main>
+    <aside class="lesson-toc" aria-label="On this page">
+      <div class="sub first">On this page</div>
+      <ul><li><a href="#slam-in-one-paragraph">SLAM in one paragraph</a></li>
+<li><a href="#how-it-works-three-threads">How it works: three threads</a></li>
+<li><a href="#running-it-docker-ros-2">Running it: Docker + ROS 2</a></li>
+<li><a href="#from-mapping-to-localisation-my-drone-project">From mapping to localisation: my drone project</a></li>
+<li><a href="#exercises">Exercises</a></li></ul>
+    </aside>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container footer-inner mono wide">
+      <span>© <span id="year"></span> Henrique Corneau · course text and code under MIT</span>
+      <span><a href="https://github.com/henriquecorneau" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/henriquecorneau/" target="_blank" rel="noopener">LinkedIn</a></span>
+    </div>
+  </footer>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+  <script defer src="course.js"></script>
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>13 · Homography and RANSAC · Computer Vision Course</title>
+  <meta name="description" content="Estimate the homography between two views of a plane from point matches with the DLT and the SVD, and make it robust to wrong matches with RANSAC — written from scratch, then with cv2.findHomography.">
+  <meta property="og:title" content="13 · Homography and RANSAC · Computer Vision Course">
+  <meta property="og:description" content="Estimate the homography between two views of a plane from point matches with the DLT and the SVD, and make it robust to wrong matches with RANSAC — written from scratch, then with cv2.findHomography.">
+  <meta property="og:image" content="../assets/img/profile.jpg">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23111'/><text x='50' y='66' font-size='46' font-family='monospace' fill='%23fff' text-anchor='middle'>HC</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="course.css">
+  <script>
+    try { var t = localStorage.getItem('theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+</head>
+<body data-page="course">
+  <header class="site-header">
+    <div class="container header-inner wide">
+      <a href="../index.html" class="logo">henrique<span>.corneau</span></a>
+      <nav class="nav" aria-label="Main">
+        <a href="../index.html#projects">Projects</a>
+        <a href="index.html" class="current">CV Course</a>
+        <a href="../index.html#papers">Papers</a>
+        <a href="../index.html#about">About</a>
+      </nav>
+      <div class="header-actions">
+        <button type="button" class="icon-btn menu-btn" id="menu-toggle" aria-label="Lessons" aria-expanded="false" aria-controls="course-side">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <button type="button" class="icon-btn" id="theme-toggle" aria-label="Toggle theme">
+          <svg class="i-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="i-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="course-layout container wide">
+    <aside class="course-side" id="course-side" aria-label="Lessons">
+      <a class="side-home" href="index.html">← Course overview</a>
+      <div class="side-part"><span class="mono">Part I</span> Foundations</div><ol>
+<li><a href="00-setup.html"><span class="mono">00</span>Setup and how the course code works</a></li>
+<li><a href="01-images-as-arrays.html"><span class="mono">01</span>Images are arrays</a></li>
+<li><a href="02-sampling-quantization.html"><span class="mono">02</span>Sampling, quantization and interpolation</a></li>
+<li><a href="03-geometric-transforms.html"><span class="mono">03</span>Geometric transforms</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part II</span> Enhancement</div><ol>
+<li><a href="04-histograms-lut.html"><span class="mono">04</span>Histograms, point operations and LUTs</a></li>
+<li><a href="05-noise-filtering.html"><span class="mono">05</span>Noise and spatial filtering</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part III</span> Edges, shapes and colour</div><ol>
+<li><a href="06-edges.html"><span class="mono">06</span>Edge detection</a></li>
+<li><a href="07-canny.html"><span class="mono">07</span>The Canny edge detector</a></li>
+<li><a href="08-hough.html"><span class="mono">08</span>The Hough transform</a></li>
+<li><a href="09-morphology.html"><span class="mono">09</span>Mathematical morphology</a></li>
+<li><a href="10-color.html"><span class="mono">10</span>Colour spaces and colour segmentation</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part IV</span> Features</div><ol>
+<li><a href="11-corners-tracking.html"><span class="mono">11</span>Corners and tracking</a></li>
+<li><a href="12-keypoints-orb-sift.html"><span class="mono">12</span>Keypoints and descriptors — FAST, ORB and SIFT</a></li>
+<li><a href="13-homography-ransac.html" class="active" aria-current="page"><span class="mono">13</span>Homography and RANSAC</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part V</span> Geometry and 3-D</div><ol>
+<li><a href="14-camera-calibration.html"><span class="mono">14</span>Camera model and calibration</a></li>
+<li><a href="15-stereo-vision.html"><span class="mono">15</span>Stereo vision</a></li>
+<li><a href="16-structure-from-motion.html"><span class="mono">16</span>Structure from Motion</a></li>
+<li><a href="17-visual-slam.html"><span class="mono">17</span>Visual SLAM with ORB-SLAM3</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part VI</span> Case studies</div><ol>
+<li><a href="18-ct-lungs.html"><span class="mono">18</span>Case study: lungs and vessels in CT scans</a></li>
+<li><a href="19-fingerprints.html"><span class="mono">19</span>Case study: fingerprint identification</a></li>
+</ol>
+    </aside>
+    <main class="lesson" id="top">
+      <header class="lesson-head">
+        <p class="eyebrow mono">Part IV · Features · Lesson 13</p>
+        <h1>Homography and RANSAC</h1>
+        <p class="lead">Estimate the homography between two views of a plane from point matches with the DLT and the SVD, and make it robust to wrong matches with RANSAC — written from scratch, then with cv2.findHomography.</p>
+        <p class="lesson-sources mono">Based on: UFRN activity 06</p>
+        <div class="run-box"><div><span class="mono label">Run this lesson</span><code>python 13_homography_ransac.py</code><code>python 13_homography_ransac.py --save out</code></div><a class="btn btn-ghost" href="code/13_homography_ransac.py" download>Download 13_homography_ransac.py</a></div>
+      </header>
+      <article class="prose">
+<h2 id="the-problem">The problem<a class="headerlink" href="#the-problem" title="Permanent link">#</a></h2>
+<p>From lesson 12 we have ~150 SIFT matches between a cookie box and a cluttered scene. Many are wrong. Since the box face is a <strong>plane</strong>, the correct matches are all related by one homography <span class="arithmatex">\(H\)</span> (lesson 03): <span class="arithmatex">\(\mathbf{x}' \sim H \mathbf{x}\)</span>. We want <span class="arithmatex">\(H\)</span> — and to know which matches agree with it.</p>
+<h2 id="the-direct-linear-transform">The Direct Linear Transform<a class="headerlink" href="#the-direct-linear-transform" title="Permanent link">#</a></h2>
+<p>Write <span class="arithmatex">\(H\)</span> with rows <span class="arithmatex">\(\mathbf{h}_1^\top, \mathbf{h}_2^\top, \mathbf{h}_3^\top\)</span>. For one correspondence <span class="arithmatex">\((x, y) \to (u, v)\)</span>:</p>
+<div class="arithmatex">\[u = \frac{\mathbf{h}_1^\top \mathbf{x}}{\mathbf{h}_3^\top \mathbf{x}}, \quad v = \frac{\mathbf{h}_2^\top \mathbf{x}}{\mathbf{h}_3^\top \mathbf{x}}
+\;\Longrightarrow\;
+\begin{bmatrix} -x &amp; -y &amp; -1 &amp; 0 &amp; 0 &amp; 0 &amp; ux &amp; uy &amp; u \\ 0 &amp; 0 &amp; 0 &amp; -x &amp; -y &amp; -1 &amp; vx &amp; vy &amp; v \end{bmatrix} \mathbf{h} = \mathbf{0}\]</div>
+<p>Each correspondence gives two linear equations in the 9 entries of <span class="arithmatex">\(\mathbf{h}\)</span>. Stack <span class="arithmatex">\(n \ge 4\)</span> of them into <span class="arithmatex">\(A\mathbf{h} = \mathbf{0}\)</span>. Since <span class="arithmatex">\(H\)</span> is defined up to scale, we look for the unit vector that minimises <span class="arithmatex">\(\|A\mathbf{h}\|\)</span>: the <strong>right singular vector of <span class="arithmatex">\(A\)</span> with the smallest singular value</strong>, i.e. the last row of <span class="arithmatex">\(V^\top\)</span> in <span class="arithmatex">\(A = U \Sigma V^\top\)</span>.</p>
+<p>One more ingredient makes it numerically sound: <strong>Hartley normalisation</strong>. Pixel coordinates are in the hundreds, so the columns of <span class="arithmatex">\(A\)</span> differ by orders of magnitude (<span class="arithmatex">\(x\)</span> vs <span class="arithmatex">\(ux\)</span>). Translate and scale the points so their centroid is at the origin and their mean distance is <span class="arithmatex">\(\sqrt 2\)</span>, solve, then undo: <span class="arithmatex">\(H = T'^{-1} \tilde H T\)</span>.</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">normalize</span><span class="p">(</span><span class="n">pts</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Hartley normalisation: centroid at 0, mean distance sqrt(2). Returns (pts', T)."""</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">pts</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">pts</span> <span class="o">-</span> <span class="n">c</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+    <span class="n">T</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">s</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">s</span> <span class="o">*</span> <span class="n">c</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="o">-</span><span class="n">s</span> <span class="o">*</span> <span class="n">c</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+    <span class="n">ph</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">pts</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pts</span><span class="p">))]</span> <span class="o">@</span> <span class="n">T</span><span class="o">.</span><span class="n">T</span>
+    <span class="k">return</span> <span class="n">ph</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">],</span> <span class="n">T</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">dlt_homography</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""H such that dst ~ H @ src, from &gt;= 4 correspondences, by solving A h = 0 with the SVD."""</span>
+    <span class="n">s</span><span class="p">,</span> <span class="n">Ts</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
+    <span class="n">d</span><span class="p">,</span> <span class="n">Td</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">dst</span><span class="p">)</span>
+    <span class="n">rows</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">s</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+        <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="o">-</span><span class="n">x</span><span class="p">,</span> <span class="o">-</span><span class="n">y</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">u</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span> <span class="n">u</span> <span class="o">*</span> <span class="n">y</span><span class="p">,</span> <span class="n">u</span><span class="p">])</span>
+        <span class="n">rows</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">x</span><span class="p">,</span> <span class="o">-</span><span class="n">y</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">v</span> <span class="o">*</span> <span class="n">x</span><span class="p">,</span> <span class="n">v</span> <span class="o">*</span> <span class="n">y</span><span class="p">,</span> <span class="n">v</span><span class="p">])</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">rows</span><span class="p">)</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">Vt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">svd</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+    <span class="n">Hn</span> <span class="o">=</span> <span class="n">Vt</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>                 <span class="c1"># right singular vector of the smallest singular value</span>
+    <span class="n">H</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">Td</span><span class="p">)</span> <span class="o">@</span> <span class="n">Hn</span> <span class="o">@</span> <span class="n">Ts</span>           <span class="c1"># undo the normalisation</span>
+    <span class="k">return</span> <span class="n">H</span> <span class="o">/</span> <span class="n">H</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">project</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="n">pts</span><span class="p">):</span>
+    <span class="n">ph</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">c_</span><span class="p">[</span><span class="n">pts</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">pts</span><span class="p">))]</span> <span class="o">@</span> <span class="n">H</span><span class="o">.</span><span class="n">T</span>
+    <span class="k">return</span> <span class="n">ph</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">/</span> <span class="n">ph</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>             <span class="c1"># back from homogeneous coordinates</span>
+</code></pre></div>
+<h2 id="ransac">RANSAC<a class="headerlink" href="#ransac" title="Permanent link">#</a></h2>
+<p>Least squares on <em>all</em> matches is ruined by the outliers. <strong>RANSAC</strong> (Fischler &amp; Bolles, 1981) turns the problem around:</p>
+<ol>
+<li>pick a <strong>minimal sample</strong> at random (4 matches for a homography) and fit <span class="arithmatex">\(H\)</span>;</li>
+<li>count the <strong>inliers</strong>: matches whose reprojection error is below a threshold <span class="arithmatex">\(t\)</span>;</li>
+<li>repeat, keep the <span class="arithmatex">\(H\)</span> with the most inliers, and refit it on all of them.</li>
+</ol>
+<p>How many iterations? If <span class="arithmatex">\(w\)</span> is the inlier fraction, a sample of 4 is all-inlier with probability <span class="arithmatex">\(w^4\)</span>. To get at least one good sample with confidence <span class="arithmatex">\(p\)</span>:</p>
+<div class="arithmatex">\[N = \frac{\log(1 - p)}{\log(1 - w^4)}\]</div>
+<p><span class="arithmatex">\(w\)</span> is unknown, so we update <span class="arithmatex">\(N\)</span> with the best inlier fraction seen so far — RANSAC stops early when the data is good.</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">ransac_homography</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">,</span> <span class="n">thresh</span><span class="o">=</span><span class="mf">3.0</span><span class="p">,</span> <span class="n">confidence</span><span class="o">=</span><span class="mf">0.99</span><span class="p">,</span> <span class="n">max_iters</span><span class="o">=</span><span class="mi">5000</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">n</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">src</span><span class="p">)</span>
+    <span class="n">best_inliers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="nb">bool</span><span class="p">)</span>
+    <span class="n">iters</span><span class="p">,</span> <span class="n">i</span> <span class="o">=</span> <span class="n">max_iters</span><span class="p">,</span> <span class="mi">0</span>
+    <span class="k">while</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">iters</span><span class="p">:</span>
+        <span class="n">sample</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="n">replace</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>             <span class="c1"># minimal sample</span>
+        <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">H</span> <span class="o">=</span> <span class="n">dlt_homography</span><span class="p">(</span><span class="n">src</span><span class="p">[</span><span class="n">sample</span><span class="p">],</span> <span class="n">dst</span><span class="p">[</span><span class="n">sample</span><span class="p">])</span>
+        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">det</span><span class="p">(</span><span class="n">H</span><span class="p">))</span> <span class="o">&lt;</span> <span class="mf">1e-8</span><span class="p">:</span>                     <span class="c1"># degenerate sample (repeated or collinear points)</span>
+            <span class="k">continue</span>
+        <span class="c1"># symmetric transfer error: forward and backward reprojection</span>
+        <span class="n">err</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">project</span><span class="p">(</span><span class="n">H</span><span class="p">,</span> <span class="n">src</span><span class="p">)</span> <span class="o">-</span> <span class="n">dst</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>
+               <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">project</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">H</span><span class="p">),</span> <span class="n">dst</span><span class="p">)</span> <span class="o">-</span> <span class="n">src</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">inliers</span> <span class="o">=</span> <span class="n">err</span> <span class="o">&lt;</span> <span class="n">thresh</span> <span class="o">**</span> <span class="mi">2</span>
+        <span class="k">if</span> <span class="n">inliers</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">best_inliers</span><span class="o">.</span><span class="n">sum</span><span class="p">():</span>
+            <span class="n">best_inliers</span> <span class="o">=</span> <span class="n">inliers</span>
+            <span class="n">w</span> <span class="o">=</span> <span class="n">inliers</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>                               <span class="c1"># current inlier ratio estimate</span>
+            <span class="c1"># iterations needed so that P(at least one all-inlier sample) &gt;= confidence</span>
+            <span class="n">iters</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">max_iters</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ceil</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">confidence</span><span class="p">)</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">w</span> <span class="o">**</span> <span class="mi">4</span> <span class="o">+</span> <span class="mf">1e-12</span><span class="p">))))</span>
+    <span class="n">H</span> <span class="o">=</span> <span class="n">dlt_homography</span><span class="p">(</span><span class="n">src</span><span class="p">[</span><span class="n">best_inliers</span><span class="p">],</span> <span class="n">dst</span><span class="p">[</span><span class="n">best_inliers</span><span class="p">])</span>  <span class="c1"># refit on all the inliers</span>
+    <span class="k">return</span> <span class="n">H</span><span class="p">,</span> <span class="n">best_inliers</span><span class="p">,</span> <span class="n">i</span>
+</code></pre></div>
+<p>We use the <strong>symmetric transfer error</strong> — forward and backward reprojection — and skip degenerate samples (repeated or collinear points give a singular <span class="arithmatex">\(H\)</span>).</p>
+<div class="highlight"><pre><span></span><code>157 tentative SIFT matches
+RANSAC: 71/157 inliers after 135 iterations
+OpenCV: 90 inliers
+corner disagreement ours vs OpenCV (px): [1.  0.2 0.4 0.4]
+</code></pre></div>
+<p>With 45% inliers, theory says <span class="arithmatex">\(N \approx 110\)</span> iterations for 99% confidence, and we stopped after 135. OpenCV counts more inliers because its error is one-way and not squared-and-summed, but both homographies put the box corners within 1 px of each other.</p>
+<figure class="fig"><a href="img/13-inliers.webp" target="_blank" rel="noopener"><img src="img/13-inliers.webp" alt="RANSAC inliers in green, outliers in red. Every green line is consistent with one plane-to-plane mapping." loading="lazy"></a><figcaption markdown="span">RANSAC inliers in green, outliers in red. Every green line is consistent with one plane-to-plane mapping.</figcaption></figure>
+
+<h2 id="the-opencv-way">The OpenCV way<a class="headerlink" href="#the-opencv-way" title="Permanent link">#</a></h2>
+<div class="highlight"><pre><span></span><code><span class="n">H_cv</span><span class="p">,</span> <span class="n">mask</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">findHomography</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">RANSAC</span><span class="p">,</span> <span class="n">ransacReprojThreshold</span><span class="o">=</span><span class="mf">3.0</span><span class="p">)</span>
+</code></pre></div>
+<p><code>mask</code> marks the inliers. Other robust methods are available: <code>cv2.LMEDS</code> (no threshold, needs &gt; 50% inliers) and <code>cv2.USAC_MAGSAC</code> (newer, often better).</p>
+<h2 id="using-the-homography">Using the homography<a class="headerlink" href="#using-the-homography" title="Permanent link">#</a></h2>
+<div class="highlight"><pre><span></span><code><span class="n">warped</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">warpPerspective</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="p">(</span><span class="n">scene</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">scene</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>   <span class="c1"># the box, as the camera sees it</span>
+<span class="n">mask_w</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">warpPerspective</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="n">H</span><span class="p">,</span> <span class="p">(</span><span class="n">scene</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">scene</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+<span class="n">overlay</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">scene</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_GRAY2BGR</span><span class="p">)</span>
+<span class="n">overlay</span><span class="p">[</span><span class="n">mask_w</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">overlay</span><span class="p">[</span><span class="n">mask_w</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">180</span><span class="p">,</span> <span class="mi">255</span><span class="p">]))</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+
+<span class="n">rectified</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">warpPerspective</span><span class="p">(</span><span class="n">scene</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">H</span><span class="p">),</span> <span class="p">(</span><span class="n">box</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">box</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>  <span class="c1"># and back</span>
+</code></pre></div>
+<figure class="fig"><a href="img/13-result.webp" target="_blank" rel="noopener"><img src="img/13-result.webp" alt="Least squares on all matches (red) is nonsense. RANSAC finds the box (green); warping the box into the scene overlays it exactly; $H^{-1}$ &quot;un-perspectives&quot; the scene into a front view of the box." loading="lazy"></a><figcaption markdown="span">Least squares on all matches (red) is nonsense. RANSAC finds the box (green); warping the box into the scene overlays it exactly; $H^{-1}$ "un-perspectives" the scene into a front view of the box.</figcaption></figure>
+
+<p>The same three steps — features, matches, robust model fitting — are the backbone of panorama stitching, augmented reality and, with a different model (the essential matrix), of 3-D reconstruction (lesson 16).</p>
+<h2 id="exercises">Exercises<a class="headerlink" href="#exercises" title="Permanent link">#</a></h2>
+<ol>
+<li>Remove the Hartley normalisation and compare the corner positions. On which images does it matter most?</li>
+<li>Plot the number of RANSAC iterations as a function of the ratio-test threshold (0.6 to 0.9). Explain the curve.</li>
+<li>Stitch two overlapping photos of a building: estimate <span class="arithmatex">\(H\)</span>, warp one image into the other's frame on a larger canvas, and blend the overlap.</li>
+</ol>
+      </article>
+      <nav class="pager" aria-label="Lessons">
+        <a href="12-keypoints-orb-sift.html"><span class="mono">Previous</span><strong>12 · Keypoints and descriptors — FAST, ORB and SIFT</strong></a>
+        <a href="14-camera-calibration.html" class="next"><span class="mono">Next</span><strong>14 · Camera model and calibration</strong></a>
+      </nav>
+    </main>
+    <aside class="lesson-toc" aria-label="On this page">
+      <div class="sub first">On this page</div>
+      <ul><li><a href="#the-problem">The problem</a></li>
+<li><a href="#the-direct-linear-transform">The Direct Linear Transform</a></li>
+<li><a href="#ransac">RANSAC</a></li>
+<li><a href="#the-opencv-way">The OpenCV way</a></li>
+<li><a href="#using-the-homography">Using the homography</a></li>
+<li><a href="#exercises">Exercises</a></li></ul>
+    </aside>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container footer-inner mono wide">
+      <span>© <span id="year"></span> Henrique Corneau · course text and code under MIT</span>
+      <span><a href="https://github.com/henriquecorneau" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/henriquecorneau/" target="_blank" rel="noopener">LinkedIn</a></span>
+    </div>
+  </footer>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+  <script defer src="course.js"></script>
+</body>
+</html>

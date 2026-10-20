@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Computer Vision Course · Henrique Corneau</title>
+  <meta name="description" content="A hands-on course that starts with a pixel and ends with a 3-D reconstruction of a street. Every method is first written from scratch in NumPy, then compared with the OpenCV function you would use in practice — and every figure on these pages is the real output of the code.">
+  <meta property="og:title" content="Computer Vision Course · Henrique Corneau">
+  <meta property="og:description" content="A hands-on course that starts with a pixel and ends with a 3-D reconstruction of a street. Every method is first written from scratch in NumPy, then compared with the OpenCV function you would use in practice — and every figure on these pages is the real output of the code.">
+  <meta property="og:image" content="img/16-reconstruction.webp">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23111'/><text x='50' y='66' font-size='46' font-family='monospace' fill='%23fff' text-anchor='middle'>HC</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="course.css">
+  <script>
+    try { var t = localStorage.getItem('theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+</head>
+<body data-page="course">
+  <header class="site-header">
+    <div class="container header-inner wide">
+      <a href="../index.html" class="logo">henrique<span>.corneau</span></a>
+      <nav class="nav" aria-label="Main">
+        <a href="../index.html#projects">Projects</a>
+        <a href="index.html" class="current">CV Course</a>
+        <a href="../index.html#papers">Papers</a>
+        <a href="../index.html#about">About</a>
+      </nav>
+      <div class="header-actions">
+        
+        <button type="button" class="icon-btn" id="theme-toggle" aria-label="Toggle theme">
+          <svg class="i-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="i-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container course-index">
+    <section class="course-hero">
+      <p class="eyebrow mono">Free course · Python · OpenCV · NumPy</p>
+      <h1>Computer Vision, from Pixels to 3-D</h1>
+      <p class="lead">A hands-on course that starts with a pixel and ends with a 3-D reconstruction of a street. Every method is first written from scratch in NumPy, then compared with the OpenCV function you would use in practice — and every figure on these pages is the real output of the code.</p>
+      <div class="detail-actions">
+        <a class="btn" href="00-setup.html">Start with lesson 00 →</a>
+        <a class="btn btn-ghost" href="cv-course-code.zip" download>Download all code + data (zip)</a>
+      </div>
+      <figure class="hero-strip">
+        <img src="img/07-steps.webp" alt="Canny edge detector, step by step" loading="eager">
+      </figure>
+    </section>
+    <article class="prose intro"><h2 id="about-this-course">About this course<a class="headerlink" href="#about-this-course" title="Permanent link">#</a></h2>
+<p>This course grew out of two university courses I took and the projects I built around them: <strong>Robotic Vision</strong> in the mechatronics graduate program at UFRN (Brazil) and <strong>Image Processing (TIM)</strong> at INSA Rouen Normandie (France), plus the computer vision I use in my research on autonomous drones and boats. I rewrote all of it as one path, in English, cleaned up the code, fixed the mistakes I made the first time, and added the explanations I wish I had had.</p>
+<p>Each lesson follows the same rhythm:</p>
+<ol>
+<li><strong>The idea</strong> — what problem we are solving and the maths behind it, kept as short as possible.</li>
+<li><strong>From scratch</strong> — an implementation in plain Python/NumPy that you can read line by line.</li>
+<li><strong>The OpenCV way</strong> — the one-liner you would use in a real project, and a check that both agree.</li>
+<li><strong>Run it</strong> — every lesson is a single script. Run it, change a parameter, run it again.</li>
+<li><strong>Pitfalls</strong> — the bugs I actually hit, so you don't have to.</li>
+</ol>
+<h2 id="who-it-is-for">Who it is for<a class="headerlink" href="#who-it-is-for" title="Permanent link">#</a></h2>
+<p>Students and engineers who know some Python and want to <em>understand</em> computer vision instead of copying function calls. You need high-school maths; a bit of linear algebra (matrices, vectors) helps from Part I on and becomes essential in Part V. No deep learning is required: this is the classical toolbox that every vision pipeline — including the neural ones — still relies on for calibration, geometry, pre- and post-processing.</p>
+<h2 id="how-to-follow-it">How to follow it<a class="headerlink" href="#how-to-follow-it" title="Permanent link">#</a></h2>
+<p>Start with <a href="00-setup.html">lesson 00</a> to install the environment and download the code and data (one zip, about 20 MB). Parts I to IV build on each other; Part V (geometry and 3-D) needs lessons 11–14; the two case studies in Part VI reuse a bit of everything.</p>
+<div class="admonition tip">
+<p class="admonition-title">Where this leads</p>
+<p>Lessons 15–17 are the foundations of two of my projects: the <a href="../projects/boat-vision.html">boat perception pipeline</a> (stereo depth + GPS georeferencing) and <a href="../projects/drone-map-localization.html">drone localisation in a pre-built map</a> with ORB-SLAM3.</p>
+</div></article>
+    <section class="part">
+      <h2><span class="mono">Part I</span> Foundations</h2>
+      <div class="lesson-grid"><a class="lesson-card" href="00-setup.html">
+          <span class="mono num">00</span>
+          <strong>Setup and how the course code works</strong>
+          <span class="desc">Install Python, OpenCV and friends in a virtual environment, download the code and data, and learn the two-flag convention every lesson script follows.</span>
+          <span class="tags-line mono">venv · pip · OpenCV · project layout</span>
+        </a><a class="lesson-card" href="01-images-as-arrays.html">
+          <span class="mono num">01</span>
+          <strong>Images are arrays</strong>
+          <span class="desc">A digital image is a NumPy matrix. Learn how OpenCV stores it, why data types cause half of all image-processing bugs, and how masks replace loops.</span>
+          <span class="tags-line mono">NumPy · dtype · BGR · channels · ROI · masks</span>
+        </a><a class="lesson-card" href="02-sampling-quantization.html">
+          <span class="mono num">02</span>
+          <strong>Sampling, quantization and interpolation</strong>
+          <span class="desc">A digital image is a continuous scene sampled on a grid and quantized to a few levels. See what happens when we use too few samples or too few levels, and how to resize an image properly.</span>
+          <span class="tags-line mono">quantization · histograms · k-means · aliasing · nearest / bilinear</span>
+        </a><a class="lesson-card" href="03-geometric-transforms.html">
+          <span class="mono num">03</span>
+          <strong>Geometric transforms</strong>
+          <span class="desc">Rotate, scale, shear and change the perspective of an image with matrices. Homogeneous coordinates turn all of them into one matrix product, and inverse mapping turns that into an image without holes.</span>
+          <span class="tags-line mono">rotation · homogeneous coordinates · affine · homography · warping</span>
+        </a></div>
+    </section><section class="part">
+      <h2><span class="mono">Part II</span> Enhancement</h2>
+      <div class="lesson-grid"><a class="lesson-card" href="04-histograms-lut.html">
+          <span class="mono num">04</span>
+          <strong>Histograms, point operations and LUTs</strong>
+          <span class="desc">Change the brightness, contrast and dynamic range of an image by remapping its gray levels. Equalise histograms, transfer the "look" of one photo to another, and do all of it with look-up tables.</span>
+          <span class="tags-line mono">thresholding · contrast stretch · equalisation · CLAHE · gamma · histogram matching</span>
+        </a><a class="lesson-card" href="05-noise-filtering.html">
+          <span class="mono num">05</span>
+          <strong>Noise and spatial filtering</strong>
+          <span class="desc">Identify the kind of noise in an image, remove it with mean, median and Gaussian filters, understand convolution as the one operation behind most of them, and clean up a badly lit barcode.</span>
+          <span class="tags-line mono">Gaussian &amp; salt-and-pepper noise · PSNR · convolution · median · filter2D · background removal</span>
+        </a></div>
+    </section><section class="part">
+      <h2><span class="mono">Part III</span> Edges, shapes and colour</h2>
+      <div class="lesson-grid"><a class="lesson-card" href="06-edges.html">
+          <span class="mono num">06</span>
+          <strong>Edge detection</strong>
+          <span class="desc">Edges are where the intensity changes fast. Find them with first derivatives (Sobel, Prewitt) or second derivatives (Laplacian, difference of Gaussians), and turn the result into a clean edge map.</span>
+          <span class="tags-line mono">gradient · Sobel · Prewitt · Laplacian · DoG · zero crossings</span>
+        </a><a class="lesson-card" href="07-canny.html">
+          <span class="mono num">07</span>
+          <strong>The Canny edge detector</strong>
+          <span class="desc">Build the most widely used edge detector step by step — smoothing, gradient, non-maximum suppression, double threshold and hysteresis — and check it against cv2.Canny.</span>
+          <span class="tags-line mono">Gaussian blur · non-maximum suppression · double threshold · hysteresis</span>
+        </a><a class="lesson-card" href="08-hough.html">
+          <span class="mono num">08</span>
+          <strong>The Hough transform</strong>
+          <span class="desc">Turn edge pixels into lines by letting every pixel vote for all the lines that could pass through it. Detect road lanes, and circles too.</span>
+          <span class="tags-line mono">parameter space · accumulator · peak detection · HoughLinesP · HoughCircles</span>
+        </a><a class="lesson-card" href="09-morphology.html">
+          <span class="mono num">09</span>
+          <strong>Mathematical morphology</strong>
+          <span class="desc">Erode, dilate, open and close binary images with a structuring element. Clean a noisy shape, make a damaged QR code readable again, and find patterns with hit-or-miss.</span>
+          <span class="tags-line mono">structuring elements · erosion · dilation · opening · closing · gradient · hit-or-miss · connected components</span>
+        </a><a class="lesson-card" href="10-color.html">
+          <span class="mono num">10</span>
+          <strong>Colour spaces and colour segmentation</strong>
+          <span class="desc">RGB is how screens work, not how to reason about colour. Convert to CMYK, YUV and HSV by hand, then use hue to recolour objects and to segment and locate a toy car.</span>
+          <span class="tags-line mono">CMYK · YUV · HSV · inRange · hue shift · moments · centroid</span>
+        </a></div>
+    </section><section class="part">
+      <h2><span class="mono">Part IV</span> Features</h2>
+      <div class="lesson-grid"><a class="lesson-card" href="11-corners-tracking.html">
+          <span class="mono num">11</span>
+          <strong>Corners and tracking</strong>
+          <span class="desc">Corners are points you can find again in another image. Detect them with Harris and Shi-Tomasi from the structure tensor, refine them to sub-pixel accuracy, and follow them between video frames with template matching and Lucas-Kanade.</span>
+          <span class="tags-line mono">structure tensor · Harris · Shi-Tomasi · NMS · cornerSubPix · NCC · optical flow</span>
+        </a><a class="lesson-card" href="12-keypoints-orb-sift.html">
+          <span class="mono num">12</span>
+          <strong>Keypoints and descriptors — FAST, ORB and SIFT</strong>
+          <span class="desc">Detect keypoints with FAST, give them an orientation, describe them with binary BRIEF strings and match them with the Hamming distance — then see why ORB steers its descriptors and how SIFT and the ratio test compare.</span>
+          <span class="tags-line mono">FAST · intensity centroid · BRIEF · Hamming distance · ORB · SIFT · FLANN · ratio test</span>
+        </a><a class="lesson-card" href="13-homography-ransac.html">
+          <span class="mono num">13</span>
+          <strong>Homography and RANSAC</strong>
+          <span class="desc">Estimate the homography between two views of a plane from point matches with the DLT and the SVD, and make it robust to wrong matches with RANSAC — written from scratch, then with cv2.findHomography.</span>
+          <span class="tags-line mono">DLT · Hartley normalisation · SVD · RANSAC · inliers · warping</span>
+        </a></div>
+    </section><section class="part">
+      <h2><span class="mono">Part V</span> Geometry and 3-D</h2>
+      <div class="lesson-grid"><a class="lesson-card" href="14-camera-calibration.html">
+          <span class="mono num">14</span>
+          <strong>Camera model and calibration</strong>
+          <span class="desc">Write down how a 3-D point becomes a pixel — extrinsics, perspective, lens distortion, intrinsics — then recover the camera's parameters from chessboard photos, undistort images and place a virtual cube on the board.</span>
+          <span class="tags-line mono">pinhole model · intrinsics K · distortion · calibrateCamera · reprojection error · solvePnP</span>
+        </a><a class="lesson-card" href="15-stereo-vision.html">
+          <span class="mono num">15</span>
+          <strong>Stereo vision</strong>
+          <span class="desc">Two calibrated cameras see depth. Calibrate and rectify a stereo pair, compute disparity maps with block matching and SGBM, convert them to metres and point clouds, and georeference an object seen from a boat.</span>
+          <span class="tags-line mono">epipolar geometry · stereoCalibrate · rectification · StereoBM / SGBM · depth = fB/d · point cloud · GPS</span>
+        </a><a class="lesson-card" href="16-structure-from-motion.html">
+          <span class="mono num">16</span>
+          <strong>Structure from Motion</strong>
+          <span class="desc">Recover the camera's motion and a 3-D map of the scene from a single moving camera — essential matrix, cheirality, triangulation and PnP — on 15 frames of the KITTI driving dataset.</span>
+          <span class="tags-line mono">essential matrix · recoverPose · triangulation · solvePnPRansac · scale ambiguity · visual odometry</span>
+        </a><a class="lesson-card" href="17-visual-slam.html">
+          <span class="mono num">17</span>
+          <strong>Visual SLAM with ORB-SLAM3</strong>
+          <span class="desc">Everything from lessons 11–16 assembled into a real-time system. Understand ORB-SLAM3's three threads, run it in Docker with ROS 2 on a recorded bag, and use a saved map to localise a drone.</span>
+          <span class="tags-line mono">tracking · local mapping · loop closing · bag of words · Docker · ROS 2</span>
+        </a></div>
+    </section><section class="part">
+      <h2><span class="mono">Part VI</span> Case studies</h2>
+      <div class="lesson-grid"><a class="lesson-card" href="18-ct-lungs.html">
+          <span class="mono num">18</span>
+          <strong>Case study: lungs and vessels in CT scans</strong>
+          <span class="desc">Medical images are not photos. Read CT slices in Hounsfield units, choose display windows, segment the lungs with thresholds, connected components and contours, segment the vessels inside them, and screen 21 patients.</span>
+          <span class="tags-line mono">NIfTI · Hounsfield units · windowing · connected components · contours · masks · areas in mm²</span>
+        </a><a class="lesson-card" href="19-fingerprints.html">
+          <span class="mono num">19</span>
+          <strong>Case study: fingerprint identification</strong>
+          <span class="desc">Five fingerprints were found at a crime scene, damaged in five different ways. Thin the ridges, detect minutiae with the crossing number and hit-or-miss, clean them up, restore the crime-scene prints and match them against a database of 20 people.</span>
+          <span class="tags-line mono">thinning · crossing number · hit-or-miss · convex hull · pre-processing · alignment-based matching</span>
+        </a></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner mono wide">
+      <span>© <span id="year"></span> Henrique Corneau · course text and code under MIT</span>
+      <span><a href="https://github.com/henriquecorneau" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/henriquecorneau/" target="_blank" rel="noopener">LinkedIn</a></span>
+    </div>
+  </footer>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+  <script defer src="course.js"></script>
+</body>
+</html>

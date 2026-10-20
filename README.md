@@ -28,3 +28,19 @@ generated cover showing `coverLabel`.
 ## Deploy (GitHub Pages)
 
 Push this folder to a repo and enable **Settings → Pages → Deploy from branch → main / root**.
+
+## Computer Vision course (`course/`)
+
+A 20-lesson course (English) served as static pages from `course/`. The HTML is generated and
+committed, so deploying still needs no build step. To edit it:
+
+- lesson text: `course/src/NN-*.md` (Markdown + `$math$`; `!fig name | caption` inserts `course/img/name.webp`)
+- code: `course/code/NN_*.py`, one runnable script per lesson; pages include code sections from
+  these scripts (`--8<-- "file.py:section"`), so page and code never diverge
+- regenerate:
+
+```bash
+pip install markdown pymdown-extensions pygments -r course/code/requirements.txt
+python course/build.py                    # pages only
+python course/build.py --figures --zip    # also re-run every script (figures) and rebuild the zip
+```

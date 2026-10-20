@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>10 · Colour spaces and colour segmentation · Computer Vision Course</title>
+  <meta name="description" content="RGB is how screens work, not how to reason about colour. Convert to CMYK, YUV and HSV by hand, then use hue to recolour objects and to segment and locate a toy car.">
+  <meta property="og:title" content="10 · Colour spaces and colour segmentation · Computer Vision Course">
+  <meta property="og:description" content="RGB is how screens work, not how to reason about colour. Convert to CMYK, YUV and HSV by hand, then use hue to recolour objects and to segment and locate a toy car.">
+  <meta property="og:image" content="../assets/img/profile.jpg">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23111'/><text x='50' y='66' font-size='46' font-family='monospace' fill='%23fff' text-anchor='middle'>HC</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="course.css">
+  <script>
+    try { var t = localStorage.getItem('theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+</head>
+<body data-page="course">
+  <header class="site-header">
+    <div class="container header-inner wide">
+      <a href="../index.html" class="logo">henrique<span>.corneau</span></a>
+      <nav class="nav" aria-label="Main">
+        <a href="../index.html#projects">Projects</a>
+        <a href="index.html" class="current">CV Course</a>
+        <a href="../index.html#papers">Papers</a>
+        <a href="../index.html#about">About</a>
+      </nav>
+      <div class="header-actions">
+        <button type="button" class="icon-btn menu-btn" id="menu-toggle" aria-label="Lessons" aria-expanded="false" aria-controls="course-side">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <button type="button" class="icon-btn" id="theme-toggle" aria-label="Toggle theme">
+          <svg class="i-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="i-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="course-layout container wide">
+    <aside class="course-side" id="course-side" aria-label="Lessons">
+      <a class="side-home" href="index.html">← Course overview</a>
+      <div class="side-part"><span class="mono">Part I</span> Foundations</div><ol>
+<li><a href="00-setup.html"><span class="mono">00</span>Setup and how the course code works</a></li>
+<li><a href="01-images-as-arrays.html"><span class="mono">01</span>Images are arrays</a></li>
+<li><a href="02-sampling-quantization.html"><span class="mono">02</span>Sampling, quantization and interpolation</a></li>
+<li><a href="03-geometric-transforms.html"><span class="mono">03</span>Geometric transforms</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part II</span> Enhancement</div><ol>
+<li><a href="04-histograms-lut.html"><span class="mono">04</span>Histograms, point operations and LUTs</a></li>
+<li><a href="05-noise-filtering.html"><span class="mono">05</span>Noise and spatial filtering</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part III</span> Edges, shapes and colour</div><ol>
+<li><a href="06-edges.html"><span class="mono">06</span>Edge detection</a></li>
+<li><a href="07-canny.html"><span class="mono">07</span>The Canny edge detector</a></li>
+<li><a href="08-hough.html"><span class="mono">08</span>The Hough transform</a></li>
+<li><a href="09-morphology.html"><span class="mono">09</span>Mathematical morphology</a></li>
+<li><a href="10-color.html" class="active" aria-current="page"><span class="mono">10</span>Colour spaces and colour segmentation</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part IV</span> Features</div><ol>
+<li><a href="11-corners-tracking.html"><span class="mono">11</span>Corners and tracking</a></li>
+<li><a href="12-keypoints-orb-sift.html"><span class="mono">12</span>Keypoints and descriptors — FAST, ORB and SIFT</a></li>
+<li><a href="13-homography-ransac.html"><span class="mono">13</span>Homography and RANSAC</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part V</span> Geometry and 3-D</div><ol>
+<li><a href="14-camera-calibration.html"><span class="mono">14</span>Camera model and calibration</a></li>
+<li><a href="15-stereo-vision.html"><span class="mono">15</span>Stereo vision</a></li>
+<li><a href="16-structure-from-motion.html"><span class="mono">16</span>Structure from Motion</a></li>
+<li><a href="17-visual-slam.html"><span class="mono">17</span>Visual SLAM with ORB-SLAM3</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part VI</span> Case studies</div><ol>
+<li><a href="18-ct-lungs.html"><span class="mono">18</span>Case study: lungs and vessels in CT scans</a></li>
+<li><a href="19-fingerprints.html"><span class="mono">19</span>Case study: fingerprint identification</a></li>
+</ol>
+    </aside>
+    <main class="lesson" id="top">
+      <header class="lesson-head">
+        <p class="eyebrow mono">Part III · Edges, shapes and colour · Lesson 10</p>
+        <h1>Colour spaces and colour segmentation</h1>
+        <p class="lead">RGB is how screens work, not how to reason about colour. Convert to CMYK, YUV and HSV by hand, then use hue to recolour objects and to segment and locate a toy car.</p>
+        <p class="lesson-sources mono">Based on: INSA TIM lab 6, UFRN lecture 06</p>
+        <div class="run-box"><div><span class="mono label">Run this lesson</span><code>python 10_color.py</code><code>python 10_color.py --save out</code></div><a class="btn btn-ghost" href="code/10_color.py" download>Download 10_color.py</a></div>
+      </header>
+      <article class="prose">
+<h2 id="why-other-colour-spaces">Why other colour spaces?<a class="headerlink" href="#why-other-colour-spaces" title="Permanent link">#</a></h2>
+<p>In RGB, all three channels mix <em>what colour</em> a pixel is with <em>how bright</em> it is. A dark blue and a light blue pencil are far apart in RGB, so "select the blue pixels" is not a simple box. Other colour spaces separate those two pieces of information.</p>
+<h2 id="cmyk-subtractive-colour-for-printing">CMYK: subtractive colour for printing<a class="headerlink" href="#cmyk-subtractive-colour-for-printing" title="Permanent link">#</a></h2>
+<p>Screens <em>add</em> light (RGB, starting from black); printers <em>subtract</em> it with inks (starting from white paper). Cyan absorbs red, magenta absorbs green, yellow absorbs blue. Since mixing the three inks to make black is expensive and muddy, a fourth black ink (K) takes over the common part. With <span class="arithmatex">\(r, g, b \in [0, 1]\)</span>:</p>
+<div class="arithmatex">\[k = 1 - \max(r, g, b), \qquad c = \frac{1 - r - k}{1 - k}, \quad m = \frac{1 - g - k}{1 - k}, \quad y = \frac{1 - b - k}{1 - k}\]</div>
+<p>and back: <span class="arithmatex">\(r = (1 - c)(1 - k)\)</span>, and so on.</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">rgb_to_cmyk</span><span class="p">(</span><span class="n">rgb</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">rgb</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">/</span> <span class="mi">255</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">denom</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">k</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">k</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>                 <span class="c1"># avoid 0/0 on pure black pixels</span>
+    <span class="n">c</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="p">[(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">x</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="n">i</span><span class="p">]</span> <span class="o">-</span> <span class="n">k</span><span class="p">)</span> <span class="o">/</span> <span class="n">denom</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">)]</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dstack</span><span class="p">([</span><span class="n">c</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">k</span><span class="p">])</span>                    <span class="c1"># floats in [0, 1]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">cmyk_to_rgb</span><span class="p">(</span><span class="n">cmyk</span><span class="p">):</span>
+    <span class="n">c</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">moveaxis</span><span class="p">(</span><span class="n">cmyk</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="n">rgb</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">dstack</span><span class="p">([(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">c</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">k</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">m</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">k</span><span class="p">),</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">k</span><span class="p">)])</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">rgb</span> <span class="o">*</span> <span class="mi">255</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+</code></pre></div>
+<p>The round trip RGB → CMYK → RGB is exact (max error 0). OpenCV has no CMYK conversion — it is a printing concern.</p>
+<figure class="fig"><a href="img/10-cmyk.webp" target="_blank" rel="noopener"><img src="img/10-cmyk.webp" alt="Each ink printed alone on white paper. Most of the dark shading goes to the K plate." loading="lazy"></a><figcaption markdown="span">Each ink printed alone on white paper. Most of the dark shading goes to the K plate.</figcaption></figure>
+
+<h2 id="yuv-luma-plus-two-colour-differences">YUV: luma plus two colour differences<a class="headerlink" href="#yuv-luma-plus-two-colour-differences" title="Permanent link">#</a></h2>
+<p>YUV was designed in the 1950s so that colour TV could stay compatible with black-and-white sets: <strong>Y</strong> is exactly the gray image of lesson 01, and <strong>U</strong>, <strong>V</strong> carry the colour as differences from it.</p>
+<div class="arithmatex">\[Y = 0.299 R + 0.587 G + 0.114 B, \qquad U = 0.492\,(B - Y), \qquad V = 0.877\,(R - Y)\]</div>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">rgb_to_yuv</span><span class="p">(</span><span class="n">rgb</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">rgb</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">/</span> <span class="mi">255</span>
+    <span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="mf">0.299</span> <span class="o">*</span> <span class="n">r</span> <span class="o">+</span> <span class="mf">0.587</span> <span class="o">*</span> <span class="n">g</span> <span class="o">+</span> <span class="mf">0.114</span> <span class="o">*</span> <span class="n">b</span>     <span class="c1"># luma: what a black-and-white TV shows</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="mf">0.492</span> <span class="o">*</span> <span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span>                       <span class="c1"># blue-difference chroma, in [-0.436, 0.436]</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="mf">0.877</span> <span class="o">*</span> <span class="p">(</span><span class="n">r</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span>                       <span class="c1"># red-difference chroma, in [-0.615, 0.615]</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dstack</span><span class="p">([</span><span class="n">y</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">])</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">yuv_to_rgb</span><span class="p">(</span><span class="n">yuv</span><span class="p">):</span>
+    <span class="n">y</span><span class="p">,</span> <span class="n">u</span><span class="p">,</span> <span class="n">v</span> <span class="o">=</span> <span class="n">yuv</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">yuv</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">yuv</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="mf">1.140</span> <span class="o">*</span> <span class="n">v</span>
+    <span class="n">g</span> <span class="o">=</span> <span class="n">y</span> <span class="o">-</span> <span class="mf">0.395</span> <span class="o">*</span> <span class="n">u</span> <span class="o">-</span> <span class="mf">0.581</span> <span class="o">*</span> <span class="n">v</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="mf">2.032</span> <span class="o">*</span> <span class="n">u</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">dstack</span><span class="p">([</span><span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span><span class="p">])</span> <span class="o">*</span> <span class="mi">255</span><span class="p">),</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+</code></pre></div>
+<p><span class="arithmatex">\(U\)</span> and <span class="arithmatex">\(V\)</span> are signed (<span class="arithmatex">\(U \in [-0.44, 0.44]\)</span>, <span class="arithmatex">\(V \in [-0.62, 0.62]\)</span>). OpenCV's <code>COLOR_RGB2YUV</code> stores them in <code>uint8</code> with an offset of 128, so you cannot compare the two numbers directly — only after converting. Since the eye is less sensitive to colour detail than to brightness, video codecs store U and V at half resolution (4:2:0) — and you can barely tell.</p>
+<figure class="fig"><a href="img/10-yuv.webp" target="_blank" rel="noopener"><img src="img/10-yuv.webp" alt="Y is the gray image. U is high on blue pencils, V on red/orange ones." loading="lazy"></a><figcaption markdown="span">Y is the gray image. U is high on blue pencils, V on red/orange ones.</figcaption></figure>
+
+<h2 id="hsv-hue-saturation-value">HSV: hue, saturation, value<a class="headerlink" href="#hsv-hue-saturation-value" title="Permanent link">#</a></h2>
+<p>HSV is built for humans: <strong>H</strong> (hue) is the colour as an angle on the colour wheel, <strong>S</strong> (saturation) how pure it is, <strong>V</strong> (value) how bright. With <span class="arithmatex">\(M = \max(r, g, b)\)</span>, <span class="arithmatex">\(m = \min(r, g, b)\)</span>, <span class="arithmatex">\(\Delta = M - m\)</span>:</p>
+<div class="arithmatex">\[H = \begin{cases} 60° \cdot \frac{g - b}{\Delta} \bmod 360° &amp; M = r \\ 60° \cdot \frac{b - r}{\Delta} + 120° &amp; M = g \\ 60° \cdot \frac{r - g}{\Delta} + 240° &amp; M = b \end{cases} \qquad S = \frac{\Delta}{M}, \qquad V = M\]</div>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">rgb_to_hsv</span><span class="p">(</span><span class="n">rgb</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""H in [0, 180) (degrees / 2, fits in uint8), S and V in [0, 255], like OpenCV."""</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">rgb</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">/</span> <span class="mi">255</span>
+    <span class="n">r</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">x</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="n">mx</span><span class="p">,</span> <span class="n">mn</span> <span class="o">=</span> <span class="n">x</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">),</span> <span class="n">x</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">delta</span> <span class="o">=</span> <span class="n">mx</span> <span class="o">-</span> <span class="n">mn</span>
+    <span class="n">safe</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">delta</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">delta</span><span class="p">)</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">mx</span><span class="p">)</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">mx</span> <span class="o">==</span> <span class="n">r</span><span class="p">,</span> <span class="p">(</span><span class="mi">60</span> <span class="o">*</span> <span class="p">(</span><span class="n">g</span> <span class="o">-</span> <span class="n">b</span><span class="p">)</span> <span class="o">/</span> <span class="n">safe</span><span class="p">)</span> <span class="o">%</span> <span class="mi">360</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">mx</span> <span class="o">==</span> <span class="n">g</span><span class="p">,</span> <span class="mi">60</span> <span class="o">*</span> <span class="p">(</span><span class="n">b</span> <span class="o">-</span> <span class="n">r</span><span class="p">)</span> <span class="o">/</span> <span class="n">safe</span> <span class="o">+</span> <span class="mi">120</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">mx</span> <span class="o">==</span> <span class="n">b</span><span class="p">,</span> <span class="mi">60</span> <span class="o">*</span> <span class="p">(</span><span class="n">r</span> <span class="o">-</span> <span class="n">g</span><span class="p">)</span> <span class="o">/</span> <span class="n">safe</span> <span class="o">+</span> <span class="mi">240</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
+    <span class="n">h</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">delta</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>                         <span class="c1"># gray: hue undefined, use 0</span>
+    <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">mx</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">delta</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">mx</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mx</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">dstack</span><span class="p">([</span><span class="n">h</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">s</span> <span class="o">*</span> <span class="mi">255</span><span class="p">,</span> <span class="n">mx</span> <span class="o">*</span> <span class="mi">255</span><span class="p">])</span><span class="o">.</span><span class="n">round</span><span class="p">()</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+</code></pre></div>
+<p>In OpenCV's 8-bit HSV, <strong>H is divided by 2</strong> (0–179) to fit in a byte, while S and V go to 255. Our version matches <code>cv2.COLOR_BGR2HSV</code> within 1 unit.</p>
+<figure class="fig"><a href="img/10-hsv.webp" target="_blank" rel="noopener"><img src="img/10-hsv.webp" alt="The H channel is (almost) constant along a pencil, despite shading — that is the point. Note how it jumps between ~0 and ~179 around red: hue is circular." loading="lazy"></a><figcaption markdown="span">The H channel is (almost) constant along a pencil, despite shading — that is the point. Note how it jumps between ~0 and ~179 around red: hue is circular.</figcaption></figure>
+
+<figure class="fig"><a href="img/10-hsv-disc.webp" target="_blank" rel="noopener"><img src="img/10-hsv-disc.webp" alt="Each pixel placed at angle H and radius S·V. Pencils of the same colour form tight angular wedges, whatever their brightness." loading="lazy"></a><figcaption markdown="span">Each pixel placed at angle H and radius S·V. Pencils of the same colour form tight angular wedges, whatever their brightness.</figcaption></figure>
+
+<h2 id="recolouring-by-hue">Recolouring by hue<a class="headerlink" href="#recolouring-by-hue" title="Permanent link">#</a></h2>
+<p>Select a hue range with <code>cv2.inRange</code>, change H, keep S and V: the shading stays, so the result looks natural.</p>
+<div class="highlight"><pre><span></span><code><span class="n">hsv</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">bgr</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2HSV</span><span class="p">)</span>
+<span class="c1"># Yellow sits in a narrow hue band (~35-65 degrees, i.e. 17-33 in OpenCV units),</span>
+<span class="c1"># whatever its brightness. Saturation and value thresholds drop the white paper.</span>
+<span class="n">yellow</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">inRange</span><span class="p">(</span><span class="n">hsv</span><span class="p">,</span> <span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">100</span><span class="p">),</span> <span class="p">(</span><span class="mi">34</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">))</span>
+
+<span class="n">recolored</span> <span class="o">=</span> <span class="n">hsv</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">recolored</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">][</span><span class="n">yellow</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mi">60</span>           <span class="c1"># 120 degrees / 2: green. S and V untouched,</span>
+<span class="n">recolored</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">recolored</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_HSV2BGR</span><span class="p">)</span>  <span class="c1"># so the shading still looks natural</span>
+
+<span class="n">rotated</span> <span class="o">=</span> <span class="n">hsv</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+<span class="n">rotated</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">rotated</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span> <span class="o">+</span> <span class="mi">60</span><span class="p">)</span> <span class="o">%</span> <span class="mi">180</span>   <span class="c1"># rotate *every* hue by 120 degrees</span>
+<span class="n">rotated</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">rotated</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_HSV2BGR</span><span class="p">)</span>
+
+<span class="c1"># Red wraps around 0 degrees, so it needs two ranges:</span>
+<span class="n">red</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">inRange</span><span class="p">(</span><span class="n">hsv</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">70</span><span class="p">),</span> <span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">))</span> <span class="o">|</span> <span class="n">cv2</span><span class="o">.</span><span class="n">inRange</span><span class="p">(</span><span class="n">hsv</span><span class="p">,</span> <span class="p">(</span><span class="mi">170</span><span class="p">,</span> <span class="mi">120</span><span class="p">,</span> <span class="mi">70</span><span class="p">),</span> <span class="p">(</span><span class="mi">179</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">))</span>
+</code></pre></div>
+<figure class="fig"><a href="img/10-recolor.webp" target="_blank" rel="noopener"><img src="img/10-recolor.webp" alt="The yellow pencil becomes green. Rotating every hue by 120° recolours the whole image consistently." loading="lazy"></a><figcaption markdown="span">The yellow pencil becomes green. Rotating every hue by 120° recolours the whole image consistently.</figcaption></figure>
+
+<div class="admonition warning">
+<p class="admonition-title">Red wraps around</p>
+<p>Red sits at both ends of the hue axis (0° and 360°, i.e. 0 and 179 in OpenCV). A red mask therefore needs <strong>two</strong> ranges combined with <code>|</code>. Also always constrain S and V: a white or black pixel has an undefined, meaningless hue.</p>
+</div>
+<h2 id="segment-and-locate-an-object">Segment and locate an object<a class="headerlink" href="#segment-and-locate-an-object" title="Permanent link">#</a></h2>
+<p>This is the robotics version (my UFRN lecture tracked a toy car this way): segment the object by colour, then compute its <strong>centre of mass</strong> from the image moments <span class="arithmatex">\(m_{pq} = \sum_{x,y} x^p y^q\, I(x, y)\)</span>:</p>
+<div class="arithmatex">\[\bar x = \frac{m_{10}}{m_{00}}, \qquad \bar y = \frac{m_{01}}{m_{00}}\]</div>
+<p>The car is pale (S ≈ 40) — hard to threshold. The background is a saturated red (S ≈ 135) — easy. So we segment the <strong>background</strong> and invert, keep the largest blob and fill its holes:</p>
+<div class="highlight"><pre><span></span><code><span class="n">car</span> <span class="o">=</span> <span class="n">U</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s2">"color/toy_car.jpg"</span><span class="p">)</span>
+<span class="n">car_hsv</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">car</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2HSV</span><span class="p">)</span>
+<span class="c1"># The pale car (S ~ 40) is hard to threshold, the saturated red background (S ~ 135) is easy:</span>
+<span class="c1"># segment the background and invert.</span>
+<span class="n">background</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">inRange</span><span class="p">(</span><span class="n">car_hsv</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">80</span><span class="p">),</span> <span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">))</span> <span class="o">|</span> \
+             <span class="n">cv2</span><span class="o">.</span><span class="n">inRange</span><span class="p">(</span><span class="n">car_hsv</span><span class="p">,</span> <span class="p">(</span><span class="mi">168</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">80</span><span class="p">),</span> <span class="p">(</span><span class="mi">179</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">255</span><span class="p">))</span>
+<span class="n">mask</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">bitwise_not</span><span class="p">(</span><span class="n">background</span><span class="p">)</span>
+<span class="n">mask</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">morphologyEx</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">MORPH_OPEN</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="mi">5</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">))</span>
+
+<span class="c1"># keep the largest blob and fill its holes (windows, reflections)</span>
+<span class="n">n</span><span class="p">,</span> <span class="n">labels</span><span class="p">,</span> <span class="n">stats</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">connectedComponentsWithStats</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
+<span class="n">largest</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">stats</span><span class="p">[</span><span class="mi">1</span><span class="p">:,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">CC_STAT_AREA</span><span class="p">])</span>
+<span class="n">mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">labels</span> <span class="o">==</span> <span class="n">largest</span><span class="p">,</span> <span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+<span class="n">mask</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">morphologyEx</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">MORPH_CLOSE</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">getStructuringElement</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">MORPH_ELLIPSE</span><span class="p">,</span> <span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">15</span><span class="p">)))</span>
+
+<span class="n">m</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">moments</span><span class="p">(</span><span class="n">mask</span><span class="p">,</span> <span class="n">binaryImage</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">cx</span><span class="p">,</span> <span class="n">cy</span> <span class="o">=</span> <span class="n">m</span><span class="p">[</span><span class="s2">"m10"</span><span class="p">]</span> <span class="o">/</span> <span class="n">m</span><span class="p">[</span><span class="s2">"m00"</span><span class="p">],</span> <span class="n">m</span><span class="p">[</span><span class="s2">"m01"</span><span class="p">]</span> <span class="o">/</span> <span class="n">m</span><span class="p">[</span><span class="s2">"m00"</span><span class="p">]</span>                   <span class="c1"># centre of mass</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">boundingRect</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
+</code></pre></div>
+<figure class="fig"><a href="img/10-track.webp" target="_blank" rel="noopener"><img src="img/10-track.webp" alt="Segment what is easy, then invert. The cross is the centroid, the box comes from `cv2.boundingRect`. Running this on every frame of a video gives a simple colour tracker." loading="lazy"></a><figcaption markdown="span">Segment what is easy, then invert. The cross is the centroid, the box comes from `cv2.boundingRect`. Running this on every frame of a video gives a simple colour tracker.</figcaption></figure>
+
+<h2 id="exercises">Exercises<a class="headerlink" href="#exercises" title="Permanent link">#</a></h2>
+<ol>
+<li>Plot the H histogram of <code>crayons.jpg</code> (only pixels with S &gt; 100). Can you count the pencil colours from its peaks?</li>
+<li>Recolour all <em>blue</em> pencils to orange (careful with the target hue in OpenCV units).</li>
+<li>Convert to L*a*b* (<code>cv2.COLOR_BGR2LAB</code>) and segment the car with a threshold on the <em>a*</em> channel only. Compare with the HSV approach.</li>
+</ol>
+      </article>
+      <nav class="pager" aria-label="Lessons">
+        <a href="09-morphology.html"><span class="mono">Previous</span><strong>09 · Mathematical morphology</strong></a>
+        <a href="11-corners-tracking.html" class="next"><span class="mono">Next</span><strong>11 · Corners and tracking</strong></a>
+      </nav>
+    </main>
+    <aside class="lesson-toc" aria-label="On this page">
+      <div class="sub first">On this page</div>
+      <ul><li><a href="#why-other-colour-spaces">Why other colour spaces?</a></li>
+<li><a href="#cmyk-subtractive-colour-for-printing">CMYK: subtractive colour for printing</a></li>
+<li><a href="#yuv-luma-plus-two-colour-differences">YUV: luma plus two colour differences</a></li>
+<li><a href="#hsv-hue-saturation-value">HSV: hue, saturation, value</a></li>
+<li><a href="#recolouring-by-hue">Recolouring by hue</a></li>
+<li><a href="#segment-and-locate-an-object">Segment and locate an object</a></li>
+<li><a href="#exercises">Exercises</a></li></ul>
+    </aside>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container footer-inner mono wide">
+      <span>© <span id="year"></span> Henrique Corneau · course text and code under MIT</span>
+      <span><a href="https://github.com/henriquecorneau" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/henriquecorneau/" target="_blank" rel="noopener">LinkedIn</a></span>
+    </div>
+  </footer>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+  <script defer src="course.js"></script>
+</body>
+</html>

@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>14 · Camera model and calibration · Computer Vision Course</title>
+  <meta name="description" content="Write down how a 3-D point becomes a pixel — extrinsics, perspective, lens distortion, intrinsics — then recover the camera&#x27;s parameters from chessboard photos, undistort images and place a virtual cube on the board.">
+  <meta property="og:title" content="14 · Camera model and calibration · Computer Vision Course">
+  <meta property="og:description" content="Write down how a 3-D point becomes a pixel — extrinsics, perspective, lens distortion, intrinsics — then recover the camera&#x27;s parameters from chessboard photos, undistort images and place a virtual cube on the board.">
+  <meta property="og:image" content="../assets/img/profile.jpg">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23111'/><text x='50' y='66' font-size='46' font-family='monospace' fill='%23fff' text-anchor='middle'>HC</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="course.css">
+  <script>
+    try { var t = localStorage.getItem('theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+</head>
+<body data-page="course">
+  <header class="site-header">
+    <div class="container header-inner wide">
+      <a href="../index.html" class="logo">henrique<span>.corneau</span></a>
+      <nav class="nav" aria-label="Main">
+        <a href="../index.html#projects">Projects</a>
+        <a href="index.html" class="current">CV Course</a>
+        <a href="../index.html#papers">Papers</a>
+        <a href="../index.html#about">About</a>
+      </nav>
+      <div class="header-actions">
+        <button type="button" class="icon-btn menu-btn" id="menu-toggle" aria-label="Lessons" aria-expanded="false" aria-controls="course-side">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <button type="button" class="icon-btn" id="theme-toggle" aria-label="Toggle theme">
+          <svg class="i-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="i-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="course-layout container wide">
+    <aside class="course-side" id="course-side" aria-label="Lessons">
+      <a class="side-home" href="index.html">← Course overview</a>
+      <div class="side-part"><span class="mono">Part I</span> Foundations</div><ol>
+<li><a href="00-setup.html"><span class="mono">00</span>Setup and how the course code works</a></li>
+<li><a href="01-images-as-arrays.html"><span class="mono">01</span>Images are arrays</a></li>
+<li><a href="02-sampling-quantization.html"><span class="mono">02</span>Sampling, quantization and interpolation</a></li>
+<li><a href="03-geometric-transforms.html"><span class="mono">03</span>Geometric transforms</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part II</span> Enhancement</div><ol>
+<li><a href="04-histograms-lut.html"><span class="mono">04</span>Histograms, point operations and LUTs</a></li>
+<li><a href="05-noise-filtering.html"><span class="mono">05</span>Noise and spatial filtering</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part III</span> Edges, shapes and colour</div><ol>
+<li><a href="06-edges.html"><span class="mono">06</span>Edge detection</a></li>
+<li><a href="07-canny.html"><span class="mono">07</span>The Canny edge detector</a></li>
+<li><a href="08-hough.html"><span class="mono">08</span>The Hough transform</a></li>
+<li><a href="09-morphology.html"><span class="mono">09</span>Mathematical morphology</a></li>
+<li><a href="10-color.html"><span class="mono">10</span>Colour spaces and colour segmentation</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part IV</span> Features</div><ol>
+<li><a href="11-corners-tracking.html"><span class="mono">11</span>Corners and tracking</a></li>
+<li><a href="12-keypoints-orb-sift.html"><span class="mono">12</span>Keypoints and descriptors — FAST, ORB and SIFT</a></li>
+<li><a href="13-homography-ransac.html"><span class="mono">13</span>Homography and RANSAC</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part V</span> Geometry and 3-D</div><ol>
+<li><a href="14-camera-calibration.html" class="active" aria-current="page"><span class="mono">14</span>Camera model and calibration</a></li>
+<li><a href="15-stereo-vision.html"><span class="mono">15</span>Stereo vision</a></li>
+<li><a href="16-structure-from-motion.html"><span class="mono">16</span>Structure from Motion</a></li>
+<li><a href="17-visual-slam.html"><span class="mono">17</span>Visual SLAM with ORB-SLAM3</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part VI</span> Case studies</div><ol>
+<li><a href="18-ct-lungs.html"><span class="mono">18</span>Case study: lungs and vessels in CT scans</a></li>
+<li><a href="19-fingerprints.html"><span class="mono">19</span>Case study: fingerprint identification</a></li>
+</ol>
+    </aside>
+    <main class="lesson" id="top">
+      <header class="lesson-head">
+        <p class="eyebrow mono">Part V · Geometry and 3-D · Lesson 14</p>
+        <h1>Camera model and calibration</h1>
+        <p class="lead">Write down how a 3-D point becomes a pixel — extrinsics, perspective, lens distortion, intrinsics — then recover the camera's parameters from chessboard photos, undistort images and place a virtual cube on the board.</p>
+        <p class="lesson-sources mono">Based on: UFRN activity 02</p>
+        <div class="run-box"><div><span class="mono label">Run this lesson</span><code>python 14_camera_calibration.py</code><code>python 14_camera_calibration.py --save out</code></div><a class="btn btn-ghost" href="code/14_camera_calibration.py" download>Download 14_camera_calibration.py</a></div>
+      </header>
+      <article class="prose">
+<h2 id="from-the-world-to-a-pixel">From the world to a pixel<a class="headerlink" href="#from-the-world-to-a-pixel" title="Permanent link">#</a></h2>
+<p>Every measurement we want to make in 3-D — a distance, a pose, a map — depends on knowing exactly how the camera turns rays into pixels. The <strong>pinhole model</strong> does it in four steps:</p>
+<ol>
+<li><strong>Extrinsics</strong> — express the world point in the camera frame: <span class="arithmatex">\(\mathbf{X}_c = R\,\mathbf{X}_w + \mathbf{t}\)</span>.</li>
+<li><strong>Perspective division</strong> — project on the normalised image plane: <span class="arithmatex">\(x = X_c / Z_c\)</span>, <span class="arithmatex">\(y = Y_c / Z_c\)</span>.</li>
+<li><strong>Lens distortion</strong> — real lenses bend straight lines. The Brown–Conrady model, with <span class="arithmatex">\(r^2 = x^2 + y^2\)</span>:
+   $<span class="arithmatex">\(x_d = x\,(1 + k_1 r^2 + k_2 r^4 + k_3 r^6) + 2 p_1 x y + p_2 (r^2 + 2 x^2)\)</span>$
+   (and symmetrically for <span class="arithmatex">\(y_d\)</span>). <span class="arithmatex">\(k_i\)</span> are radial terms (barrel when <span class="arithmatex">\(k_1 &lt; 0\)</span>), <span class="arithmatex">\(p_i\)</span> tangential ones.</li>
+<li><strong>Intrinsics</strong> — from metric to pixels with the matrix
+   $<span class="arithmatex">\(K = \begin{bmatrix} f_x &amp; s &amp; c_x \\ 0 &amp; f_y &amp; c_y \\ 0 &amp; 0 &amp; 1 \end{bmatrix}, \qquad \begin{bmatrix} u \\ v \\ 1 \end{bmatrix} = K \begin{bmatrix} x_d \\ y_d \\ 1 \end{bmatrix}\)</span>$
+   <span class="arithmatex">\(f_x, f_y\)</span> are the focal length in pixels, <span class="arithmatex">\((c_x, c_y)\)</span> the principal point, <span class="arithmatex">\(s\)</span> the skew (≈ 0).</li>
+</ol>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">project_points</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">dist</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)):</span>
+<span class="w">    </span><span class="sd">"""World points (N x 3) -&gt; pixels (N x 2), with the Brown-Conrady distortion model."""</span>
+    <span class="n">k1</span><span class="p">,</span> <span class="n">k2</span><span class="p">,</span> <span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">k3</span> <span class="o">=</span> <span class="n">dist</span>
+    <span class="n">Xc</span> <span class="o">=</span> <span class="n">X</span> <span class="o">@</span> <span class="n">R</span><span class="o">.</span><span class="n">T</span> <span class="o">+</span> <span class="n">t</span>                          <span class="c1"># 1. world -&gt; camera frame (extrinsics)</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">Xc</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">Xc</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">Xc</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">Xc</span><span class="p">[:,</span> <span class="mi">2</span><span class="p">]</span>   <span class="c1"># 2. perspective division (normalised plane)</span>
+    <span class="n">r2</span> <span class="o">=</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">y</span> <span class="o">**</span> <span class="mi">2</span>                      <span class="c1"># 3. lens distortion</span>
+    <span class="n">radial</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">k1</span> <span class="o">*</span> <span class="n">r2</span> <span class="o">+</span> <span class="n">k2</span> <span class="o">*</span> <span class="n">r2</span> <span class="o">**</span> <span class="mi">2</span> <span class="o">+</span> <span class="n">k3</span> <span class="o">*</span> <span class="n">r2</span> <span class="o">**</span> <span class="mi">3</span>
+    <span class="n">xd</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">radial</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">p1</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span> <span class="o">+</span> <span class="n">p2</span> <span class="o">*</span> <span class="p">(</span><span class="n">r2</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">x</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">yd</span> <span class="o">=</span> <span class="n">y</span> <span class="o">*</span> <span class="n">radial</span> <span class="o">+</span> <span class="n">p1</span> <span class="o">*</span> <span class="p">(</span><span class="n">r2</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">y</span> <span class="o">**</span> <span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">p2</span> <span class="o">*</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="n">K</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">xd</span> <span class="o">+</span> <span class="n">K</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">yd</span> <span class="o">+</span> <span class="n">K</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>  <span class="c1"># 4. intrinsics: metric -&gt; pixels</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">K</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">yd</span> <span class="o">+</span> <span class="n">K</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div>
+<p>This 15-line function gives exactly the same pixels as <code>cv2.projectPoints</code> (max difference 0.0 px).</p>
+<figure class="fig"><a href="img/14-distortion-model.webp" target="_blank" rel="noopener"><img src="img/14-distortion-model.webp" alt="A flat grid through an ideal pinhole (gray) and through a lens with $k_1 = -0.3$ (red): barrel distortion pulls the edges inwards." loading="lazy"></a><figcaption markdown="span">A flat grid through an ideal pinhole (gray) and through a lens with $k_1 = -0.3$ (red): barrel distortion pulls the edges inwards.</figcaption></figure>
+
+<h2 id="calibration-inverting-the-model">Calibration = inverting the model<a class="headerlink" href="#calibration-inverting-the-model" title="Permanent link">#</a></h2>
+<p><strong>Calibrating</strong> means finding <span class="arithmatex">\(K\)</span> and the distortion coefficients (plus a pose per image) from images of an object whose geometry we know exactly: a chessboard. Its inner corners are, in the board's own frame, at <span class="arithmatex">\((i \cdot s, j \cdot s, 0)\)</span>. Zhang's method (2000) gets a first estimate from the homographies between the board and each image, then refines everything by minimising the <strong>reprojection error</strong> — the distance between the detected corners and the corners projected by the model.</p>
+<h3 id="1-detect-the-corners">1. Detect the corners<a class="headerlink" href="#1-detect-the-corners" title="Permanent link">#</a></h3>
+<div class="highlight"><pre><span></span><code><span class="n">PATTERN</span> <span class="o">=</span> <span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>            <span class="c1"># inner corners per row and per column (not squares!)</span>
+<span class="n">SQUARE</span> <span class="o">=</span> <span class="mf">1.0</span>                <span class="c1"># square side; use real units (e.g. 0.025 m) to get metric extrinsics</span>
+
+<span class="n">objp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">PATTERN</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">PATTERN</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">3</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">objp</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">PATTERN</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">:</span><span class="n">PATTERN</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span> <span class="o">*</span> <span class="n">SQUARE</span>   <span class="c1"># z = 0 plane</span>
+
+<span class="n">criteria</span> <span class="o">=</span> <span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">TERM_CRITERIA_EPS</span> <span class="o">+</span> <span class="n">cv2</span><span class="o">.</span><span class="n">TERM_CRITERIA_MAX_ITER</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">)</span>
+<span class="n">object_points</span><span class="p">,</span> <span class="n">image_points</span><span class="p">,</span> <span class="n">used</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">fname</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">U</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="s2">"calibration/*.jpg"</span><span class="p">)))):</span>
+    <span class="n">gray</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">fname</span><span class="p">),</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
+    <span class="n">found</span><span class="p">,</span> <span class="n">corners</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">findChessboardCorners</span><span class="p">(</span><span class="n">gray</span><span class="p">,</span> <span class="n">PATTERN</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">found</span><span class="p">:</span>
+        <span class="k">continue</span>
+    <span class="n">corners</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cornerSubPix</span><span class="p">(</span><span class="n">gray</span><span class="p">,</span> <span class="n">corners</span><span class="p">,</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">criteria</span><span class="p">)</span>   <span class="c1"># sub-pixel accuracy</span>
+    <span class="n">object_points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">objp</span><span class="p">)</span>
+    <span class="n">image_points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">corners</span><span class="p">)</span>
+    <span class="n">used</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">fname</span><span class="p">)</span>
+<span class="n">image_size</span> <span class="o">=</span> <span class="n">gray</span><span class="o">.</span><span class="n">shape</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>               <span class="c1"># (width, height)</span>
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Inner corners, not squares</p>
+<p>A board with 10 × 7 squares has <strong>9 × 6 inner corners</strong>: <code>PATTERN = (9, 6)</code>. Getting this wrong makes <code>findChessboardCorners</code> fail silently on every image.</p>
+</div>
+<p><code>cornerSubPix</code> (lesson 11) is not optional: calibration is only as accurate as the corners.</p>
+<h3 id="2-calibrate">2. Calibrate<a class="headerlink" href="#2-calibrate" title="Permanent link">#</a></h3>
+<div class="highlight"><pre><span></span><code><span class="n">rms</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">dist</span><span class="p">,</span> <span class="n">rvecs</span><span class="p">,</span> <span class="n">tvecs</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">calibrateCamera</span><span class="p">(</span><span class="n">object_points</span><span class="p">,</span> <span class="n">image_points</span><span class="p">,</span> <span class="n">image_size</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"RMS reprojection error: </span><span class="si">%.3f</span><span class="s2"> px"</span> <span class="o">%</span> <span class="n">rms</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"K =</span><span class="se">\n</span><span class="s2">"</span><span class="p">,</span> <span class="n">K</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"dist (k1, k2, p1, p2, k3) ="</span><span class="p">,</span> <span class="n">dist</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">))</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>chessboard found in 21 images of size (1280, 720)
+RMS reprojection error: 0.438 px
+K =
+ [[780.61   0.   725.46]
+ [  0.   787.5  365.94]
+ [  0.     0.     1.  ]]
+dist (k1, k2, p1, p2, k3) = [-0.4282  0.2407  0.0013 -0.0013 -0.0992]
+</code></pre></div>
+<p>These are the parameters of my webcam: a wide-angle lens with strong barrel distortion (<span class="arithmatex">\(k_1 = -0.43\)</span>). An RMS error below 0.5 px is a good calibration.</p>
+<h3 id="3-check-every-view">3. Check every view<a class="headerlink" href="#3-check-every-view" title="Permanent link">#</a></h3>
+<div class="highlight"><pre><span></span><code><span class="n">per_view</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">objp_i</span><span class="p">,</span> <span class="n">imgp_i</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">t</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">object_points</span><span class="p">,</span> <span class="n">image_points</span><span class="p">,</span> <span class="n">rvecs</span><span class="p">,</span> <span class="n">tvecs</span><span class="p">):</span>
+    <span class="n">projected</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">projectPoints</span><span class="p">(</span><span class="n">objp_i</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">t</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">dist</span><span class="p">)</span>
+    <span class="n">per_view</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">projected</span> <span class="o">-</span> <span class="n">imgp_i</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">2</span><span class="p">))))</span>
+</code></pre></div>
+<figure class="fig"><a href="img/14-per-view.webp" target="_blank" rel="noopener"><img src="img/14-per-view.webp" alt="Per-image reprojection error. A view far above the others usually has a blurred or misdetected board: remove it and recalibrate." loading="lazy"></a><figcaption markdown="span">Per-image reprojection error. A view far above the others usually has a blurred or misdetected board: remove it and recalibrate.</figcaption></figure>
+
+<div class="admonition tip">
+<p class="admonition-title">Taking good calibration pictures</p>
+<p>15–25 images; the board <strong>flat</strong> and sharp; cover the <strong>whole field of view</strong>, especially the corners where distortion is strongest; tilt the board up to ±45° in different directions; vary the distance. If you only show the board in the centre, <span class="arithmatex">\(k_1, k_2, k_3\)</span> are poorly constrained.</p>
+</div>
+<h2 id="undistorting">Undistorting<a class="headerlink" href="#undistorting" title="Permanent link">#</a></h2>
+<div class="highlight"><pre><span></span><code><span class="n">img</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">U</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="s2">"calibration/frame3.jpg"</span><span class="p">)))</span>
+<span class="n">new_K</span><span class="p">,</span> <span class="n">roi</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">getOptimalNewCameraMatrix</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">dist</span><span class="p">,</span> <span class="n">image_size</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>   <span class="c1"># alpha=0: crop black borders</span>
+<span class="n">undistorted</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">undistort</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">dist</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">new_K</span><span class="p">)</span>
+
+<span class="c1"># for video, build the maps once and remap every frame (much faster)</span>
+<span class="n">map1</span><span class="p">,</span> <span class="n">map2</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">initUndistortRectifyMap</span><span class="p">(</span><span class="n">K</span><span class="p">,</span> <span class="n">dist</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">new_K</span><span class="p">,</span> <span class="n">image_size</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">CV_16SC2</span><span class="p">)</span>
+<span class="n">undistorted_fast</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">remap</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">map1</span><span class="p">,</span> <span class="n">map2</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">INTER_LINEAR</span><span class="p">)</span>
+</code></pre></div>
+<p><code>alpha</code> chooses between keeping only valid pixels (<code>0</code>, cropped) and keeping every source pixel (<code>1</code>, black borders).</p>
+<figure class="fig"><a href="img/14-undistort.webp" target="_blank" rel="noopener"><img src="img/14-undistort.webp" alt="Detected corners and the undistorted image: the edges of the board and the frame of the whiteboard become straight lines." loading="lazy"></a><figcaption markdown="span">Detected corners and the undistorted image: the edges of the board and the frame of the whiteboard become straight lines.</figcaption></figure>
+
+<h2 id="pose-estimation-solvepnp">Pose estimation: solvePnP<a class="headerlink" href="#pose-estimation-solvepnp" title="Permanent link">#</a></h2>
+<p>Once <span class="arithmatex">\(K\)</span> is known, the pose of the board in any new image follows from its 2-D/3-D correspondences: this is the <strong>Perspective-n-Point</strong> problem.</p>
+<div class="highlight"><pre><span></span><code><span class="n">view</span> <span class="o">=</span> <span class="n">used</span><span class="o">.</span><span class="n">index</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">U</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="s2">"calibration/frame4.jpg"</span><span class="p">)))</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">rvec</span><span class="p">,</span> <span class="n">tvec</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">solvePnP</span><span class="p">(</span><span class="n">objp</span><span class="p">,</span> <span class="n">image_points</span><span class="p">[</span><span class="n">view</span><span class="p">],</span> <span class="n">K</span><span class="p">,</span> <span class="n">dist</span><span class="p">)</span>    <span class="c1"># board pose in this image</span>
+<span class="n">s</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">SQUARE</span>
+<span class="n">cube</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="n">s</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="n">s</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span>
+                   <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">s</span><span class="p">],</span> <span class="p">[</span><span class="n">s</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">s</span><span class="p">],</span> <span class="p">[</span><span class="n">s</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="o">-</span><span class="n">s</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">s</span><span class="p">,</span> <span class="o">-</span><span class="n">s</span><span class="p">]])</span>  <span class="c1"># -z points towards the camera</span>
+<span class="n">pix</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">projectPoints</span><span class="p">(</span><span class="n">cube</span><span class="p">,</span> <span class="n">rvec</span><span class="p">,</span> <span class="n">tvec</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">dist</span><span class="p">)</span>
+<span class="n">pix</span> <span class="o">=</span> <span class="n">pix</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<span class="n">ar</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">used</span><span class="p">[</span><span class="n">view</span><span class="p">])</span>
+<span class="n">cv2</span><span class="o">.</span><span class="n">drawContours</span><span class="p">(</span><span class="n">ar</span><span class="p">,</span> <span class="p">[</span><span class="n">pix</span><span class="p">[:</span><span class="mi">4</span><span class="p">]],</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">200</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">8</span><span class="p">)):</span>
+    <span class="n">cv2</span><span class="o">.</span><span class="n">line</span><span class="p">(</span><span class="n">ar</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">pix</span><span class="p">[</span><span class="n">i</span><span class="p">]),</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">pix</span><span class="p">[</span><span class="n">j</span><span class="p">]),</span> <span class="p">(</span><span class="mi">255</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">cv2</span><span class="o">.</span><span class="n">drawContours</span><span class="p">(</span><span class="n">ar</span><span class="p">,</span> <span class="p">[</span><span class="n">pix</span><span class="p">[</span><span class="mi">4</span><span class="p">:]],</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">),</span> <span class="mi">3</span><span class="p">)</span>
+<span class="n">cv2</span><span class="o">.</span><span class="n">drawFrameAxes</span><span class="p">(</span><span class="n">ar</span><span class="p">,</span> <span class="n">K</span><span class="p">,</span> <span class="n">dist</span><span class="p">,</span> <span class="n">rvec</span><span class="p">,</span> <span class="n">tvec</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">SQUARE</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+</code></pre></div>
+<figure class="fig"><a href="img/14-pose.webp" target="_blank" rel="noopener"><img src="img/14-pose.webp" alt="A 3 × 3 × 3-square cube drawn on the board with `solvePnP` + `projectPoints`: the core of marker-based augmented reality." loading="lazy"></a><figcaption markdown="span">A 3 × 3 × 3-square cube drawn on the board with `solvePnP` + `projectPoints`: the core of marker-based augmented reality.</figcaption></figure>
+
+<h2 id="saving-the-result">Saving the result<a class="headerlink" href="#saving-the-result" title="Permanent link">#</a></h2>
+<div class="highlight"><pre><span></span><code><span class="n">fs</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">FileStorage</span><span class="p">(</span><span class="s2">"camera_calibration.yaml"</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">FILE_STORAGE_WRITE</span><span class="p">)</span>
+<span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"camera_matrix"</span><span class="p">,</span> <span class="n">K</span><span class="p">)</span>
+<span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"distortion_coefficients"</span><span class="p">,</span> <span class="n">dist</span><span class="p">)</span>
+<span class="n">fs</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="s2">"image_size"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">image_size</span><span class="p">))</span>
+<span class="n">fs</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+
+<span class="n">fs</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">FileStorage</span><span class="p">(</span><span class="s2">"camera_calibration.yaml"</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">FILE_STORAGE_READ</span><span class="p">)</span>
+<span class="n">K_loaded</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">getNode</span><span class="p">(</span><span class="s2">"camera_matrix"</span><span class="p">)</span><span class="o">.</span><span class="n">mat</span><span class="p">()</span>
+<span class="n">fs</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+</code></pre></div>
+<p>The YAML written by <code>cv2.FileStorage</code> is the format of the calibration files in lessons 15–17 and in ORB-SLAM3.</p>
+<h2 id="bonus-does-calibration-find-the-truth">Bonus: does calibration find the truth?<a class="headerlink" href="#bonus-does-calibration-find-the-truth" title="Permanent link">#</a></h2>
+<p>To know whether calibration recovers the real parameters, we need a camera whose parameters we <em>know</em>: simulate one. We project the chessboard with a chosen <span class="arithmatex">\(K\)</span> and distortion from 15 random poses, add 0.2 px of noise, and calibrate:</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># Bonus: a camera we *know*, so we can check that calibration recovers it.</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">K_true</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">900</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">640</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">900</span><span class="p">,</span> <span class="mi">360</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span> <span class="nb">float</span><span class="p">)</span>
+<span class="n">dist_true</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.08</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">])</span>
+<span class="n">obj_s</span><span class="p">,</span> <span class="n">img_s</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">15</span><span class="p">):</span>
+    <span class="n">rvec</span> <span class="o">=</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">tvec</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">rng</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">14</span><span class="p">)])</span>
+    <span class="n">pts</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">projectPoints</span><span class="p">(</span><span class="n">objp</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">),</span> <span class="n">rvec</span><span class="p">,</span> <span class="n">tvec</span><span class="p">,</span> <span class="n">K_true</span><span class="p">,</span> <span class="n">dist_true</span><span class="p">)</span>
+    <span class="n">pts</span> <span class="o">+=</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="n">pts</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>                  <span class="c1"># 0.2 px of detection noise</span>
+    <span class="n">obj_s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">objp</span><span class="p">)</span>
+    <span class="n">img_s</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pts</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>
+<span class="n">rms_s</span><span class="p">,</span> <span class="n">K_est</span><span class="p">,</span> <span class="n">dist_est</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">calibrateCamera</span><span class="p">(</span><span class="n">obj_s</span><span class="p">,</span> <span class="n">img_s</span><span class="p">,</span> <span class="p">(</span><span class="mi">1280</span><span class="p">,</span> <span class="mi">720</span><span class="p">),</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>synthetic: fx true 900 -&gt; 901.3, k1 true -0.25 -&gt; -0.252, k2 true 0.08 -&gt; 0.083 (RMS 0.28 px)
+</code></pre></div>
+<p>The focal length is recovered within 0.15% and the distortion within a few thousandths — and the RMS error equals the noise we injected (<span class="arithmatex">\(0.2\sqrt{2} \approx 0.28\)</span> px), the sign of a model that fits perfectly.</p>
+<h2 id="exercises">Exercises<a class="headerlink" href="#exercises" title="Permanent link">#</a></h2>
+<ol>
+<li>Calibrate with only the 5 views where the board is closest to the centre. How do <span class="arithmatex">\(k_1, k_2, k_3\)</span> change?</li>
+<li>Calibrate your own phone or webcam (print a chessboard, use <code>cv2.VideoCapture(0)</code> and press a key to save frames).</li>
+<li>In the synthetic bonus, increase the noise to 1 px and the number of views to 50. How does the error on <span class="arithmatex">\(f_x\)</span> scale?</li>
+</ol>
+      </article>
+      <nav class="pager" aria-label="Lessons">
+        <a href="13-homography-ransac.html"><span class="mono">Previous</span><strong>13 · Homography and RANSAC</strong></a>
+        <a href="15-stereo-vision.html" class="next"><span class="mono">Next</span><strong>15 · Stereo vision</strong></a>
+      </nav>
+    </main>
+    <aside class="lesson-toc" aria-label="On this page">
+      <div class="sub first">On this page</div>
+      <ul><li><a href="#from-the-world-to-a-pixel">From the world to a pixel</a></li>
+<li><a href="#calibration-inverting-the-model">Calibration = inverting the model</a></li>
+<li class="sub"><a href="#1-detect-the-corners">1. Detect the corners</a></li>
+<li class="sub"><a href="#2-calibrate">2. Calibrate</a></li>
+<li class="sub"><a href="#3-check-every-view">3. Check every view</a></li>
+<li><a href="#undistorting">Undistorting</a></li>
+<li><a href="#pose-estimation-solvepnp">Pose estimation: solvePnP</a></li>
+<li><a href="#saving-the-result">Saving the result</a></li>
+<li><a href="#bonus-does-calibration-find-the-truth">Bonus: does calibration find the truth?</a></li>
+<li><a href="#exercises">Exercises</a></li></ul>
+    </aside>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container footer-inner mono wide">
+      <span>© <span id="year"></span> Henrique Corneau · course text and code under MIT</span>
+      <span><a href="https://github.com/henriquecorneau" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/henriquecorneau/" target="_blank" rel="noopener">LinkedIn</a></span>
+    </div>
+  </footer>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+  <script defer src="course.js"></script>
+</body>
+</html>

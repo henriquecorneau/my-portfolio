@@ -1,0 +1,324 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>15 · Stereo vision · Computer Vision Course</title>
+  <meta name="description" content="Two calibrated cameras see depth. Calibrate and rectify a stereo pair, compute disparity maps with block matching and SGBM, convert them to metres and point clouds, and georeference an object seen from a boat.">
+  <meta property="og:title" content="15 · Stereo vision · Computer Vision Course">
+  <meta property="og:description" content="Two calibrated cameras see depth. Calibrate and rectify a stereo pair, compute disparity maps with block matching and SGBM, convert them to metres and point clouds, and georeference an object seen from a boat.">
+  <meta property="og:image" content="../assets/img/profile.jpg">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23111'/><text x='50' y='66' font-size='46' font-family='monospace' fill='%23fff' text-anchor='middle'>HC</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="course.css">
+  <script>
+    try { var t = localStorage.getItem('theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+</head>
+<body data-page="course">
+  <header class="site-header">
+    <div class="container header-inner wide">
+      <a href="../index.html" class="logo">henrique<span>.corneau</span></a>
+      <nav class="nav" aria-label="Main">
+        <a href="../index.html#projects">Projects</a>
+        <a href="index.html" class="current">CV Course</a>
+        <a href="../index.html#papers">Papers</a>
+        <a href="../index.html#about">About</a>
+      </nav>
+      <div class="header-actions">
+        <button type="button" class="icon-btn menu-btn" id="menu-toggle" aria-label="Lessons" aria-expanded="false" aria-controls="course-side">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <button type="button" class="icon-btn" id="theme-toggle" aria-label="Toggle theme">
+          <svg class="i-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="i-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="course-layout container wide">
+    <aside class="course-side" id="course-side" aria-label="Lessons">
+      <a class="side-home" href="index.html">← Course overview</a>
+      <div class="side-part"><span class="mono">Part I</span> Foundations</div><ol>
+<li><a href="00-setup.html"><span class="mono">00</span>Setup and how the course code works</a></li>
+<li><a href="01-images-as-arrays.html"><span class="mono">01</span>Images are arrays</a></li>
+<li><a href="02-sampling-quantization.html"><span class="mono">02</span>Sampling, quantization and interpolation</a></li>
+<li><a href="03-geometric-transforms.html"><span class="mono">03</span>Geometric transforms</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part II</span> Enhancement</div><ol>
+<li><a href="04-histograms-lut.html"><span class="mono">04</span>Histograms, point operations and LUTs</a></li>
+<li><a href="05-noise-filtering.html"><span class="mono">05</span>Noise and spatial filtering</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part III</span> Edges, shapes and colour</div><ol>
+<li><a href="06-edges.html"><span class="mono">06</span>Edge detection</a></li>
+<li><a href="07-canny.html"><span class="mono">07</span>The Canny edge detector</a></li>
+<li><a href="08-hough.html"><span class="mono">08</span>The Hough transform</a></li>
+<li><a href="09-morphology.html"><span class="mono">09</span>Mathematical morphology</a></li>
+<li><a href="10-color.html"><span class="mono">10</span>Colour spaces and colour segmentation</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part IV</span> Features</div><ol>
+<li><a href="11-corners-tracking.html"><span class="mono">11</span>Corners and tracking</a></li>
+<li><a href="12-keypoints-orb-sift.html"><span class="mono">12</span>Keypoints and descriptors — FAST, ORB and SIFT</a></li>
+<li><a href="13-homography-ransac.html"><span class="mono">13</span>Homography and RANSAC</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part V</span> Geometry and 3-D</div><ol>
+<li><a href="14-camera-calibration.html"><span class="mono">14</span>Camera model and calibration</a></li>
+<li><a href="15-stereo-vision.html" class="active" aria-current="page"><span class="mono">15</span>Stereo vision</a></li>
+<li><a href="16-structure-from-motion.html"><span class="mono">16</span>Structure from Motion</a></li>
+<li><a href="17-visual-slam.html"><span class="mono">17</span>Visual SLAM with ORB-SLAM3</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part VI</span> Case studies</div><ol>
+<li><a href="18-ct-lungs.html"><span class="mono">18</span>Case study: lungs and vessels in CT scans</a></li>
+<li><a href="19-fingerprints.html"><span class="mono">19</span>Case study: fingerprint identification</a></li>
+</ol>
+    </aside>
+    <main class="lesson" id="top">
+      <header class="lesson-head">
+        <p class="eyebrow mono">Part V · Geometry and 3-D · Lesson 15</p>
+        <h1>Stereo vision</h1>
+        <p class="lead">Two calibrated cameras see depth. Calibrate and rectify a stereo pair, compute disparity maps with block matching and SGBM, convert them to metres and point clouds, and georeference an object seen from a boat.</p>
+        <p class="lesson-sources mono">Based on: UFRN activities 08 and 09, my PIBIC boat project</p>
+        <div class="run-box"><div><span class="mono label">Run this lesson</span><code>python 15_stereo_vision.py</code><code>python 15_stereo_vision.py --save out</code></div><a class="btn btn-ghost" href="code/15_stereo_vision.py" download>Download 15_stereo_vision.py</a></div>
+      </header>
+      <article class="prose">
+<h2 id="depth-from-two-eyes">Depth from two eyes<a class="headerlink" href="#depth-from-two-eyes" title="Permanent link">#</a></h2>
+<p>Two cameras side by side, separated by a <strong>baseline</strong> <span class="arithmatex">\(B\)</span>, see the same point at slightly different horizontal positions. The difference is the <strong>disparity</strong> <span class="arithmatex">\(d = u_\text{left} - u_\text{right}\)</span>, and similar triangles give the depth directly:</p>
+<div class="arithmatex">\[Z = \frac{f\,B}{d}\]</div>
+<p>with <span class="arithmatex">\(f\)</span> in pixels and <span class="arithmatex">\(B\)</span> in metres. Near objects have large disparity, far ones small. Since <span class="arithmatex">\(d\)</span> is measured with ~1 px error, the depth error grows like <span class="arithmatex">\(Z^2\)</span>: stereo is precise up close and poor far away.</p>
+<p>The hard part is finding, for each left pixel, <em>the same point</em> in the right image. Epipolar geometry makes it a 1-D search.</p>
+<h2 id="epipolar-geometry">Epipolar geometry<a class="headerlink" href="#epipolar-geometry" title="Permanent link">#</a></h2>
+<p>The ray of a left pixel, seen from the right camera, is a line: the <strong>epipolar line</strong>. Its match can only be on that line. Algebraically, corresponding points satisfy</p>
+<div class="arithmatex">\[\mathbf{x}_r^\top F\, \mathbf{x}_l = 0\]</div>
+<p>where <span class="arithmatex">\(F\)</span> is the <span class="arithmatex">\(3 \times 3\)</span> <strong>fundamental matrix</strong> (in normalised coordinates it becomes the essential matrix <span class="arithmatex">\(E = [\mathbf{t}]_\times R\)</span>, which we use in lesson 16).</p>
+<h2 id="part-1-calibrating-a-stereo-pair">Part 1 — calibrating a stereo pair<a class="headerlink" href="#part-1-calibrating-a-stereo-pair" title="Permanent link">#</a></h2>
+<p>Calibrate each camera alone (lesson 14), then estimate the rotation <span class="arithmatex">\(R\)</span> and translation <span class="arithmatex">\(T\)</span> <strong>between</strong> them with images where both see the board, keeping the intrinsics fixed:</p>
+<div class="highlight"><pre><span></span><code><span class="n">PATTERN</span> <span class="o">=</span> <span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+<span class="n">objp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">PATTERN</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">PATTERN</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mi">3</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+<span class="n">objp</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">PATTERN</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">:</span><span class="n">PATTERN</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+
+<span class="n">lefts</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">U</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="s2">"stereo/left/*.jpg"</span><span class="p">))))</span>
+<span class="n">rights</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">U</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="s2">"stereo/right/*.jpg"</span><span class="p">))))</span>
+<span class="n">obj_pts</span><span class="p">,</span> <span class="n">left_pts</span><span class="p">,</span> <span class="n">right_pts</span> <span class="o">=</span> <span class="p">[],</span> <span class="p">[],</span> <span class="p">[]</span>
+<span class="k">for</span> <span class="n">fl</span><span class="p">,</span> <span class="n">fr</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">lefts</span><span class="p">,</span> <span class="n">rights</span><span class="p">):</span>
+    <span class="n">gl</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">fl</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">IMREAD_GRAYSCALE</span><span class="p">)</span>
+    <span class="n">gr</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">fr</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">IMREAD_GRAYSCALE</span><span class="p">)</span>
+    <span class="n">ok_l</span><span class="p">,</span> <span class="n">cl</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">findChessboardCorners</span><span class="p">(</span><span class="n">gl</span><span class="p">,</span> <span class="n">PATTERN</span><span class="p">)</span>
+    <span class="n">ok_r</span><span class="p">,</span> <span class="n">cr</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">findChessboardCorners</span><span class="p">(</span><span class="n">gr</span><span class="p">,</span> <span class="n">PATTERN</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ok_l</span> <span class="ow">and</span> <span class="n">ok_r</span><span class="p">:</span>                              <span class="c1"># the board must be seen by *both* cameras</span>
+        <span class="n">crit</span> <span class="o">=</span> <span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">TERM_CRITERIA_EPS</span> <span class="o">+</span> <span class="n">cv2</span><span class="o">.</span><span class="n">TERM_CRITERIA_MAX_ITER</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">)</span>
+        <span class="n">left_pts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">cornerSubPix</span><span class="p">(</span><span class="n">gl</span><span class="p">,</span> <span class="n">cl</span><span class="p">,</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">crit</span><span class="p">))</span>
+        <span class="n">right_pts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">cornerSubPix</span><span class="p">(</span><span class="n">gr</span><span class="p">,</span> <span class="n">cr</span><span class="p">,</span> <span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="mi">11</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">),</span> <span class="n">crit</span><span class="p">))</span>
+        <span class="n">obj_pts</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">objp</span><span class="p">)</span>
+<span class="n">size</span> <span class="o">=</span> <span class="n">gl</span><span class="o">.</span><span class="n">shape</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+<span class="c1"># 1. intrinsics of each camera alone</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">K1</span><span class="p">,</span> <span class="n">D1</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">calibrateCamera</span><span class="p">(</span><span class="n">obj_pts</span><span class="p">,</span> <span class="n">left_pts</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="n">_</span><span class="p">,</span> <span class="n">K2</span><span class="p">,</span> <span class="n">D2</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">calibrateCamera</span><span class="p">(</span><span class="n">obj_pts</span><span class="p">,</span> <span class="n">right_pts</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+<span class="c1"># 2. extrinsics between them, keeping the intrinsics fixed</span>
+<span class="n">rms</span><span class="p">,</span> <span class="n">K1</span><span class="p">,</span> <span class="n">D1</span><span class="p">,</span> <span class="n">K2</span><span class="p">,</span> <span class="n">D2</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">E</span><span class="p">,</span> <span class="n">F</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">stereoCalibrate</span><span class="p">(</span>
+    <span class="n">obj_pts</span><span class="p">,</span> <span class="n">left_pts</span><span class="p">,</span> <span class="n">right_pts</span><span class="p">,</span> <span class="n">K1</span><span class="p">,</span> <span class="n">D1</span><span class="p">,</span> <span class="n">K2</span><span class="p">,</span> <span class="n">D2</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">CALIB_FIX_INTRINSIC</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>13 stereo pairs, RMS 0.448 px
+T = [-3.344  0.042  0.053] -&gt; baseline 3.345 squares
+</code></pre></div>
+<p><span class="arithmatex">\(R\)</span> is almost the identity (the cameras are parallel) and <span class="arithmatex">\(T\)</span> is mostly along <span class="arithmatex">\(x\)</span>: the right camera is 3.3 chessboard squares to the right.</p>
+<div class="admonition bug">
+<p class="admonition-title">What I changed from my first version</p>
+<p>My first version called <code>stereoCalibrate</code> with no initial intrinsics and <code>flags=0</code>, so it estimated 30+ parameters at once from 13 image pairs. Calibrating each camera first and then using <code>CALIB_FIX_INTRINSIC</code> is more stable.</p>
+</div>
+<div class="highlight"><pre><span></span><code><span class="n">img_l</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">lefts</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cv2</span><span class="o">.</span><span class="n">IMREAD_GRAYSCALE</span><span class="p">)</span>
+<span class="n">img_r</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="n">rights</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">cv2</span><span class="o">.</span><span class="n">IMREAD_GRAYSCALE</span><span class="p">)</span>
+<span class="n">pts_l</span> <span class="o">=</span> <span class="n">left_pts</span><span class="p">[</span><span class="mi">0</span><span class="p">][::</span><span class="mi">9</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>            <span class="c1"># a few corners in the left image</span>
+<span class="n">lines_r</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">computeCorrespondEpilines</span><span class="p">(</span><span class="n">pts_l</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="n">F</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>  <span class="c1"># a x + b y + c = 0</span>
+</code></pre></div>
+<figure class="fig"><a href="img/15-epilines.webp" target="_blank" rel="noopener"><img src="img/15-epilines.webp" alt="Points in the left image and their epipolar lines in the right image: each matching corner lies on its line." loading="lazy"></a><figcaption markdown="span">Points in the left image and their epipolar lines in the right image: each matching corner lies on its line.</figcaption></figure>
+
+<h2 id="rectification">Rectification<a class="headerlink" href="#rectification" title="Permanent link">#</a></h2>
+<p>If we warp both images so that epipolar lines become <strong>the same image rows</strong>, matching is a search along a row. That is <strong>rectification</strong>: a homography per image computed by <code>stereoRectify</code>, applied (together with undistortion) with <code>remap</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="n">R1</span><span class="p">,</span> <span class="n">R2</span><span class="p">,</span> <span class="n">P1</span><span class="p">,</span> <span class="n">P2</span><span class="p">,</span> <span class="n">Q</span><span class="p">,</span> <span class="n">roi1</span><span class="p">,</span> <span class="n">roi2</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">stereoRectify</span><span class="p">(</span><span class="n">K1</span><span class="p">,</span> <span class="n">D1</span><span class="p">,</span> <span class="n">K2</span><span class="p">,</span> <span class="n">D2</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">R</span><span class="p">,</span> <span class="n">T</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">map_l</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">initUndistortRectifyMap</span><span class="p">(</span><span class="n">K1</span><span class="p">,</span> <span class="n">D1</span><span class="p">,</span> <span class="n">R1</span><span class="p">,</span> <span class="n">P1</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">CV_32FC1</span><span class="p">)</span>
+<span class="n">map_r</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">initUndistortRectifyMap</span><span class="p">(</span><span class="n">K2</span><span class="p">,</span> <span class="n">D2</span><span class="p">,</span> <span class="n">R2</span><span class="p">,</span> <span class="n">P2</span><span class="p">,</span> <span class="n">size</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">CV_32FC1</span><span class="p">)</span>
+<span class="n">rect_l</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">remap</span><span class="p">(</span><span class="n">img_l</span><span class="p">,</span> <span class="o">*</span><span class="n">map_l</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">INTER_LINEAR</span><span class="p">)</span>
+<span class="n">rect_r</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">remap</span><span class="p">(</span><span class="n">img_r</span><span class="p">,</span> <span class="o">*</span><span class="n">map_r</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">INTER_LINEAR</span><span class="p">)</span>
+</code></pre></div>
+<figure class="fig"><a href="img/15-rectified.webp" target="_blank" rel="noopener"><img src="img/15-rectified.webp" alt="Before: the same corner sits on different rows. After: every corner is on the same row in both images." loading="lazy"></a><figcaption markdown="span">Before: the same corner sits on different rows. After: every corner is on the same row in both images.</figcaption></figure>
+
+<p><code>stereoRectify</code> also returns <span class="arithmatex">\(P_1, P_2\)</span> (the new projection matrices, <span class="arithmatex">\(f\)</span> is <code>P1[0, 0]</code>) and <span class="arithmatex">\(Q\)</span>, the matrix that turns a disparity into a 3-D point.</p>
+<h2 id="part-2-depth-on-the-water">Part 2 — depth on the water<a class="headerlink" href="#part-2-depth-on-the-water" title="Permanent link">#</a></h2>
+<p>The second dataset is a frame of the <strong>MODD</strong> maritime dataset, filmed from a small boat — the setting of my research project on autonomous boats.</p>
+<h3 id="check-before-you-rectify">Check before you rectify<a class="headerlink" href="#check-before-you-rectify" title="Permanent link">#</a></h3>
+<div class="highlight"><pre><span></span><code><span class="n">left</span> <span class="o">=</span> <span class="n">U</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s2">"modd/00013824L.jpg"</span><span class="p">)</span>
+<span class="n">right</span> <span class="o">=</span> <span class="n">U</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s2">"modd/00013824R.jpg"</span><span class="p">)</span>
+<span class="n">gray_l</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">left</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
+<span class="n">gray_r</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">right</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2GRAY</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">row_offsets</span><span class="p">(</span><span class="n">img_l</span><span class="p">,</span> <span class="n">img_r</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Vertical offset of RANSAC-filtered ORB matches: ~0 everywhere if the pair is rectified."""</span>
+    <span class="n">orb</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">ORB_create</span><span class="p">(</span><span class="mi">3000</span><span class="p">)</span>
+    <span class="n">k1</span><span class="p">,</span> <span class="n">d1</span> <span class="o">=</span> <span class="n">orb</span><span class="o">.</span><span class="n">detectAndCompute</span><span class="p">(</span><span class="n">img_l</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">k2</span><span class="p">,</span> <span class="n">d2</span> <span class="o">=</span> <span class="n">orb</span><span class="o">.</span><span class="n">detectAndCompute</span><span class="p">(</span><span class="n">img_r</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">BFMatcher</span><span class="p">(</span><span class="n">cv2</span><span class="o">.</span><span class="n">NORM_HAMMING</span><span class="p">,</span> <span class="n">crossCheck</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">match</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">)</span>
+    <span class="n">p1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">([</span><span class="n">k1</span><span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">queryIdx</span><span class="p">]</span><span class="o">.</span><span class="n">pt</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">m</span><span class="p">])</span>
+    <span class="n">p2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">([</span><span class="n">k2</span><span class="p">[</span><span class="n">x</span><span class="o">.</span><span class="n">trainIdx</span><span class="p">]</span><span class="o">.</span><span class="n">pt</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">m</span><span class="p">])</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">inl</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">findFundamentalMat</span><span class="p">(</span><span class="n">p1</span><span class="p">,</span> <span class="n">p2</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">FM_RANSAC</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">)</span>
+    <span class="n">inl</span> <span class="o">=</span> <span class="n">inl</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span>
+    <span class="k">return</span> <span class="n">p1</span><span class="p">[</span><span class="n">inl</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">p2</span><span class="p">[</span><span class="n">inl</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">p1</span><span class="p">[</span><span class="n">inl</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">p2</span><span class="p">[</span><span class="n">inl</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>
+
+
+<span class="n">dy</span><span class="p">,</span> <span class="n">dx</span> <span class="o">=</span> <span class="n">row_offsets</span><span class="p">(</span><span class="n">gray_l</span><span class="p">,</span> <span class="n">gray_r</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"dy percentiles (5, 50, 95):"</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">dy</span><span class="p">,</span> <span class="p">[</span><span class="mi">5</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">95</span><span class="p">])</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>   <span class="c1"># [-1, 0, 0]</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>dy percentiles (5, 50, 95): [-1.  0.  0.]
+</code></pre></div>
+<p>The matched features are already on the same rows: <strong>the MODD frames are distributed rectified</strong>. Rectifying them again with the raw calibration would break them (I tried: no feature stayed within 3 rows of its match). Always check the row offset of a few matches before computing disparities — it takes five lines and saves hours.</p>
+<div class="highlight"><pre><span></span><code><span class="c1"># The MODD frames are *already rectified*: rectifying them again with the raw calibration</span>
+<span class="c1"># would break them. We only need the focal length (px) and the baseline (m).</span>
+<span class="n">fs</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">FileStorage</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">U</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="s2">"modd/calibration.yaml"</span><span class="p">)),</span> <span class="n">cv2</span><span class="o">.</span><span class="n">FILE_STORAGE_READ</span><span class="p">)</span>
+<span class="n">K</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">getNode</span><span class="p">(</span><span class="s2">"M1"</span><span class="p">)</span><span class="o">.</span><span class="n">mat</span><span class="p">()</span>
+<span class="n">T</span> <span class="o">=</span> <span class="n">fs</span><span class="o">.</span><span class="n">getNode</span><span class="p">(</span><span class="s2">"T"</span><span class="p">)</span><span class="o">.</span><span class="n">mat</span><span class="p">()</span>                    <span class="c1"># millimetres</span>
+<span class="n">fs</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+<span class="n">f_px</span> <span class="o">=</span> <span class="n">K</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>                               <span class="c1"># ~958 px</span>
+<span class="n">cx</span><span class="p">,</span> <span class="n">cy</span> <span class="o">=</span> <span class="n">K</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="n">K</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="n">baseline_m</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">T</span><span class="p">)</span> <span class="o">/</span> <span class="mi">1000</span>        <span class="c1"># 0.356 m</span>
+
+<span class="c1"># reprojection matrix for a rectified pair: [X Y Z W]^T = Q [u v d 1]^T</span>
+<span class="n">Q</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">cx</span><span class="p">],</span>
+                <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="n">cy</span><span class="p">],</span>
+                <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">f_px</span><span class="p">],</span>
+                <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="n">baseline_m</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+</code></pre></div>
+<h3 id="disparity-block-matching-and-sgbm">Disparity: block matching and SGBM<a class="headerlink" href="#disparity-block-matching-and-sgbm" title="Permanent link">#</a></h3>
+<p><strong>StereoBM</strong> compares small blocks along each row (sum of absolute differences) and keeps the best. Fast, but it fails on weak texture. <strong>StereoSGBM</strong> (semi-global matching) adds a smoothness cost along several directions: <code>P1</code> penalises disparity changes of 1 between neighbours, <code>P2</code> larger jumps. It is slower and much denser.</p>
+<div class="highlight"><pre><span></span><code><span class="n">fs</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">FileStorage</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">U</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="s2">"modd/stereo-method.yaml"</span><span class="p">)),</span> <span class="n">cv2</span><span class="o">.</span><span class="n">FILE_STORAGE_READ</span><span class="p">)</span>
+<span class="n">param</span> <span class="o">=</span> <span class="p">{</span><span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">(</span><span class="n">fs</span><span class="o">.</span><span class="n">getNode</span><span class="p">(</span><span class="n">k</span><span class="p">)</span><span class="o">.</span><span class="n">real</span><span class="p">())</span> <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span>
+         <span class="p">[</span><span class="s2">"PreFilterSize"</span><span class="p">,</span> <span class="s2">"PreFilterCap"</span><span class="p">,</span> <span class="s2">"SADWindowSize"</span><span class="p">,</span> <span class="s2">"MinDisparity"</span><span class="p">,</span> <span class="s2">"NumDisparities"</span><span class="p">,</span>
+          <span class="s2">"TextureThreshold"</span><span class="p">,</span> <span class="s2">"UniquenessRatio"</span><span class="p">,</span> <span class="s2">"SpeckleWindowSize"</span><span class="p">,</span> <span class="s2">"SpeckleRange"</span><span class="p">,</span> <span class="s2">"Disp12MaxDiff"</span><span class="p">]}</span>
+<span class="n">fs</span><span class="o">.</span><span class="n">release</span><span class="p">()</span>
+
+<span class="n">bm</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">StereoBM_create</span><span class="p">(</span><span class="n">numDisparities</span><span class="o">=</span><span class="n">param</span><span class="p">[</span><span class="s2">"NumDisparities"</span><span class="p">],</span> <span class="n">blockSize</span><span class="o">=</span><span class="n">param</span><span class="p">[</span><span class="s2">"SADWindowSize"</span><span class="p">])</span>
+<span class="n">bm</span><span class="o">.</span><span class="n">setPreFilterSize</span><span class="p">(</span><span class="n">param</span><span class="p">[</span><span class="s2">"PreFilterSize"</span><span class="p">])</span>
+<span class="n">bm</span><span class="o">.</span><span class="n">setPreFilterCap</span><span class="p">(</span><span class="n">param</span><span class="p">[</span><span class="s2">"PreFilterCap"</span><span class="p">])</span>
+<span class="n">bm</span><span class="o">.</span><span class="n">setTextureThreshold</span><span class="p">(</span><span class="n">param</span><span class="p">[</span><span class="s2">"TextureThreshold"</span><span class="p">])</span>
+<span class="n">bm</span><span class="o">.</span><span class="n">setUniquenessRatio</span><span class="p">(</span><span class="n">param</span><span class="p">[</span><span class="s2">"UniquenessRatio"</span><span class="p">])</span>
+<span class="n">bm</span><span class="o">.</span><span class="n">setSpeckleWindowSize</span><span class="p">(</span><span class="n">param</span><span class="p">[</span><span class="s2">"SpeckleWindowSize"</span><span class="p">])</span>
+<span class="n">bm</span><span class="o">.</span><span class="n">setSpeckleRange</span><span class="p">(</span><span class="n">param</span><span class="p">[</span><span class="s2">"SpeckleRange"</span><span class="p">])</span>
+<span class="n">bm</span><span class="o">.</span><span class="n">setDisp12MaxDiff</span><span class="p">(</span><span class="n">param</span><span class="p">[</span><span class="s2">"Disp12MaxDiff"</span><span class="p">])</span>
+
+<span class="n">block</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">sgbm</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">StereoSGBM_create</span><span class="p">(</span><span class="n">minDisparity</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">numDisparities</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">blockSize</span><span class="o">=</span><span class="n">block</span><span class="p">,</span>
+                             <span class="n">P1</span><span class="o">=</span><span class="mi">8</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">block</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span> <span class="n">P2</span><span class="o">=</span><span class="mi">32</span> <span class="o">*</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">block</span> <span class="o">**</span> <span class="mi">2</span><span class="p">,</span>   <span class="c1"># smoothness penalties</span>
+                             <span class="n">uniquenessRatio</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">speckleWindowSize</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">speckleRange</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span>
+                             <span class="n">disp12MaxDiff</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">mode</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">STEREO_SGBM_MODE_SGBM_3WAY</span><span class="p">)</span>
+
+<span class="c1"># compute() returns fixed-point disparities (x16); invalid pixels are negative</span>
+<span class="n">disp_bm</span> <span class="o">=</span> <span class="n">bm</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">gray_l</span><span class="p">,</span> <span class="n">gray_r</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">/</span> <span class="mi">16</span>
+<span class="n">disp</span> <span class="o">=</span> <span class="n">sgbm</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">gray_l</span><span class="p">,</span> <span class="n">gray_r</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span> <span class="o">/</span> <span class="mi">16</span>
+<span class="n">valid</span> <span class="o">=</span> <span class="n">disp</span> <span class="o">&gt;</span> <span class="mi">0</span>
+</code></pre></div>
+<div class="admonition warning">
+<p class="admonition-title">Disparities are fixed-point</p>
+<p><code>compute()</code> returns <code>int16</code> values <strong>multiplied by 16</strong>. Divide by 16 before using them, and treat values ≤ 0 as invalid.</p>
+</div>
+<h3 id="the-distance-to-the-dinghy">The distance to the dinghy<a class="headerlink" href="#the-distance-to-the-dinghy" title="Permanent link">#</a></h3>
+<p>Given a bounding box (from a detector like YOLO, in my project), take the <strong>median</strong> disparity inside it — the box also contains water and sky, and the median ignores them — and apply <span class="arithmatex">\(Z = fB/d\)</span>:</p>
+<div class="highlight"><pre><span></span><code><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="mi">252</span><span class="p">,</span> <span class="mi">461</span><span class="p">,</span> <span class="mi">412</span><span class="p">,</span> <span class="mi">184</span>                      <span class="c1"># the dinghy (e.g. a YOLO bounding box)</span>
+<span class="n">roi_disp</span> <span class="o">=</span> <span class="n">disp</span><span class="p">[</span><span class="n">y</span><span class="p">:</span><span class="n">y</span> <span class="o">+</span> <span class="n">h</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span><span class="n">x</span> <span class="o">+</span> <span class="n">w</span><span class="p">]</span>
+<span class="n">d_obj</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">median</span><span class="p">(</span><span class="n">roi_disp</span><span class="p">[</span><span class="n">roi_disp</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">])</span>            <span class="c1"># median: robust to holes and to background pixels</span>
+<span class="n">Z</span> <span class="o">=</span> <span class="n">f_px</span> <span class="o">*</span> <span class="n">baseline_m</span> <span class="o">/</span> <span class="n">d_obj</span>                        <span class="c1"># depth = f B / d</span>
+<span class="n">X</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="n">w</span> <span class="o">/</span> <span class="mi">2</span> <span class="o">-</span> <span class="n">cx</span><span class="p">)</span> <span class="o">*</span> <span class="n">Z</span> <span class="o">/</span> <span class="n">f_px</span>                      <span class="c1"># lateral offset of the box centre</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>dinghy: median disparity 47.3 px -&gt; depth 7.21 m, -1.49 m to the side
+</code></pre></div>
+<p>The dinghy's disparity (47 px) matches the median horizontal offset of the ORB matches (46 px) from the rectification check — two independent measurements agreeing.</p>
+<figure class="fig"><a href="img/15-disparity.webp" target="_blank" rel="noopener"><img src="img/15-disparity.webp" alt="Water has little texture: StereoBM (with the dataset&#x27;s parameters) finds only 3% of valid disparities, SGBM 22%, including the whole dinghy. The black band on the left is where no right-image pixel can match (`numDisparities`)." loading="lazy"></a><figcaption markdown="span">Water has little texture: StereoBM (with the dataset's parameters) finds only 3% of valid disparities, SGBM 22%, including the whole dinghy. The black band on the left is where no right-image pixel can match (`numDisparities`).</figcaption></figure>
+
+<h2 id="point-clouds">Point clouds<a class="headerlink" href="#point-clouds" title="Permanent link">#</a></h2>
+<p><span class="arithmatex">\(Q\)</span> turns every <span class="arithmatex">\((u, v, d)\)</span> into <span class="arithmatex">\((X, Y, Z)\)</span>; <code>reprojectImageTo3D</code> applies it to the whole map. For a rectified pair it is simply</p>
+<div class="arithmatex">\[Q = \begin{bmatrix} 1 &amp; 0 &amp; 0 &amp; -c_x \\ 0 &amp; 1 &amp; 0 &amp; -c_y \\ 0 &amp; 0 &amp; 0 &amp; f \\ 0 &amp; 0 &amp; 1/B &amp; 0 \end{bmatrix}\]</div>
+<div class="highlight"><pre><span></span><code><span class="n">points</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">reprojectImageTo3D</span><span class="p">(</span><span class="n">disp</span><span class="p">,</span> <span class="n">Q</span><span class="p">)</span>             <span class="c1"># metres, because the baseline is in metres</span>
+<span class="n">colors</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">rect_l</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2RGB</span><span class="p">)</span>
+<span class="n">mask</span> <span class="o">=</span> <span class="n">valid</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">points</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">40</span><span class="p">)</span>
+<span class="n">xyz</span><span class="p">,</span> <span class="n">rgb</span> <span class="o">=</span> <span class="n">points</span><span class="p">[</span><span class="n">mask</span><span class="p">],</span> <span class="n">colors</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">write_ply</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">xyz</span><span class="p">,</span> <span class="n">rgb</span><span class="p">):</span>
+    <span class="n">header</span> <span class="o">=</span> <span class="p">(</span><span class="sa">f</span><span class="s2">"ply</span><span class="se">\n</span><span class="s2">format ascii 1.0</span><span class="se">\n</span><span class="s2">element vertex </span><span class="si">{</span><span class="nb">len</span><span class="p">(</span><span class="n">xyz</span><span class="p">)</span><span class="si">}</span><span class="se">\n</span><span class="s2">"</span>
+              <span class="s2">"property float x</span><span class="se">\n</span><span class="s2">property float y</span><span class="se">\n</span><span class="s2">property float z</span><span class="se">\n</span><span class="s2">"</span>
+              <span class="s2">"property uchar red</span><span class="se">\n</span><span class="s2">property uchar green</span><span class="se">\n</span><span class="s2">property uchar blue</span><span class="se">\n</span><span class="s2">end_header</span><span class="se">\n</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="s2">"w"</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">header</span><span class="p">)</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">savetxt</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">hstack</span><span class="p">([</span><span class="n">xyz</span><span class="p">,</span> <span class="n">rgb</span><span class="p">]),</span> <span class="n">fmt</span><span class="o">=</span><span class="s2">"</span><span class="si">%.4f</span><span class="s2"> </span><span class="si">%.4f</span><span class="s2"> </span><span class="si">%.4f</span><span class="s2"> </span><span class="si">%d</span><span class="s2"> </span><span class="si">%d</span><span class="s2"> </span><span class="si">%d</span><span class="s2">"</span><span class="p">)</span>
+
+<span class="c1"># write_ply("boat.ply", xyz, rgb)   # open it in MeshLab or CloudCompare</span>
+</code></pre></div>
+<figure class="fig"><a href="img/15-pointcloud.webp" target="_blank" rel="noopener"><img src="img/15-pointcloud.webp" alt="The point cloud from above. The dinghy (red) is at ~7 m; the red points far behind are background pixels inside its bounding box — the reason we used the median. The `.ply` file opens in MeshLab or CloudCompare." loading="lazy"></a><figcaption markdown="span">The point cloud from above. The dinghy (red) is at ~7 m; the red points far behind are background pixels inside its bounding box — the reason we used the median. The `.ply` file opens in MeshLab or CloudCompare.</figcaption></figure>
+
+<div class="admonition bug">
+<p class="admonition-title">What I changed from my first version</p>
+<p>My first point cloud reprojected the <em>colour-mapped, normalised</em> disparity image (converted back to gray) instead of the real disparity, so the depths were meaningless. <code>reprojectImageTo3D</code> needs the float disparity in pixels.</p>
+</div>
+<h2 id="georeferencing">Georeferencing<a class="headerlink" href="#georeferencing" title="Permanent link">#</a></h2>
+<p>The boat knows where it is (GPS, in UTM coordinates) and where it points (magnetometer + local magnetic declination). The object's <strong>bearing</strong> is the boat's heading plus the object's angle in the image, <span class="arithmatex">\(\operatorname{atan2}(X, Z)\)</span>; moving <code>distance</code> metres along it gives the object's position. Doing the offset in UTM (metres) and converting to latitude/longitude once with <code>pyproj</code> avoids the "1° ≈ 111 km" approximations:</p>
+<div class="highlight"><pre><span></span><code><span class="n">utm_e</span><span class="p">,</span> <span class="n">utm_n</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">U</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="s2">"modd/gps.txt"</span><span class="p">))</span>              <span class="c1"># boat position, UTM zone 33 N (metres)</span>
+<span class="n">mag_x</span><span class="p">,</span> <span class="n">mag_y</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">U</span><span class="o">.</span><span class="n">path</span><span class="p">(</span><span class="s2">"modd/imu.txt"</span><span class="p">))</span>           <span class="c1"># magnetometer reading</span>
+<span class="n">declination</span> <span class="o">=</span> <span class="mf">4.41</span>                                             <span class="c1"># degrees, Gulf of Koper</span>
+
+<span class="n">heading</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">mag_y</span><span class="p">,</span> <span class="n">mag_x</span><span class="p">))</span> <span class="o">+</span> <span class="n">declination</span>  <span class="c1"># where the camera points (deg from north)</span>
+<span class="n">bearing</span> <span class="o">=</span> <span class="n">heading</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Z</span><span class="p">))</span>               <span class="c1"># add the object's angle in the image</span>
+<span class="n">distance</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">hypot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Z</span><span class="p">)</span>                                      <span class="c1"># X, Z of the dinghy, from the ROI step</span>
+
+<span class="n">obj_e</span> <span class="o">=</span> <span class="n">utm_e</span> <span class="o">+</span> <span class="n">distance</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">bearing</span><span class="p">))</span>         <span class="c1"># metres east</span>
+<span class="n">obj_n</span> <span class="o">=</span> <span class="n">utm_n</span> <span class="o">+</span> <span class="n">distance</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="n">bearing</span><span class="p">))</span>         <span class="c1"># metres north</span>
+<span class="n">to_wgs84</span> <span class="o">=</span> <span class="n">Transformer</span><span class="o">.</span><span class="n">from_crs</span><span class="p">(</span><span class="s2">"EPSG:32633"</span><span class="p">,</span> <span class="s2">"EPSG:4326"</span><span class="p">,</span> <span class="n">always_xy</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">boat_lon</span><span class="p">,</span> <span class="n">boat_lat</span> <span class="o">=</span> <span class="n">to_wgs84</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">utm_e</span><span class="p">,</span> <span class="n">utm_n</span><span class="p">)</span>
+<span class="n">obj_lon</span><span class="p">,</span> <span class="n">obj_lat</span> <span class="o">=</span> <span class="n">to_wgs84</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">obj_e</span><span class="p">,</span> <span class="n">obj_n</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>boat   45.547620, 13.705387
+object 45.547674, 13.705441  (7.4 m at bearing 35.7 deg)
+</code></pre></div>
+<p>This is the pipeline of my <a href="../projects/boat-vision.html">boat perception project</a>, where it runs on every frame with YOLO detections.</p>
+<h2 id="exercises">Exercises<a class="headerlink" href="#exercises" title="Permanent link">#</a></h2>
+<ol>
+<li>Plot depth error vs depth for a 1 px disparity error with this camera (<span class="arithmatex">\(f = 958\)</span> px, <span class="arithmatex">\(B = 0.356\)</span> m). At what distance is the error 1 m?</li>
+<li>Tune SGBM (<code>blockSize</code>, <code>uniquenessRatio</code>, <code>P1</code>, <code>P2</code>) to get more valid pixels on the water without noise.</li>
+<li>Compute the dinghy's depth from the ORB matches inside its box only, without any disparity map.</li>
+</ol>
+      </article>
+      <nav class="pager" aria-label="Lessons">
+        <a href="14-camera-calibration.html"><span class="mono">Previous</span><strong>14 · Camera model and calibration</strong></a>
+        <a href="16-structure-from-motion.html" class="next"><span class="mono">Next</span><strong>16 · Structure from Motion</strong></a>
+      </nav>
+    </main>
+    <aside class="lesson-toc" aria-label="On this page">
+      <div class="sub first">On this page</div>
+      <ul><li><a href="#depth-from-two-eyes">Depth from two eyes</a></li>
+<li><a href="#epipolar-geometry">Epipolar geometry</a></li>
+<li><a href="#part-1-calibrating-a-stereo-pair">Part 1 — calibrating a stereo pair</a></li>
+<li><a href="#rectification">Rectification</a></li>
+<li><a href="#part-2-depth-on-the-water">Part 2 — depth on the water</a></li>
+<li class="sub"><a href="#check-before-you-rectify">Check before you rectify</a></li>
+<li class="sub"><a href="#disparity-block-matching-and-sgbm">Disparity: block matching and SGBM</a></li>
+<li class="sub"><a href="#the-distance-to-the-dinghy">The distance to the dinghy</a></li>
+<li><a href="#point-clouds">Point clouds</a></li>
+<li><a href="#georeferencing">Georeferencing</a></li>
+<li><a href="#exercises">Exercises</a></li></ul>
+    </aside>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container footer-inner mono wide">
+      <span>© <span id="year"></span> Henrique Corneau · course text and code under MIT</span>
+      <span><a href="https://github.com/henriquecorneau" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/henriquecorneau/" target="_blank" rel="noopener">LinkedIn</a></span>
+    </div>
+  </footer>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+  <script defer src="course.js"></script>
+</body>
+</html>

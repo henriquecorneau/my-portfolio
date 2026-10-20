@@ -1,0 +1,234 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>03 · Geometric transforms · Computer Vision Course</title>
+  <meta name="description" content="Rotate, scale, shear and change the perspective of an image with matrices. Homogeneous coordinates turn all of them into one matrix product, and inverse mapping turns that into an image without holes.">
+  <meta property="og:title" content="03 · Geometric transforms · Computer Vision Course">
+  <meta property="og:description" content="Rotate, scale, shear and change the perspective of an image with matrices. Homogeneous coordinates turn all of them into one matrix product, and inverse mapping turns that into an image without holes.">
+  <meta property="og:image" content="../assets/img/profile.jpg">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23111'/><text x='50' y='66' font-size='46' font-family='monospace' fill='%23fff' text-anchor='middle'>HC</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="course.css">
+  <script>
+    try { var t = localStorage.getItem('theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+</head>
+<body data-page="course">
+  <header class="site-header">
+    <div class="container header-inner wide">
+      <a href="../index.html" class="logo">henrique<span>.corneau</span></a>
+      <nav class="nav" aria-label="Main">
+        <a href="../index.html#projects">Projects</a>
+        <a href="index.html" class="current">CV Course</a>
+        <a href="../index.html#papers">Papers</a>
+        <a href="../index.html#about">About</a>
+      </nav>
+      <div class="header-actions">
+        <button type="button" class="icon-btn menu-btn" id="menu-toggle" aria-label="Lessons" aria-expanded="false" aria-controls="course-side">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <button type="button" class="icon-btn" id="theme-toggle" aria-label="Toggle theme">
+          <svg class="i-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="i-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="course-layout container wide">
+    <aside class="course-side" id="course-side" aria-label="Lessons">
+      <a class="side-home" href="index.html">← Course overview</a>
+      <div class="side-part"><span class="mono">Part I</span> Foundations</div><ol>
+<li><a href="00-setup.html"><span class="mono">00</span>Setup and how the course code works</a></li>
+<li><a href="01-images-as-arrays.html"><span class="mono">01</span>Images are arrays</a></li>
+<li><a href="02-sampling-quantization.html"><span class="mono">02</span>Sampling, quantization and interpolation</a></li>
+<li><a href="03-geometric-transforms.html" class="active" aria-current="page"><span class="mono">03</span>Geometric transforms</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part II</span> Enhancement</div><ol>
+<li><a href="04-histograms-lut.html"><span class="mono">04</span>Histograms, point operations and LUTs</a></li>
+<li><a href="05-noise-filtering.html"><span class="mono">05</span>Noise and spatial filtering</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part III</span> Edges, shapes and colour</div><ol>
+<li><a href="06-edges.html"><span class="mono">06</span>Edge detection</a></li>
+<li><a href="07-canny.html"><span class="mono">07</span>The Canny edge detector</a></li>
+<li><a href="08-hough.html"><span class="mono">08</span>The Hough transform</a></li>
+<li><a href="09-morphology.html"><span class="mono">09</span>Mathematical morphology</a></li>
+<li><a href="10-color.html"><span class="mono">10</span>Colour spaces and colour segmentation</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part IV</span> Features</div><ol>
+<li><a href="11-corners-tracking.html"><span class="mono">11</span>Corners and tracking</a></li>
+<li><a href="12-keypoints-orb-sift.html"><span class="mono">12</span>Keypoints and descriptors — FAST, ORB and SIFT</a></li>
+<li><a href="13-homography-ransac.html"><span class="mono">13</span>Homography and RANSAC</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part V</span> Geometry and 3-D</div><ol>
+<li><a href="14-camera-calibration.html"><span class="mono">14</span>Camera model and calibration</a></li>
+<li><a href="15-stereo-vision.html"><span class="mono">15</span>Stereo vision</a></li>
+<li><a href="16-structure-from-motion.html"><span class="mono">16</span>Structure from Motion</a></li>
+<li><a href="17-visual-slam.html"><span class="mono">17</span>Visual SLAM with ORB-SLAM3</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part VI</span> Case studies</div><ol>
+<li><a href="18-ct-lungs.html"><span class="mono">18</span>Case study: lungs and vessels in CT scans</a></li>
+<li><a href="19-fingerprints.html"><span class="mono">19</span>Case study: fingerprint identification</a></li>
+</ol>
+    </aside>
+    <main class="lesson" id="top">
+      <header class="lesson-head">
+        <p class="eyebrow mono">Part I · Foundations · Lesson 03</p>
+        <h1>Geometric transforms</h1>
+        <p class="lead">Rotate, scale, shear and change the perspective of an image with matrices. Homogeneous coordinates turn all of them into one matrix product, and inverse mapping turns that into an image without holes.</p>
+        <p class="lesson-sources mono">Based on: UFRN lectures 03, 04, 06 and 07, INSA TIM lab 1</p>
+        <div class="run-box"><div><span class="mono label">Run this lesson</span><code>python 03_geometric_transforms.py</code><code>python 03_geometric_transforms.py --save out</code></div><a class="btn btn-ghost" href="code/03_geometric_transforms.py" download>Download 03_geometric_transforms.py</a></div>
+      </header>
+      <article class="prose">
+<h2 id="rotating-a-point">Rotating a point<a class="headerlink" href="#rotating-a-point" title="Permanent link">#</a></h2>
+<p>Rotating the point <span class="arithmatex">\(\mathbf{p} = (x, y)\)</span> by an angle <span class="arithmatex">\(\theta\)</span> around the origin is a matrix product:</p>
+<div class="arithmatex">\[\begin{bmatrix} x' \\ y' \end{bmatrix} = \begin{bmatrix} \cos\theta &amp; -\sin\theta \\ \sin\theta &amp; \cos\theta \end{bmatrix} \begin{bmatrix} x \\ y \end{bmatrix}\]</div>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">rotation</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
+    <span class="n">c</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">c</span><span class="p">,</span> <span class="o">-</span><span class="n">s</span><span class="p">],</span>
+                     <span class="p">[</span><span class="n">s</span><span class="p">,</span> <span class="n">c</span><span class="p">]])</span>
+
+
+<span class="n">p</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="n">p_rot</span> <span class="o">=</span> <span class="n">rotation</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">@</span> <span class="n">p</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="s2">"-&gt;"</span><span class="p">,</span> <span class="n">p_rot</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">3</span><span class="p">))</span>   <span class="c1"># [2 4] -&gt; [-4. 2.]</span>
+</code></pre></div>
+<figure class="fig"><a href="img/03-rotate-point.webp" target="_blank" rel="noopener"><img src="img/03-rotate-point.webp" alt="$(2, 4)$ rotated by 90° becomes $(-4, 2)$." loading="lazy"></a><figcaption markdown="span">$(2, 4)$ rotated by 90° becomes $(-4, 2)$.</figcaption></figure>
+
+<h2 id="homogeneous-coordinates">Homogeneous coordinates<a class="headerlink" href="#homogeneous-coordinates" title="Permanent link">#</a></h2>
+<p>Scaling and rotation are matrix products, but translation is an <em>addition</em> — which breaks the nice "one matrix per transform" story. The trick is to add a coordinate: the 2-D point <span class="arithmatex">\((x, y)\)</span> becomes <span class="arithmatex">\((x, y, 1)\)</span>, and every transform becomes a <span class="arithmatex">\(3 \times 3\)</span> matrix:</p>
+<div class="arithmatex">\[T = \begin{bmatrix} 1 &amp; 0 &amp; t_x \\ 0 &amp; 1 &amp; t_y \\ 0 &amp; 0 &amp; 1 \end{bmatrix},\quad
+R = \begin{bmatrix} \cos\theta &amp; -\sin\theta &amp; 0 \\ \sin\theta &amp; \cos\theta &amp; 0 \\ 0 &amp; 0 &amp; 1 \end{bmatrix},\quad
+S = \begin{bmatrix} s_x &amp; 0 &amp; 0 \\ 0 &amp; s_y &amp; 0 \\ 0 &amp; 0 &amp; 1 \end{bmatrix}\]</div>
+<p>Chaining transforms is now multiplying matrices — <strong>read from right to left</strong>: <span class="arithmatex">\(M = T\,R\,S\)</span> scales first, then rotates, then translates. Undoing everything is <code>np.linalg.inv(M)</code>.</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">T</span><span class="p">(</span><span class="n">tx</span><span class="p">,</span> <span class="n">ty</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">tx</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">ty</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span> <span class="nb">float</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">R</span><span class="p">(</span><span class="n">theta</span><span class="p">):</span>
+    <span class="n">c</span><span class="p">,</span> <span class="n">s</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">theta</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">theta</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">c</span><span class="p">,</span> <span class="o">-</span><span class="n">s</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="n">s</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">S</span><span class="p">(</span><span class="n">sx</span><span class="p">,</span> <span class="n">sy</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="n">sx</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">sy</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]],</span> <span class="nb">float</span><span class="p">)</span>
+
+
+<span class="n">M</span> <span class="o">=</span> <span class="n">T</span><span class="p">(</span><span class="mf">1.5</span><span class="p">,</span> <span class="mf">2.3</span><span class="p">)</span> <span class="o">@</span> <span class="n">R</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">@</span> <span class="n">S</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>      <span class="c1"># scale, then rotate, then translate</span>
+<span class="n">ph</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>                      <span class="c1"># the point (2, 4) in homogeneous form</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">M</span> <span class="o">@</span> <span class="n">ph</span>
+<span class="n">back</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">M</span><span class="p">)</span> <span class="o">@</span> <span class="n">q</span>                   <span class="c1"># the inverse undoes the whole chain</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">q</span><span class="p">[:</span><span class="mi">2</span><span class="p">],</span> <span class="n">back</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span>                        <span class="c1"># [-2.5  4.3] [2. 4.]</span>
+
+<span class="c1"># 3-D works the same way with 4x4 matrices: [[R, t], [0 0 0 1]]</span>
+</code></pre></div>
+<p>To rotate an image around its <em>centre</em> instead of the top-left corner, sandwich the rotation: move the centre to the origin, rotate, move it back: <span class="arithmatex">\(T(c)\,R\,T(-c)\)</span>. In 3-D the same idea gives the <span class="arithmatex">\(4 \times 4\)</span> matrices <span class="arithmatex">\(\begin{bmatrix} R &amp; \mathbf{t} \\ \mathbf{0}^\top &amp; 1 \end{bmatrix}\)</span> that we will use for camera poses in Part V.</p>
+<h2 id="warping-an-image-forward-or-inverse">Warping an image: forward or inverse?<a class="headerlink" href="#warping-an-image-forward-or-inverse" title="Permanent link">#</a></h2>
+<p>To transform an image we could take every source pixel and <em>push</em> it to <span class="arithmatex">\(M\mathbf{p}\)</span> (forward mapping). But when the image is enlarged or rotated, several destination pixels receive nothing — the result is full of holes.</p>
+<p>The right way is <strong>inverse mapping</strong>: loop over the <em>destination</em> pixels and <em>pull</em> the value from <span class="arithmatex">\(M^{-1}\mathbf{p}'\)</span> in the source. Every output pixel gets exactly one value.</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">warp_forward</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">A</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Push every source pixel to its destination: leaves holes."""</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">img</span><span class="p">)</span>
+    <span class="n">ys</span><span class="p">,</span> <span class="n">xs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">0</span><span class="p">:</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+    <span class="n">src</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">xs</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">ys</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">xs</span><span class="o">.</span><span class="n">size</span><span class="p">)])</span>  <span class="c1"># 3 x N, (x, y, 1)</span>
+    <span class="n">dst</span> <span class="o">=</span> <span class="n">A</span> <span class="o">@</span> <span class="n">src</span>
+    <span class="n">xd</span><span class="p">,</span> <span class="n">yd</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">dst</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">dst</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">ok</span> <span class="o">=</span> <span class="p">(</span><span class="n">xd</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">xd</span> <span class="o">&lt;</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">yd</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">yd</span> <span class="o">&lt;</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">out</span><span class="p">[</span><span class="n">yd</span><span class="p">[</span><span class="n">ok</span><span class="p">],</span> <span class="n">xd</span><span class="p">[</span><span class="n">ok</span><span class="p">]]</span> <span class="o">=</span> <span class="n">img</span><span class="p">[</span><span class="n">ys</span><span class="o">.</span><span class="n">ravel</span><span class="p">()[</span><span class="n">ok</span><span class="p">],</span> <span class="n">xs</span><span class="o">.</span><span class="n">ravel</span><span class="p">()[</span><span class="n">ok</span><span class="p">]]</span>
+    <span class="k">return</span> <span class="n">out</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">warp_inverse</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">out_shape</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""For every *destination* pixel, look up where it comes from (no holes)."""</span>
+    <span class="n">oh</span><span class="p">,</span> <span class="n">ow</span> <span class="o">=</span> <span class="n">out_shape</span> <span class="ow">or</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">A_inv</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">inv</span><span class="p">(</span><span class="n">A</span><span class="p">)</span>
+    <span class="n">ys</span><span class="p">,</span> <span class="n">xs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="n">oh</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="n">ow</span><span class="p">]</span>
+    <span class="n">dst</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">xs</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">ys</span><span class="o">.</span><span class="n">ravel</span><span class="p">(),</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">xs</span><span class="o">.</span><span class="n">size</span><span class="p">)])</span>
+    <span class="n">src</span> <span class="o">=</span> <span class="n">A_inv</span> <span class="o">@</span> <span class="n">dst</span>
+    <span class="n">src</span> <span class="o">=</span> <span class="n">src</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="o">/</span> <span class="n">src</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>                      <span class="c1"># divide by w (needed for perspective)</span>
+    <span class="n">xs_src</span><span class="p">,</span> <span class="n">ys_src</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">src</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>  <span class="c1"># nearest neighbour lookup</span>
+    <span class="n">ok</span> <span class="o">=</span> <span class="p">(</span><span class="n">xs_src</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">xs_src</span> <span class="o">&lt;</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">ys_src</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">&amp;</span> <span class="p">(</span><span class="n">ys_src</span> <span class="o">&lt;</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">oh</span><span class="p">,</span> <span class="n">ow</span><span class="p">)</span> <span class="o">+</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">:],</span> <span class="n">img</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="n">out</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">oh</span> <span class="o">*</span> <span class="n">ow</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)[</span><span class="n">ok</span><span class="p">]</span> <span class="o">=</span> <span class="n">img</span><span class="p">[</span><span class="n">ys_src</span><span class="p">[</span><span class="n">ok</span><span class="p">],</span> <span class="n">xs_src</span><span class="p">[</span><span class="n">ok</span><span class="p">]]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">ok</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">out</span>
+</code></pre></div>
+<figure class="fig"><a href="img/03-forward-inverse.webp" target="_blank" rel="noopener"><img src="img/03-forward-inverse.webp" alt="The same rotation + 1.4× zoom. Forward mapping (left) leaves a grid of black holes; inverse mapping (right) is complete." loading="lazy"></a><figcaption markdown="span">The same rotation + 1.4× zoom. Forward mapping (left) leaves a grid of black holes; inverse mapping (right) is complete.</figcaption></figure>
+
+<p>The division <code>src[:2] / src[2]</code> does nothing for affine matrices (the last row is <span class="arithmatex">\([0, 0, 1]\)</span>, so <span class="arithmatex">\(w = 1\)</span>) but is essential for perspective, below. Here we take the nearest source pixel; using bilinear interpolation (lesson 02) instead is what <code>cv2.warpAffine</code> does by default.</p>
+<h2 id="affine-transforms-with-opencv">Affine transforms with OpenCV<a class="headerlink" href="#affine-transforms-with-opencv" title="Permanent link">#</a></h2>
+<p>An <strong>affine</strong> transform keeps parallel lines parallel. It has 6 parameters — the top two rows of the <span class="arithmatex">\(3 \times 3\)</span> matrix — and OpenCV represents it as a <span class="arithmatex">\(2 \times 3\)</span> array.</p>
+<div class="highlight"><pre><span></span><code><span class="n">M_rot</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">getRotationMatrix2D</span><span class="p">(</span><span class="n">center</span><span class="o">=</span><span class="p">(</span><span class="n">w</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">h</span> <span class="o">/</span> <span class="mi">2</span><span class="p">),</span> <span class="n">angle</span><span class="o">=</span><span class="mi">45</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>  <span class="c1"># 2x3 matrix</span>
+<span class="n">rotated</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">warpAffine</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">M_rot</span><span class="p">,</span> <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">))</span>
+
+<span class="n">shear</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.4</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">]])</span>
+<span class="n">sheared</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">warpAffine</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">shear</span><span class="p">,</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="mf">1.4</span><span class="p">),</span> <span class="n">h</span><span class="p">))</span>
+
+<span class="c1"># an affine map is fully defined by 3 point correspondences</span>
+<span class="n">src_tri</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="n">w</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">h</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]])</span>
+<span class="n">dst_tri</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="n">h</span> <span class="o">*</span> <span class="mf">0.33</span><span class="p">],</span> <span class="p">[</span><span class="n">w</span> <span class="o">*</span> <span class="mf">0.85</span><span class="p">,</span> <span class="n">h</span> <span class="o">*</span> <span class="mf">0.25</span><span class="p">],</span> <span class="p">[</span><span class="n">w</span> <span class="o">*</span> <span class="mf">0.15</span><span class="p">,</span> <span class="n">h</span> <span class="o">*</span> <span class="mf">0.7</span><span class="p">]])</span>
+<span class="n">M_aff</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">getAffineTransform</span><span class="p">(</span><span class="n">src_tri</span><span class="p">,</span> <span class="n">dst_tri</span><span class="p">)</span>
+<span class="n">affine</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">warpAffine</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">M_aff</span><span class="p">,</span> <span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">))</span>
+</code></pre></div>
+<figure class="fig"><a href="img/03-affine.webp" target="_blank" rel="noopener"><img src="img/03-affine.webp" alt="Rotation around the centre, a horizontal shear, and a general affine map defined by where three corners must go." loading="lazy"></a><figcaption markdown="span">Rotation around the centre, a horizontal shear, and a general affine map defined by where three corners must go.</figcaption></figure>
+
+<p>Since each point gives 2 equations, <strong>3 point pairs</strong> define an affine map (<code>getAffineTransform</code>).</p>
+<h2 id="perspective-the-homography">Perspective: the homography<a class="headerlink" href="#perspective-the-homography" title="Permanent link">#</a></h2>
+<p>A camera looking at a plane at an angle does not preserve parallelism — the edges of a road meet at the horizon. The general projective map between two planes is a <strong>homography</strong>, a full <span class="arithmatex">\(3 \times 3\)</span> matrix <span class="arithmatex">\(H\)</span> defined up to scale (8 degrees of freedom):</p>
+<div class="arithmatex">\[\begin{bmatrix} x' w \\ y' w \\ w \end{bmatrix} = H \begin{bmatrix} x \\ y \\ 1 \end{bmatrix}, \qquad (x', y') = \left(\frac{x'w}{w}, \frac{y'w}{w}\right)\]</div>
+<p>The division by <span class="arithmatex">\(w\)</span> is what makes far things small. Four point correspondences (no three collinear) determine <span class="arithmatex">\(H\)</span>.</p>
+<p>A classic use in mobile robotics is the <strong>bird's-eye view</strong> (inverse perspective mapping): pick four points that form a trapezoid on the road and declare that, seen from above, they form a rectangle.</p>
+<div class="highlight"><pre><span></span><code><span class="n">road</span> <span class="o">=</span> <span class="n">U</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s2">"features/estrada.jpg"</span><span class="p">)</span>       <span class="c1"># 500 x 281 road picture</span>
+<span class="c1"># four points on the road surface (a trapezoid in the image)...</span>
+<span class="n">src</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">([[</span><span class="mi">205</span><span class="p">,</span> <span class="mi">160</span><span class="p">],</span> <span class="p">[</span><span class="mi">295</span><span class="p">,</span> <span class="mi">160</span><span class="p">],</span> <span class="p">[</span><span class="mi">480</span><span class="p">,</span> <span class="mi">280</span><span class="p">],</span> <span class="p">[</span><span class="mi">20</span><span class="p">,</span> <span class="mi">280</span><span class="p">]])</span>
+<span class="c1"># ...that are a rectangle when seen from above</span>
+<span class="n">dst</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">([[</span><span class="mi">150</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">350</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[</span><span class="mi">350</span><span class="p">,</span> <span class="mi">500</span><span class="p">],</span> <span class="p">[</span><span class="mi">150</span><span class="p">,</span> <span class="mi">500</span><span class="p">]])</span>
+<span class="n">H</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">getPerspectiveTransform</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">)</span>     <span class="c1"># 3x3 homography</span>
+<span class="n">top_view</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">warpPerspective</span><span class="p">(</span><span class="n">road</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="mi">500</span><span class="p">))</span>
+<span class="n">top_view_mine</span> <span class="o">=</span> <span class="n">warp_inverse</span><span class="p">(</span><span class="n">road</span><span class="p">,</span> <span class="n">H</span><span class="p">,</span> <span class="p">(</span><span class="mi">500</span><span class="p">,</span> <span class="mi">500</span><span class="p">))</span>
+</code></pre></div>
+<figure class="fig"><a href="img/03-perspective.webp" target="_blank" rel="noopener"><img src="img/03-perspective.webp" alt="Four points on the road (left) mapped to a rectangle give a top view where lane lines are parallel. Our `warp_inverse` (right) produces the same geometry as OpenCV, only blockier because it uses nearest-neighbour lookup." loading="lazy"></a><figcaption markdown="span">Four points on the road (left) mapped to a rectangle give a top view where lane lines are parallel. Our `warp_inverse` (right) produces the same geometry as OpenCV, only blockier because it uses nearest-neighbour lookup.</figcaption></figure>
+
+<p>Lesson 13 shows how to <em>estimate</em> a homography from hundreds of noisy, partly wrong correspondences, instead of four hand-picked ones.</p>
+<div class="admonition tip">
+<p class="admonition-title">Which function?</p>
+<p><code>cv2.warpAffine(img, M_2x3, (w, h))</code> for rotations, scalings and shears; <code>cv2.warpPerspective(img, H_3x3, (w, h))</code> for homographies. Both use inverse mapping internally and take the output size as <strong>(width, height)</strong>.</p>
+</div>
+<h2 id="exercises">Exercises<a class="headerlink" href="#exercises" title="Permanent link">#</a></h2>
+<ol>
+<li>Write <code>rotate_around(img, angle, center)</code> with <code>warp_inverse</code> and compare with <code>cv2.getRotationMatrix2D</code> + <code>cv2.warpAffine</code>.</li>
+<li>Rotate an image by 45° <em>without cropping the corners</em>: compute the size of the bounding box of the rotated image and add the needed translation to <span class="arithmatex">\(M\)</span>.</li>
+<li>Take a photo of a sheet of paper on a table, click its 4 corners and rectify it into an A4-shaped image ("document scanner").</li>
+</ol>
+      </article>
+      <nav class="pager" aria-label="Lessons">
+        <a href="02-sampling-quantization.html"><span class="mono">Previous</span><strong>02 · Sampling, quantization and interpolation</strong></a>
+        <a href="04-histograms-lut.html" class="next"><span class="mono">Next</span><strong>04 · Histograms, point operations and LUTs</strong></a>
+      </nav>
+    </main>
+    <aside class="lesson-toc" aria-label="On this page">
+      <div class="sub first">On this page</div>
+      <ul><li><a href="#rotating-a-point">Rotating a point</a></li>
+<li><a href="#homogeneous-coordinates">Homogeneous coordinates</a></li>
+<li><a href="#warping-an-image-forward-or-inverse">Warping an image: forward or inverse?</a></li>
+<li><a href="#affine-transforms-with-opencv">Affine transforms with OpenCV</a></li>
+<li><a href="#perspective-the-homography">Perspective: the homography</a></li>
+<li><a href="#exercises">Exercises</a></li></ul>
+    </aside>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container footer-inner mono wide">
+      <span>© <span id="year"></span> Henrique Corneau · course text and code under MIT</span>
+      <span><a href="https://github.com/henriquecorneau" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/henriquecorneau/" target="_blank" rel="noopener">LinkedIn</a></span>
+    </div>
+  </footer>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+  <script defer src="course.js"></script>
+</body>
+</html>

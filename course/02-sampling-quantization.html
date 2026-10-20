@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>02 · Sampling, quantization and interpolation · Computer Vision Course</title>
+  <meta name="description" content="A digital image is a continuous scene sampled on a grid and quantized to a few levels. See what happens when we use too few samples or too few levels, and how to resize an image properly.">
+  <meta property="og:title" content="02 · Sampling, quantization and interpolation · Computer Vision Course">
+  <meta property="og:description" content="A digital image is a continuous scene sampled on a grid and quantized to a few levels. See what happens when we use too few samples or too few levels, and how to resize an image properly.">
+  <meta property="og:image" content="../assets/img/profile.jpg">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23111'/><text x='50' y='66' font-size='46' font-family='monospace' fill='%23fff' text-anchor='middle'>HC</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="course.css">
+  <script>
+    try { var t = localStorage.getItem('theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+</head>
+<body data-page="course">
+  <header class="site-header">
+    <div class="container header-inner wide">
+      <a href="../index.html" class="logo">henrique<span>.corneau</span></a>
+      <nav class="nav" aria-label="Main">
+        <a href="../index.html#projects">Projects</a>
+        <a href="index.html" class="current">CV Course</a>
+        <a href="../index.html#papers">Papers</a>
+        <a href="../index.html#about">About</a>
+      </nav>
+      <div class="header-actions">
+        <button type="button" class="icon-btn menu-btn" id="menu-toggle" aria-label="Lessons" aria-expanded="false" aria-controls="course-side">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <button type="button" class="icon-btn" id="theme-toggle" aria-label="Toggle theme">
+          <svg class="i-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="i-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="course-layout container wide">
+    <aside class="course-side" id="course-side" aria-label="Lessons">
+      <a class="side-home" href="index.html">← Course overview</a>
+      <div class="side-part"><span class="mono">Part I</span> Foundations</div><ol>
+<li><a href="00-setup.html"><span class="mono">00</span>Setup and how the course code works</a></li>
+<li><a href="01-images-as-arrays.html"><span class="mono">01</span>Images are arrays</a></li>
+<li><a href="02-sampling-quantization.html" class="active" aria-current="page"><span class="mono">02</span>Sampling, quantization and interpolation</a></li>
+<li><a href="03-geometric-transforms.html"><span class="mono">03</span>Geometric transforms</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part II</span> Enhancement</div><ol>
+<li><a href="04-histograms-lut.html"><span class="mono">04</span>Histograms, point operations and LUTs</a></li>
+<li><a href="05-noise-filtering.html"><span class="mono">05</span>Noise and spatial filtering</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part III</span> Edges, shapes and colour</div><ol>
+<li><a href="06-edges.html"><span class="mono">06</span>Edge detection</a></li>
+<li><a href="07-canny.html"><span class="mono">07</span>The Canny edge detector</a></li>
+<li><a href="08-hough.html"><span class="mono">08</span>The Hough transform</a></li>
+<li><a href="09-morphology.html"><span class="mono">09</span>Mathematical morphology</a></li>
+<li><a href="10-color.html"><span class="mono">10</span>Colour spaces and colour segmentation</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part IV</span> Features</div><ol>
+<li><a href="11-corners-tracking.html"><span class="mono">11</span>Corners and tracking</a></li>
+<li><a href="12-keypoints-orb-sift.html"><span class="mono">12</span>Keypoints and descriptors — FAST, ORB and SIFT</a></li>
+<li><a href="13-homography-ransac.html"><span class="mono">13</span>Homography and RANSAC</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part V</span> Geometry and 3-D</div><ol>
+<li><a href="14-camera-calibration.html"><span class="mono">14</span>Camera model and calibration</a></li>
+<li><a href="15-stereo-vision.html"><span class="mono">15</span>Stereo vision</a></li>
+<li><a href="16-structure-from-motion.html"><span class="mono">16</span>Structure from Motion</a></li>
+<li><a href="17-visual-slam.html"><span class="mono">17</span>Visual SLAM with ORB-SLAM3</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part VI</span> Case studies</div><ol>
+<li><a href="18-ct-lungs.html"><span class="mono">18</span>Case study: lungs and vessels in CT scans</a></li>
+<li><a href="19-fingerprints.html"><span class="mono">19</span>Case study: fingerprint identification</a></li>
+</ol>
+    </aside>
+    <main class="lesson" id="top">
+      <header class="lesson-head">
+        <p class="eyebrow mono">Part I · Foundations · Lesson 02</p>
+        <h1>Sampling, quantization and interpolation</h1>
+        <p class="lead">A digital image is a continuous scene sampled on a grid and quantized to a few levels. See what happens when we use too few samples or too few levels, and how to resize an image properly.</p>
+        <p class="lesson-sources mono">Based on: INSA TIM lab 1, UFRN activity 01</p>
+        <div class="run-box"><div><span class="mono label">Run this lesson</span><code>python 02_sampling_quantization.py</code><code>python 02_sampling_quantization.py --save out</code></div><a class="btn btn-ghost" href="code/02_sampling_quantization.py" download>Download 02_sampling_quantization.py</a></div>
+      </header>
+      <article class="prose">
+<h2 id="two-discretisations">Two discretisations<a class="headerlink" href="#two-discretisations" title="Permanent link">#</a></h2>
+<p>A camera turns a continuous light field into numbers in two steps:</p>
+<ul>
+<li><strong>Sampling</strong> — the scene is measured only on a grid of pixels. Fewer pixels, less detail.</li>
+<li><strong>Quantization</strong> — each measurement is rounded to one of <span class="arithmatex">\(L\)</span> levels. With 8 bits, <span class="arithmatex">\(L = 256\)</span>.</li>
+</ul>
+<p>Both lose information, and both create <em>artefacts</em> — structures in the image that were not in the scene.</p>
+<h2 id="uniform-quantization">Uniform quantization<a class="headerlink" href="#uniform-quantization" title="Permanent link">#</a></h2>
+<p>To go from 256 levels to <span class="arithmatex">\(N\)</span>, split <span class="arithmatex">\([0, 255]\)</span> into <span class="arithmatex">\(N\)</span> bins of width <span class="arithmatex">\(\Delta = 256 / N\)</span> and replace every value by the centre of its bin:</p>
+<div class="arithmatex">\[q(f) = \left\lfloor \frac{f}{\Delta} \right\rfloor \Delta + \frac{\Delta}{2}\]</div>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">quantize</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">n_levels</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Uniform scalar quantization of a uint8 image to n_levels gray levels."""</span>
+    <span class="n">step</span> <span class="o">=</span> <span class="mi">256</span> <span class="o">//</span> <span class="n">n_levels</span>
+    <span class="c1"># integer division puts every pixel in a bin, then we move it to the bin centre</span>
+    <span class="k">return</span> <span class="p">((</span><span class="n">img</span> <span class="o">//</span> <span class="n">step</span><span class="p">)</span> <span class="o">*</span> <span class="n">step</span> <span class="o">+</span> <span class="n">step</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+</code></pre></div>
+<figure class="fig"><a href="img/02-quantize.webp" target="_blank" rel="noopener"><img src="img/02-quantize.webp" alt="Down to 32 levels the eye barely notices. From 8 levels on, **false contours** appear: the smooth sky becomes visible bands." loading="lazy"></a><figcaption markdown="span">Down to 32 levels the eye barely notices. From 8 levels on, **false contours** appear: the smooth sky becomes visible bands.</figcaption></figure>
+
+<h2 id="histograms">Histograms<a class="headerlink" href="#histograms" title="Permanent link">#</a></h2>
+<p>The histogram <span class="arithmatex">\(h(k)\)</span> counts the pixels with value <span class="arithmatex">\(k\)</span>. On the x-axis go <em>all possible values</em> (0–255), even absent ones; the bars add up to the number of pixels. It is the single most useful diagnostic in image processing — lesson 04 is built on it.</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">histogram</span><span class="p">(</span><span class="n">img</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Count how many pixels have each of the 256 possible values."""</span>
+    <span class="n">hist</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">int64</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">img</span><span class="o">.</span><span class="n">ravel</span><span class="p">():</span>
+        <span class="n">hist</span><span class="p">[</span><span class="n">value</span><span class="p">]</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">hist</span>
+
+<span class="c1"># Same result without a Python loop:</span>
+<span class="c1"># np.bincount(img.ravel(), minlength=256)</span>
+</code></pre></div>
+<figure class="fig"><a href="img/02-quantize-hist.webp" target="_blank" rel="noopener"><img src="img/02-quantize-hist.webp" alt="After quantization the histogram collapses into $N$ spikes: the image literally has $N$ different values left." loading="lazy"></a><figcaption markdown="span">After quantization the histogram collapses into $N$ spikes: the image literally has $N$ different values left.</figcaption></figure>
+
+<h2 id="quantizing-colour">Quantizing colour<a class="headerlink" href="#quantizing-colour" title="Permanent link">#</a></h2>
+<p>Quantizing each channel to 4 levels gives <span class="arithmatex">\(4^3 = 64\)</span> fixed colours, chosen without looking at the image. A much better palette comes from the image itself: run <strong>k-means</strong> on the pixel colours and replace each pixel by its cluster centre. Clustering in L*a*b* (a perceptually uniform space, see lesson 10) makes "close" mean "looks similar".</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">color_quantize</span><span class="p">(</span><span class="n">img_bgr</span><span class="p">,</span> <span class="n">n_colors</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Keep the n_colors most representative colours (k-means in L*a*b*)."""</span>
+    <span class="n">h</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">img_bgr</span><span class="o">.</span><span class="n">shape</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span>
+    <span class="n">lab</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">img_bgr</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_BGR2LAB</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="n">km</span> <span class="o">=</span> <span class="n">MiniBatchKMeans</span><span class="p">(</span><span class="n">n_clusters</span><span class="o">=</span><span class="n">n_colors</span><span class="p">,</span> <span class="n">n_init</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+    <span class="n">labels</span> <span class="o">=</span> <span class="n">km</span><span class="o">.</span><span class="n">fit_predict</span><span class="p">(</span><span class="n">lab</span><span class="p">)</span>
+    <span class="n">quant</span> <span class="o">=</span> <span class="n">km</span><span class="o">.</span><span class="n">cluster_centers_</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)[</span><span class="n">labels</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">w</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">cv2</span><span class="o">.</span><span class="n">cvtColor</span><span class="p">(</span><span class="n">quant</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">COLOR_LAB2BGR</span><span class="p">)</span>
+</code></pre></div>
+<figure class="fig"><a href="img/02-kmeans.webp" target="_blank" rel="noopener"><img src="img/02-kmeans.webp" alt="With only 4 colours chosen by k-means, the picture is still readable; 64 fixed colours look worse than 16 adaptive ones." loading="lazy"></a><figcaption markdown="span">With only 4 colours chosen by k-means, the picture is still readable; 64 fixed colours look worse than 16 adaptive ones.</figcaption></figure>
+
+<h2 id="subsampling-and-aliasing">Subsampling and aliasing<a class="headerlink" href="#subsampling-and-aliasing" title="Permanent link">#</a></h2>
+<p>Keeping one pixel out of <span class="arithmatex">\(k\)</span> is a one-liner with slicing:</p>
+<div class="highlight"><pre><span></span><code><span class="n">mire</span> <span class="o">=</span> <span class="n">U</span><span class="o">.</span><span class="n">imread</span><span class="p">(</span><span class="s2">"basics/mire.png"</span><span class="p">,</span> <span class="n">cv2</span><span class="o">.</span><span class="n">IMREAD_GRAYSCALE</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">subsample_loop</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">factor</span><span class="p">):</span>
+    <span class="n">h</span><span class="p">,</span> <span class="n">w</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(((</span><span class="n">h</span> <span class="o">+</span> <span class="n">factor</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="n">factor</span><span class="p">,</span> <span class="p">(</span><span class="n">w</span> <span class="o">+</span> <span class="n">factor</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="n">factor</span><span class="p">),</span> <span class="n">img</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">out</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="n">out</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">img</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="n">factor</span><span class="p">,</span> <span class="n">j</span> <span class="o">*</span> <span class="n">factor</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">out</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">subsample</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">factor</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">img</span><span class="p">[::</span><span class="n">factor</span><span class="p">,</span> <span class="p">::</span><span class="n">factor</span><span class="p">]</span>  <span class="c1"># same thing with slicing</span>
+
+
+<span class="n">blurred</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">GaussianBlur</span><span class="p">(</span><span class="n">mire</span><span class="p">,</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> <span class="n">sigmaX</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>  <span class="c1"># low-pass before decimating</span>
+</code></pre></div>
+<p>On a test chart with increasingly fine circles, the result is not just "less sharp" — new, fake patterns appear. This is <strong>aliasing</strong>: by the Nyquist–Shannon theorem, a pattern can be represented only if we take at least two samples per period. Finer patterns fold back as false, coarser ones. The cure is to remove those frequencies <em>before</em> subsampling with a low-pass filter (a blur), which is exactly what <code>cv2.pyrDown</code> and <code>cv2.resize(..., interpolation=cv2.INTER_AREA)</code> do.</p>
+<figure class="fig"><a href="img/02-aliasing.webp" target="_blank" rel="noopener"><img src="img/02-aliasing.webp" alt="Factor 4 creates whole new rings (aliasing). Blurring first leaves a uniform gray where detail is too fine to be represented — the honest answer." loading="lazy"></a><figcaption markdown="span">Factor 4 creates whole new rings (aliasing). Blurring first leaves a uniform gray where detail is too fine to be represented — the honest answer.</figcaption></figure>
+
+<h2 id="shrinking-average-the-block">Shrinking: average the block<a class="headerlink" href="#shrinking-average-the-block" title="Permanent link">#</a></h2>
+<p>When shrinking by a factor <span class="arithmatex">\(s &lt; 1\)</span>, each output pixel covers a block of <span class="arithmatex">\(1/s \times 1/s\)</span> input pixels. Averaging that block is a box low-pass filter plus subsampling in one go:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">downscale_area</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Shrink by `scale` &lt; 1: each output pixel is the mean of the block it covers."""</span>
+    <span class="n">new_h</span><span class="p">,</span> <span class="n">new_w</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">scale</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">scale</span><span class="p">)</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">new_h</span><span class="p">,</span> <span class="n">new_w</span><span class="p">)</span> <span class="o">+</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">:],</span> <span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+    <span class="n">step_y</span><span class="p">,</span> <span class="n">step_x</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">new_h</span><span class="p">,</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">new_w</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">new_h</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">new_w</span><span class="p">):</span>
+            <span class="n">y0</span><span class="p">,</span> <span class="n">y1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">i</span> <span class="o">*</span> <span class="n">step_y</span><span class="p">),</span> <span class="nb">int</span><span class="p">((</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">step_y</span><span class="p">)</span>
+            <span class="n">x0</span><span class="p">,</span> <span class="n">x1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">j</span> <span class="o">*</span> <span class="n">step_x</span><span class="p">),</span> <span class="nb">int</span><span class="p">((</span><span class="n">j</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">step_x</span><span class="p">)</span>
+            <span class="n">out</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">img</span><span class="p">[</span><span class="n">y0</span><span class="p">:</span><span class="n">y1</span><span class="p">,</span> <span class="n">x0</span><span class="p">:</span><span class="n">x1</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">out</span>
+</code></pre></div>
+<p>Our function matches <code>cv2.resize(…, interpolation=cv2.INTER_AREA)</code> to within one gray level.</p>
+<h2 id="enlarging-interpolation">Enlarging: interpolation<a class="headerlink" href="#enlarging-interpolation" title="Permanent link">#</a></h2>
+<p>Enlarging needs values <em>between</em> the known pixels. For an output pixel <span class="arithmatex">\((i, j)\)</span> we compute where it falls in the source, <span class="arithmatex">\((y, x) = (i/s, j/s)\)</span>, generally between four pixels.</p>
+<p><strong>Order 0 — nearest neighbour.</strong> Take the closest one. Fast, but blocky.</p>
+<p><strong>Order 1 — bilinear.</strong> Interpolate linearly in <span class="arithmatex">\(x\)</span>, then in <span class="arithmatex">\(y\)</span>. With <span class="arithmatex">\(d_x, d_y \in [0, 1)\)</span> the fractional parts:</p>
+<div class="arithmatex">\[I(y, x) = (1-d_y)(1-d_x)\,I_{00} + (1-d_y)\,d_x\,I_{01} + d_y(1-d_x)\,I_{10} + d_y d_x\,I_{11}\]</div>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">upscale_nearest</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Order-0 interpolation: copy the closest source pixel."""</span>
+    <span class="n">new_h</span><span class="p">,</span> <span class="n">new_w</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">scale</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">scale</span><span class="p">)</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">new_h</span><span class="p">,</span> <span class="n">new_w</span><span class="p">)</span> <span class="o">+</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">:],</span> <span class="n">img</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">new_h</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">new_w</span><span class="p">):</span>
+            <span class="n">y</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">i</span> <span class="o">/</span> <span class="n">scale</span><span class="p">),</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">x</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">j</span> <span class="o">/</span> <span class="n">scale</span><span class="p">),</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">out</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">img</span><span class="p">[</span><span class="n">y</span><span class="p">,</span> <span class="n">x</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">out</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">upscale_bilinear</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Order-1 interpolation: weighted mean of the 4 surrounding pixels."""</span>
+    <span class="n">src</span> <span class="o">=</span> <span class="n">img</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">new_h</span><span class="p">,</span> <span class="n">new_w</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">scale</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">scale</span><span class="p">)</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">new_h</span><span class="p">,</span> <span class="n">new_w</span><span class="p">)</span> <span class="o">+</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">2</span><span class="p">:],</span> <span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">new_h</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">new_w</span><span class="p">):</span>
+            <span class="n">y</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="n">i</span> <span class="o">/</span> <span class="n">scale</span><span class="p">,</span> <span class="n">j</span> <span class="o">/</span> <span class="n">scale</span>                 <span class="c1"># position in the source image</span>
+            <span class="n">y0</span><span class="p">,</span> <span class="n">x0</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="n">y1</span><span class="p">,</span> <span class="n">x1</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">y0</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span> <span class="nb">min</span><span class="p">(</span><span class="n">x0</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">img</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="n">dy</span><span class="p">,</span> <span class="n">dx</span> <span class="o">=</span> <span class="n">y</span> <span class="o">-</span> <span class="n">y0</span><span class="p">,</span> <span class="n">x</span> <span class="o">-</span> <span class="n">x0</span>                     <span class="c1"># fractional parts, in [0, 1)</span>
+            <span class="n">out</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="mi">1</span> <span class="o">-</span> <span class="n">dy</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">dx</span><span class="p">)</span> <span class="o">*</span> <span class="n">src</span><span class="p">[</span><span class="n">y0</span><span class="p">,</span> <span class="n">x0</span><span class="p">]</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">dy</span><span class="p">)</span> <span class="o">*</span> <span class="n">dx</span> <span class="o">*</span> <span class="n">src</span><span class="p">[</span><span class="n">y0</span><span class="p">,</span> <span class="n">x1</span><span class="p">]</span>
+                         <span class="o">+</span> <span class="n">dy</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">dx</span><span class="p">)</span> <span class="o">*</span> <span class="n">src</span><span class="p">[</span><span class="n">y1</span><span class="p">,</span> <span class="n">x0</span><span class="p">]</span> <span class="o">+</span> <span class="n">dy</span> <span class="o">*</span> <span class="n">dx</span> <span class="o">*</span> <span class="n">src</span><span class="p">[</span><span class="n">y1</span><span class="p">,</span> <span class="n">x1</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">clip</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">255</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">uint8</span><span class="p">)</span>
+</code></pre></div>
+<figure class="fig"><a href="img/02-interp.webp" target="_blank" rel="noopener"><img src="img/02-interp.webp" alt="Nearest neighbour keeps the pixel grid visible; bilinear is smooth but soft; bicubic (16 neighbours) is a little sharper." loading="lazy"></a><figcaption markdown="span">Nearest neighbour keeps the pixel grid visible; bilinear is smooth but soft; bicubic (16 neighbours) is a little sharper.</figcaption></figure>
+
+<div class="admonition bug">
+<p class="admonition-title">A bug I made the first time</p>
+<p>My first bilinear version computed <code>dx = x1 - x0</code>, which is always 1 — so every pixel was a copy of a corner. The weights must use the <strong>fractional part</strong> of the source position, <code>dx = x - int(x)</code>.</p>
+</div>
+<h2 id="in-practice">In practice<a class="headerlink" href="#in-practice" title="Permanent link">#</a></h2>
+<div class="highlight"><pre><span></span><code><span class="n">small</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">fx</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">fy</span><span class="o">=</span><span class="mf">0.25</span><span class="p">,</span> <span class="n">interpolation</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">INTER_AREA</span><span class="p">)</span>    <span class="c1"># shrink</span>
+<span class="n">big</span> <span class="o">=</span> <span class="n">cv2</span><span class="o">.</span><span class="n">resize</span><span class="p">(</span><span class="n">img</span><span class="p">,</span> <span class="p">(</span><span class="n">w</span> <span class="o">*</span> <span class="mi">3</span><span class="p">,</span> <span class="n">h</span> <span class="o">*</span> <span class="mi">3</span><span class="p">),</span> <span class="n">interpolation</span><span class="o">=</span><span class="n">cv2</span><span class="o">.</span><span class="n">INTER_LINEAR</span><span class="p">)</span>            <span class="c1"># enlarge</span>
+</code></pre></div>
+<p>Use <code>INTER_AREA</code> to shrink, <code>INTER_LINEAR</code> or <code>INTER_CUBIC</code> to enlarge, and <code>INTER_NEAREST</code> for label images and masks, where inventing in-between values makes no sense.</p>
+<h2 id="exercises">Exercises<a class="headerlink" href="#exercises" title="Permanent link">#</a></h2>
+<ol>
+<li>Plot the number of distinct values of <code>quantize(gray, N)</code> for <span class="arithmatex">\(N = 2 \dots 128\)</span>. Is it always <span class="arithmatex">\(N\)</span>?</li>
+<li>Implement <code>pyr_down(img)</code> = Gaussian blur + keep one pixel out of two, apply it twice on <code>mire.png</code> and compare with <code>subsample(mire, 4)</code>.</li>
+<li>Vectorise <code>upscale_bilinear</code> with <code>np.meshgrid</code> (no loops) and check that the output is identical.</li>
+</ol>
+      </article>
+      <nav class="pager" aria-label="Lessons">
+        <a href="01-images-as-arrays.html"><span class="mono">Previous</span><strong>01 · Images are arrays</strong></a>
+        <a href="03-geometric-transforms.html" class="next"><span class="mono">Next</span><strong>03 · Geometric transforms</strong></a>
+      </nav>
+    </main>
+    <aside class="lesson-toc" aria-label="On this page">
+      <div class="sub first">On this page</div>
+      <ul><li><a href="#two-discretisations">Two discretisations</a></li>
+<li><a href="#uniform-quantization">Uniform quantization</a></li>
+<li><a href="#histograms">Histograms</a></li>
+<li><a href="#quantizing-colour">Quantizing colour</a></li>
+<li><a href="#subsampling-and-aliasing">Subsampling and aliasing</a></li>
+<li><a href="#shrinking-average-the-block">Shrinking: average the block</a></li>
+<li><a href="#enlarging-interpolation">Enlarging: interpolation</a></li>
+<li><a href="#in-practice">In practice</a></li>
+<li><a href="#exercises">Exercises</a></li></ul>
+    </aside>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container footer-inner mono wide">
+      <span>© <span id="year"></span> Henrique Corneau · course text and code under MIT</span>
+      <span><a href="https://github.com/henriquecorneau" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/henriquecorneau/" target="_blank" rel="noopener">LinkedIn</a></span>
+    </div>
+  </footer>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+  <script defer src="course.js"></script>
+</body>
+</html>
