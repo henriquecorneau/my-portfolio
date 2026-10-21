@@ -1,0 +1,325 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>12 · PyTorch and the training loop · Machine Learning Course</title>
+  <meta name="description" content="The framework that does lesson 11&#x27;s calculus for you. Tensors with shapes, dtypes and devices, autograd checked against a hand derivation, the canonical training loop, SGD vs momentum vs Adam, the MNIST bug of forgetting to normalise the pixels, and early stopping with a checkpoint you can reload.">
+  <meta property="og:title" content="12 · PyTorch and the training loop · Machine Learning Course">
+  <meta property="og:description" content="The framework that does lesson 11&#x27;s calculus for you. Tensors with shapes, dtypes and devices, autograd checked against a hand derivation, the canonical training loop, SGD vs momentum vs Adam, the MNIST bug of forgetting to normalise the pixels, and early stopping with a checkpoint you can reload.">
+  <meta property="og:image" content="../assets/img/profile.jpg">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23111'/><text x='50' y='66' font-size='46' font-family='monospace' fill='%23fff' text-anchor='middle'>HC</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../course/course.css">
+  <script>
+    try { var t = localStorage.getItem('theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+</head>
+<body data-page="course">
+  <header class="site-header">
+    <div class="container header-inner wide">
+      <a href="../index.html" class="logo">henrique<span>.corneau</span></a>
+      <nav class="nav" aria-label="Main">
+        <a href="../index.html#projects">Projects</a>
+        <a href="../course/index.html">CV Course</a>
+        <a href="index.html" class="current">ML Course</a>
+        <a href="../index.html#papers">Papers</a>
+        <a href="../index.html#about">About</a>
+      </nav>
+      <div class="header-actions">
+        <button type="button" class="icon-btn menu-btn" id="menu-toggle" aria-label="Lessons" aria-expanded="false" aria-controls="course-side">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <button type="button" class="icon-btn" id="theme-toggle" aria-label="Toggle theme">
+          <svg class="i-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="i-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="course-layout container wide">
+    <aside class="course-side" id="course-side" aria-label="Lessons">
+      <a class="side-home" href="index.html">← Course overview</a>
+      <div class="side-part"><span class="mono">Part I</span> Foundations</div><ol>
+<li><a href="00-setup.html"><span class="mono">00</span>Setup and how the course code works</a></li>
+<li><a href="01-knn-data-splits.html"><span class="mono">01</span>Data, splits and a first classifier</a></li>
+<li><a href="02-linear-regression.html"><span class="mono">02</span>Linear regression and gradient descent</a></li>
+<li><a href="03-optimization.html"><span class="mono">03</span>Optimisation for machine learning</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part II</span> Supervised learning</div><ol>
+<li><a href="04-logistic-regression.html"><span class="mono">04</span>Logistic regression</a></li>
+<li><a href="05-svm.html"><span class="mono">05</span>Support vector machines</a></li>
+<li><a href="06-model-selection.html"><span class="mono">06</span>Model selection and evaluation</a></li>
+<li><a href="07-decision-trees.html"><span class="mono">07</span>Decision trees</a></li>
+<li><a href="08-ensembles.html"><span class="mono">08</span>Ensembles — bagging, forests and boosting</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part III</span> Unsupervised learning</div><ol>
+<li><a href="09-clustering.html"><span class="mono">09</span>Clustering</a></li>
+<li><a href="10-pca.html"><span class="mono">10</span>Dimensionality reduction</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part IV</span> Deep learning</div><ol>
+<li><a href="11-neural-net-from-scratch.html"><span class="mono">11</span>A neural network from scratch</a></li>
+<li><a href="12-pytorch-training.html" class="active" aria-current="page"><span class="mono">12</span>PyTorch and the training loop</a></li>
+<li><a href="13-cnn.html"><span class="mono">13</span>Convolutional neural networks</a></li>
+<li><a href="14-transfer-learning.html"><span class="mono">14</span>Architectures and transfer learning</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part V</span> Deep learning for vision</div><ol>
+<li><a href="15-object-detection.html"><span class="mono">15</span>Object detection with YOLO</a></li>
+<li><a href="16-metric-learning.html"><span class="mono">16</span>Metric learning and face recognition</a></li>
+<li><a href="17-diffusion.html"><span class="mono">17</span>Generative models — diffusion</a></li>
+</ol>
+    </aside>
+    <main class="lesson" id="top">
+      <header class="lesson-head">
+        <p class="eyebrow mono">Part IV · Deep learning · Lesson 12</p>
+        <h1>PyTorch and the training loop</h1>
+        <p class="lead">The framework that does lesson 11's calculus for you. Tensors with shapes, dtypes and devices, autograd checked against a hand derivation, the canonical training loop, SGD vs momentum vs Adam, the MNIST bug of forgetting to normalise the pixels, and early stopping with a checkpoint you can reload.</p>
+        <p class="lesson-sources mono">Based on: INSA IML deep learning lab (Keras), UFRN Deep Learning class 6</p>
+        <div class="run-box"><div><span class="mono label">Run this lesson</span><code>python 12_pytorch_training.py</code><code>python 12_pytorch_training.py --save out</code></div><a class="btn btn-ghost" href="code/12_pytorch_training.py" download>Download 12_pytorch_training.py</a></div>
+      </header>
+      <article class="prose">
+<h2 id="why-a-framework">Why a framework<a class="headerlink" href="#why-a-framework" title="Permanent link">#</a></h2>
+<p>Lesson 11 needed 20 lines of careful calculus for a two-layer network. A modern network has hundreds of layers of a dozen types. Frameworks give three things: <strong>tensors</strong> (NumPy-like arrays that can live on a GPU), <strong>automatic differentiation</strong> (the backward pass is derived for you), and building blocks (layers, losses, optimisers, data loaders). This course uses <strong>PyTorch</strong>; my original labs used Keras/TensorFlow, and every idea here translates one-to-one.</p>
+<h2 id="tensors-shape-dtype-device">Tensors: shape, dtype, device<a class="headerlink" href="#tensors-shape-dtype-device" title="Permanent link">#</a></h2>
+<div class="highlight"><pre><span></span><code><span class="n">device</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">device</span><span class="p">(</span><span class="s2">"cuda"</span> <span class="k">if</span> <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">is_available</span><span class="p">()</span> <span class="k">else</span> <span class="s2">"cpu"</span><span class="p">)</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">torch</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>   <span class="c1"># (3, 4) float32 on the CPU</span>
+<span class="n">b</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">))</span>        <span class="c1"># shares memory with the NumPy array</span>
+<span class="n">c</span> <span class="o">=</span> <span class="n">a</span> <span class="o">@</span> <span class="n">b</span>                                                  <span class="c1"># (3,) matrix-vector product</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">dtype</span><span class="p">,</span> <span class="n">a</span><span class="o">.</span><span class="n">device</span><span class="p">,</span> <span class="s2">"| a @ b ="</span><span class="p">,</span> <span class="n">c</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"broadcasting: (3, 4) + (4,) -&gt;"</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">((</span><span class="n">a</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span><span class="o">.</span><span class="n">shape</span><span class="p">),</span> <span class="s2">"| (3, 1) * (1, 4) -&gt;"</span><span class="p">,</span>
+      <span class="nb">tuple</span><span class="p">((</span><span class="n">a</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="n">a</span><span class="p">[:</span><span class="mi">1</span><span class="p">,</span> <span class="p">:])</span><span class="o">.</span><span class="n">shape</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"training on:"</span><span class="p">,</span> <span class="n">device</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>torch.Size([3, 4]) torch.float32 cpu | a @ b = [6.0, 22.0, 38.0]
+broadcasting: (3, 4) + (4,) -&gt; (3, 4) | (3, 1) * (1, 4) -&gt; (3, 4)
+training on: cpu
+</code></pre></div>
+<p>Three attributes to keep in your head at every line:</p>
+<ul>
+<li><strong>shape</strong> — most deep learning bugs are shape bugs. Write the expected shape as a comment next to every non-trivial tensor; I do it throughout the course.</li>
+<li><strong>dtype</strong> — networks train in <code>float32</code> (or lower); NumPy defaults to <code>float64</code>. Class labels for <code>CrossEntropyLoss</code> must be <code>int64</code>.</li>
+<li><strong>device</strong> — every tensor in an operation must be on the same device (<code>.to(device)</code>). The code runs unchanged on CPU or GPU.</li>
+</ul>
+<h3 id="is-it-faster">Is it faster?<a class="headerlink" href="#is-it-faster" title="Permanent link">#</a></h3>
+<p>The UFRN class compared matrix products in NumPy and the framework on CPU and GPU:</p>
+<div class="highlight"><pre><span></span><code><span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="p">(</span><span class="mi">256</span><span class="p">,</span> <span class="mi">1024</span><span class="p">,</span> <span class="mi">2048</span><span class="p">):</span>
+    <span class="n">A</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">float32</span><span class="p">)</span>
+    <span class="n">At</span><span class="p">,</span> <span class="n">Bt</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">A</span><span class="p">),</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">B</span><span class="p">)</span>
+    <span class="n">At</span> <span class="o">@</span> <span class="n">Bt</span>                                                <span class="c1"># warm-up: the first call pays one-off costs</span>
+    <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+        <span class="n">A</span> <span class="o">@</span> <span class="n">B</span>
+    <span class="n">t_np</span> <span class="o">=</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span><span class="p">)</span> <span class="o">/</span> <span class="mi">5</span>
+    <span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">5</span><span class="p">):</span>
+        <span class="n">At</span> <span class="o">@</span> <span class="n">Bt</span>
+    <span class="k">if</span> <span class="n">device</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="s2">"cuda"</span><span class="p">:</span>
+        <span class="n">torch</span><span class="o">.</span><span class="n">cuda</span><span class="o">.</span><span class="n">synchronize</span><span class="p">()</span>                           <span class="c1"># GPU calls are asynchronous: wait before timing</span>
+    <span class="n">t_pt</span> <span class="o">=</span> <span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">perf_counter</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span><span class="p">)</span> <span class="o">/</span> <span class="mi">5</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">n</span><span class="si">:</span><span class="s2">5d</span><span class="si">}</span><span class="s2"> x </span><span class="si">{</span><span class="n">n</span><span class="si">}</span><span class="s2">: NumPy </span><span class="si">{</span><span class="mf">1e3</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">t_np</span><span class="si">:</span><span class="s2">7.2f</span><span class="si">}</span><span class="s2"> ms | PyTorch CPU </span><span class="si">{</span><span class="mf">1e3</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">t_pt</span><span class="si">:</span><span class="s2">7.2f</span><span class="si">}</span><span class="s2"> ms "</span>
+          <span class="sa">f</span><span class="s2">"| </span><span class="si">{</span><span class="mi">2</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">n</span><span class="w"> </span><span class="o">**</span><span class="w"> </span><span class="mi">3</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="n">t_pt</span><span class="w"> </span><span class="o">/</span><span class="w"> </span><span class="mf">1e9</span><span class="si">:</span><span class="s2">5.0f</span><span class="si">}</span><span class="s2"> GFLOP/s"</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>  256 x 256: NumPy    3.87 ms | PyTorch CPU    1.56 ms |    22 GFLOP/s
+ 1024 x 1024: NumPy    7.09 ms | PyTorch CPU   17.09 ms |   126 GFLOP/s
+ 2048 x 2048: NumPy   45.53 ms | PyTorch CPU   65.47 ms |   262 GFLOP/s
+</code></pre></div>
+<p>On a CPU both call an optimised BLAS library, and neither is consistently faster (the numbers move with whatever else the machine is doing). The real gain is the GPU, typically 10–50× on large products. Two timing traps: the first call pays one-off initialisation costs (warm up first), and <strong>GPU calls are asynchronous</strong> — they return before the computation is done, so without <code>torch.cuda.synchronize()</code> you measure only the launch. (My version of this exercise had <code>np.arrange</code> and no loop over the sizes; it never ran.)</p>
+<h2 id="autograd">Autograd<a class="headerlink" href="#autograd" title="Permanent link">#</a></h2>
+<p>Mark parameters with <code>requires_grad=True</code>; every operation on them records itself in a graph; <code>loss.backward()</code> walks that graph backwards applying the chain rule — lesson 11's <code>backward</code>, generated automatically.</p>
+<div class="highlight"><pre><span></span><code><span class="n">x</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">2.0</span><span class="p">]])</span>                            <span class="c1"># (1, 2) one sample</span>
+<span class="n">W</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mf">0.5</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.0</span><span class="p">]],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>     <span class="c1"># (2, 1) a parameter: track its gradient</span>
+<span class="n">bias</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([</span><span class="mf">0.1</span><span class="p">],</span> <span class="n">requires_grad</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">p</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">x</span> <span class="o">@</span> <span class="n">W</span> <span class="o">+</span> <span class="n">bias</span><span class="p">)</span>                           <span class="c1"># forward pass builds a graph of operations</span>
+<span class="n">loss</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">functional</span><span class="o">.</span><span class="n">binary_cross_entropy</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">([[</span><span class="mf">1.0</span><span class="p">]]))</span>
+<span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>                                           <span class="c1"># backward pass fills .grad of every leaf</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"p = </span><span class="si">%.4f</span><span class="s2"> | dL/dW = </span><span class="si">%s</span><span class="s2"> | by hand (p - y) x = </span><span class="si">%s</span><span class="s2">"</span>
+      <span class="o">%</span> <span class="p">(</span><span class="n">p</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="n">W</span><span class="o">.</span><span class="n">grad</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">(),</span> <span class="p">((</span><span class="n">p</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">ravel</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()))</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>p = 0.1978 | dL/dW = [-0.802183985710144, -1.604367971420288] | by hand (p - y) x = [-0.8021838665008545, -1.604367733001709]
+</code></pre></div>
+<p>The "prediction minus label, times input" of lesson 04, to seven digits.</p>
+<h2 id="model-loss-optimiser-loop">Model, loss, optimiser, loop<a class="headerlink" href="#model-loss-optimiser-loop" title="Permanent link">#</a></h2>
+<p>A model is an <code>nn.Module</code>; for a plain stack of layers <code>nn.Sequential</code> is enough. Hyper-parameters go in <strong>one config object</strong>, not scattered through the code, so every experiment is described by a single value you can print, log or save next to the results:</p>
+<div class="highlight"><pre><span></span><code><span class="nd">@dataclass</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Config</span><span class="p">:</span>
+    <span class="n">hidden</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">64</span>
+    <span class="n">lr</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span>
+    <span class="n">batch_size</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">32</span>
+    <span class="n">epochs</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">30</span>
+    <span class="n">optimizer</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"sgd"</span>          <span class="c1"># "sgd", "momentum" or "adam"</span>
+    <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">make_mlp</span><span class="p">(</span><span class="n">n_in</span><span class="p">,</span> <span class="n">hidden</span><span class="p">,</span> <span class="n">n_out</span><span class="p">):</span>
+    <span class="k">return</span> <span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">n_in</span><span class="p">,</span> <span class="n">hidden</span><span class="p">),</span> <span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span> <span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden</span><span class="p">,</span> <span class="n">n_out</span><span class="p">))</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">make_optimizer</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">params</span><span class="p">,</span> <span class="n">lr</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">"sgd"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">"momentum"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">SGD</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">,</span> <span class="n">momentum</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s2">"adam"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="n">params</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span>
+    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+</code></pre></div>
+<p>The training loop is always the same five steps — forward, loss, <code>zero_grad</code>, <code>backward</code>, <code>step</code> — inside two loops (epochs, mini-batches), followed by an evaluation in <code>eval()</code> mode under <code>torch.no_grad()</code>:</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">fit</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">Xv</span><span class="p">,</span> <span class="n">yv</span><span class="p">,</span> <span class="n">loss_fn</span><span class="p">,</span> <span class="n">n_out</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">patience</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""The canonical PyTorch training loop. Returns the model and per-epoch (train loss, val loss, val acc).</span>
+
+<span class="sd">    With patience=k, stop when the validation loss has not improved for k epochs and</span>
+<span class="sd">    return the model with the best weights seen (early stopping + checkpointing)."""</span>
+    <span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">make_mlp</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">cfg</span><span class="o">.</span><span class="n">hidden</span><span class="p">,</span> <span class="n">n_out</span><span class="p">)</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+    <span class="n">opt</span> <span class="o">=</span> <span class="n">make_optimizer</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">optimizer</span><span class="p">,</span> <span class="n">model</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">cfg</span><span class="o">.</span><span class="n">lr</span><span class="p">)</span>
+    <span class="n">loader</span> <span class="o">=</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">TensorDataset</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">batch_size</span><span class="o">=</span><span class="n">cfg</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span> <span class="n">shuffle</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">history</span><span class="p">,</span> <span class="n">best_loss</span><span class="p">,</span> <span class="n">best_state</span> <span class="o">=</span> <span class="p">[],</span> <span class="nb">float</span><span class="p">(</span><span class="s2">"inf"</span><span class="p">),</span> <span class="kc">None</span>
+    <span class="k">for</span> <span class="n">epoch</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">cfg</span><span class="o">.</span><span class="n">epochs</span><span class="p">):</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+        <span class="n">total</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="k">for</span> <span class="n">xb</span><span class="p">,</span> <span class="n">yb</span> <span class="ow">in</span> <span class="n">loader</span><span class="p">:</span>
+            <span class="n">xb</span><span class="p">,</span> <span class="n">yb</span> <span class="o">=</span> <span class="n">xb</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">),</span> <span class="n">yb</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">)</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">xb</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">n_out</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">model</span><span class="p">(</span><span class="n">xb</span><span class="p">)</span>   <span class="c1"># (B,) logits or (B, 10)</span>
+            <span class="n">loss</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">yb</span><span class="p">)</span>
+            <span class="n">opt</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span>                       <span class="c1"># gradients accumulate by default: reset them</span>
+            <span class="n">loss</span><span class="o">.</span><span class="n">backward</span><span class="p">()</span>                       <span class="c1"># backpropagation</span>
+            <span class="n">opt</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>                            <span class="c1"># parameter update</span>
+            <span class="n">total</span> <span class="o">+=</span> <span class="n">loss</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">xb</span><span class="p">)</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+        <span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>                     <span class="c1"># no graph needed for evaluation</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="n">model</span><span class="p">(</span><span class="n">Xv</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">))</span>
+            <span class="n">out</span> <span class="o">=</span> <span class="n">out</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="k">if</span> <span class="n">n_out</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">out</span>
+            <span class="n">vloss</span> <span class="o">=</span> <span class="n">loss_fn</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">yv</span><span class="o">.</span><span class="n">to</span><span class="p">(</span><span class="n">device</span><span class="p">))</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+            <span class="n">pred</span> <span class="o">=</span> <span class="p">(</span><span class="n">out</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span> <span class="k">if</span> <span class="n">n_out</span> <span class="o">==</span> <span class="mi">1</span> <span class="k">else</span> <span class="n">out</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">vacc</span> <span class="o">=</span> <span class="p">(</span><span class="n">pred</span><span class="o">.</span><span class="n">cpu</span><span class="p">()</span> <span class="o">==</span> <span class="n">yv</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="n">history</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">total</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">X</span><span class="p">),</span> <span class="n">vloss</span><span class="p">,</span> <span class="n">vacc</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">patience</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">vloss</span> <span class="o">&lt;</span> <span class="n">best_loss</span><span class="p">:</span>
+                <span class="n">best_loss</span><span class="p">,</span> <span class="n">best_state</span> <span class="o">=</span> <span class="n">vloss</span><span class="p">,</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">())</span>
+            <span class="k">elif</span> <span class="n">epoch</span> <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">([</span><span class="n">h</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">h</span> <span class="ow">in</span> <span class="n">history</span><span class="p">]))</span> <span class="o">&gt;=</span> <span class="n">patience</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"early stopping after epoch </span><span class="si">{</span><span class="n">epoch</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="si">}</span><span class="s2">: no improvement for </span><span class="si">{</span><span class="n">patience</span><span class="si">}</span><span class="s2"> epochs"</span><span class="p">)</span>
+                <span class="k">break</span>
+    <span class="k">if</span> <span class="n">best_state</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">model</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">best_state</span><span class="p">)</span>            <span class="c1"># roll back to the best checkpoint</span>
+    <span class="k">return</span> <span class="n">model</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">history</span><span class="p">)</span>
+</code></pre></div>
+<p>Two details matter. Gradients <strong>accumulate</strong> in <code>.grad</code> (useful for very large batches) so they must be zeroed at every step. And the losses take <strong>logits</strong> — the raw scores before the sigmoid/softmax: <code>BCEWithLogitsLoss</code> and <code>CrossEntropyLoss</code> apply the sigmoid/softmax internally in a numerically stable way (computing <code>log(softmax(z))</code> naively overflows for large <span class="arithmatex">\(z\)</span>).</p>
+<div class="admonition bug">
+<p class="admonition-title">Softmax twice</p>
+<p>In my UFRN MNIST + Gradio exercise the Keras model already ended with a <code>softmax</code> layer, and the prediction function applied <code>tf.nn.softmax</code> <strong>again</strong> to its output. The predicted class didn't change (softmax preserves the order), so the app "worked" — but the "probabilities" it displayed were all squashed towards 10%. Decide where the softmax lives (in PyTorch: in the loss during training, explicitly at inference) and apply it once.</p>
+</div>
+<h2 id="optimisers">Optimisers<a class="headerlink" href="#optimisers" title="Permanent link">#</a></h2>
+<p>The INSA lab compared optimisers, batch sizes and epochs on the mixture data of lesson 11:</p>
+<div class="highlight"><pre><span></span><code><span class="n">bce</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">BCEWithLogitsLoss</span><span class="p">()</span>        <span class="c1"># sigmoid + binary cross-entropy in one numerically stable step</span>
+<span class="n">runs</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">cfg</span> <span class="ow">in</span> <span class="p">{</span>
+    <span class="s2">"SGD, batch 32"</span><span class="p">:</span> <span class="n">Config</span><span class="p">(</span><span class="n">optimizer</span><span class="o">=</span><span class="s2">"sgd"</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">),</span>
+    <span class="s2">"SGD, batch 256"</span><span class="p">:</span> <span class="n">Config</span><span class="p">(</span><span class="n">optimizer</span><span class="o">=</span><span class="s2">"sgd"</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">256</span><span class="p">),</span>
+    <span class="s2">"SGD + momentum"</span><span class="p">:</span> <span class="n">Config</span><span class="p">(</span><span class="n">optimizer</span><span class="o">=</span><span class="s2">"momentum"</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">),</span>
+    <span class="s2">"Adam"</span><span class="p">:</span> <span class="n">Config</span><span class="p">(</span><span class="n">optimizer</span><span class="o">=</span><span class="s2">"adam"</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.01</span><span class="p">),</span>
+<span class="p">}</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">runs</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">fit</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">Xt</span><span class="p">,</span> <span class="n">yt</span><span class="p">,</span> <span class="n">bce</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">:</span><span class="s2">15s</span><span class="si">}</span><span class="s2">: test acc after 3 epochs </span><span class="si">{</span><span class="n">runs</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">, after 30 </span><span class="si">{</span><span class="n">runs</span><span class="p">[</span><span class="n">name</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">]</span><span class="si">:</span><span class="s2">.3f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>SGD, batch 32  : test acc after 3 epochs 0.856, after 30 0.887
+SGD, batch 256 : test acc after 3 epochs 0.835, after 30 0.856
+SGD + momentum : test acc after 3 epochs 0.851, after 30 0.970
+Adam           : test acc after 3 epochs 0.868, after 30 0.965
+</code></pre></div>
+<figure class="fig"><a href="img/12-optimisers.webp" target="_blank" rel="noopener"><img src="img/12-optimisers.webp" alt="Training loss and test accuracy per epoch for the four configurations." loading="lazy"></a><figcaption markdown="span">Training loss and test accuracy per epoch for the four configurations.</figcaption></figure>
+
+<ul>
+<li><strong>Batch size.</strong> With the same learning rate, batches of 256 make 8× fewer updates per epoch than batches of 32: smoother but slower progress per epoch.</li>
+<li><strong>Momentum</strong> accumulates a velocity, <span class="arithmatex">\(\mathbf{v} \leftarrow 0.9\,\mathbf{v} - \eta\nabla J\)</span>, <span class="arithmatex">\(\theta \leftarrow \theta + \mathbf{v}\)</span>: consistent gradient directions add up, oscillating ones cancel — exactly the cure for the zig-zag in lesson 02's elongated valley.</li>
+<li><strong>Adam</strong> keeps a running average of each parameter's gradient and of its square, and divides one by the square root of the other: every parameter gets its own step size. It is the robust default; well-tuned SGD + momentum often generalises as well or better on vision tasks.</li>
+</ul>
+<div class="admonition bug">
+<p class="admonition-title">The experiment that compared nothing</p>
+<p>My Keras version looped over four configurations — but <code>model.compile(optimizer="sgd", ...)</code> was hard-coded inside the loop, so the "Adam" runs were SGD; and an <code>SGD(learning_rate=0.1, momentum=0.9)</code> object was created and never passed (the string <code>"sgd"</code> gives the default 0.01 without momentum). The written conclusions about Adam were explanations of noise. When an experiment varies a setting, print the setting <em>from the object that is actually used</em> (<code>print(opt)</code>).</p>
+</div>
+<h2 id="the-bug-that-costs-50-points-of-accuracy">The bug that costs 50 points of accuracy<a class="headerlink" href="#the-bug-that-costs-50-points-of-accuracy" title="Permanent link">#</a></h2>
+<p>The lab's MLP on MNIST: 784 → 800 ReLU → 10, plain SGD. My Keras run reached a loss of 408 in the first epoch and <strong>35%</strong> test accuracy. Here is the same thing in PyTorch, with and without dividing the pixels by 255:</p>
+<div class="highlight"><pre><span></span><code><span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">x_test</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">U</span><span class="o">.</span><span class="n">load_mnist</span><span class="p">()</span>
+<span class="n">Xm</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">x_train</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">784</span><span class="p">))</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>      <span class="c1"># (60000, 784) float32, values 0..255</span>
+<span class="n">ym</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">y_train</span><span class="p">)</span>                                <span class="c1"># (60000,) int64 class indices</span>
+<span class="n">Xm_test</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">x_test</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">784</span><span class="p">))</span><span class="o">.</span><span class="n">float</span><span class="p">()</span>
+<span class="n">ym_test</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">from_numpy</span><span class="p">(</span><span class="n">y_test</span><span class="p">)</span>
+<span class="n">ce</span> <span class="o">=</span> <span class="n">nn</span><span class="o">.</span><span class="n">CrossEntropyLoss</span><span class="p">()</span>          <span class="c1"># softmax + categorical cross-entropy, takes raw logits</span>
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span><span class="n">hidden</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">scale</span> <span class="ow">in</span> <span class="p">((</span><span class="s2">"raw pixels 0-255"</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">),</span> <span class="p">(</span><span class="s2">"pixels / 255"</span><span class="p">,</span> <span class="mf">255.0</span><span class="p">)):</span>
+    <span class="n">_</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="n">fit</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">Xm</span> <span class="o">/</span> <span class="n">scale</span><span class="p">,</span> <span class="n">ym</span><span class="p">,</span> <span class="n">Xm_test</span> <span class="o">/</span> <span class="n">scale</span><span class="p">,</span> <span class="n">ym_test</span><span class="p">,</span> <span class="n">ce</span><span class="p">,</span> <span class="n">n_out</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">:</span><span class="s2">16s</span><span class="si">}</span><span class="s2">: train loss per epoch </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">h</span><span class="p">[:,</span><span class="w"> </span><span class="mi">0</span><span class="p">],</span><span class="w"> </span><span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span><span class="si">}</span><span class="s2">, test acc </span><span class="si">{</span><span class="n">h</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="p">]</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>raw pixels 0-255: train loss per epoch [8.736, 1.698, 1.573], test acc 0.5128
+pixels / 255    : train loss per epoch [0.799, 0.364, 0.311], test acc 0.9200
+</code></pre></div>
+<p>The lab text said "scale all inputs to [0, 1]"; my code converted to <code>float32</code> and forgot the division. With inputs up to 255, the first layer's pre-activations are ~255 times larger than the initialisation expects, the first gradient steps are enormous, many ReLUs die, and the network never recovers. Lesson 02 in its most expensive form: <strong>normalise the inputs</strong>. (My write-up blamed it on "multiple classes to predict".)</p>
+<h2 id="early-stopping-and-checkpoints">Early stopping and checkpoints<a class="headerlink" href="#early-stopping-and-checkpoints" title="Permanent link">#</a></h2>
+<p>Hold out a validation set, watch its loss after each epoch, and stop when it has not improved for a few epochs (the <em>patience</em>) — then roll back to the best weights:</p>
+<div class="highlight"><pre><span></span><code><span class="n">perm</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randperm</span><span class="p">(</span><span class="mi">60000</span><span class="p">)</span>
+<span class="n">tr</span><span class="p">,</span> <span class="n">va</span> <span class="o">=</span> <span class="n">perm</span><span class="p">[:</span><span class="mi">50000</span><span class="p">],</span> <span class="n">perm</span><span class="p">[</span><span class="mi">50000</span><span class="p">:]</span>                 <span class="c1"># hold out 10,000 training images for validation</span>
+<span class="n">Xs</span> <span class="o">=</span> <span class="n">Xm</span> <span class="o">/</span> <span class="mf">255.0</span>
+<span class="n">cfg</span> <span class="o">=</span> <span class="n">Config</span><span class="p">(</span><span class="n">hidden</span><span class="o">=</span><span class="mi">800</span><span class="p">,</span> <span class="n">optimizer</span><span class="o">=</span><span class="s2">"adam"</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">1e-3</span><span class="p">,</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">30</span><span class="p">)</span>
+<span class="n">model</span><span class="p">,</span> <span class="n">curve</span> <span class="o">=</span> <span class="n">fit</span><span class="p">(</span><span class="n">cfg</span><span class="p">,</span> <span class="n">Xs</span><span class="p">[</span><span class="n">tr</span><span class="p">],</span> <span class="n">ym</span><span class="p">[</span><span class="n">tr</span><span class="p">],</span> <span class="n">Xs</span><span class="p">[</span><span class="n">va</span><span class="p">],</span> <span class="n">ym</span><span class="p">[</span><span class="n">va</span><span class="p">],</span> <span class="n">ce</span><span class="p">,</span> <span class="n">n_out</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">patience</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+<span class="n">path</span> <span class="o">=</span> <span class="n">U</span><span class="o">.</span><span class="n">CACHE</span> <span class="o">/</span> <span class="s2">"mlp_mnist_best.pt"</span>
+<span class="n">torch</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">model</span><span class="o">.</span><span class="n">state_dict</span><span class="p">(),</span> <span class="n">path</span><span class="p">)</span>                <span class="c1"># a checkpoint is just the dict of tensors</span>
+<span class="n">reloaded</span> <span class="o">=</span> <span class="n">make_mlp</span><span class="p">(</span><span class="mi">784</span><span class="p">,</span> <span class="n">cfg</span><span class="o">.</span><span class="n">hidden</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">reloaded</span><span class="o">.</span><span class="n">load_state_dict</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">path</span><span class="p">))</span>
+<span class="n">reloaded</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+<span class="k">with</span> <span class="n">torch</span><span class="o">.</span><span class="n">no_grad</span><span class="p">():</span>
+    <span class="n">same</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">equal</span><span class="p">(</span><span class="n">model</span><span class="p">(</span><span class="n">Xs</span><span class="p">[:</span><span class="mi">1000</span><span class="p">]),</span> <span class="n">reloaded</span><span class="p">(</span><span class="n">Xs</span><span class="p">[:</span><span class="mi">1000</span><span class="p">]))</span>
+    <span class="n">acc</span> <span class="o">=</span> <span class="p">(</span><span class="n">reloaded</span><span class="p">(</span><span class="n">Xm_test</span> <span class="o">/</span> <span class="mf">255.0</span><span class="p">)</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="n">ym_test</span><span class="p">)</span><span class="o">.</span><span class="n">float</span><span class="p">()</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"best validation loss </span><span class="si">%.4f</span><span class="s2"> at epoch </span><span class="si">%d</span><span class="s2"> | reloaded model identical: </span><span class="si">%s</span><span class="s2"> | test accuracy </span><span class="si">%.4f</span><span class="s2">"</span>
+      <span class="o">%</span> <span class="p">(</span><span class="n">curve</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">curve</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">argmin</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">same</span><span class="p">,</span> <span class="n">acc</span><span class="p">))</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>early stopping after epoch 10: no improvement for 3 epochs
+best validation loss 0.0738 at epoch 7 | reloaded model identical: True | test accuracy 0.9805
+</code></pre></div>
+<figure class="fig"><a href="img/12-early-stopping.webp" target="_blank" rel="noopener"><img src="img/12-early-stopping.webp" alt="Training loss keeps falling; validation loss stops improving after epoch 7. Training continues for the patience window, then the epoch-7 weights are restored." loading="lazy"></a><figcaption markdown="span">Training loss keeps falling; validation loss stops improving after epoch 7. Training continues for the patience window, then the epoch-7 weights are restored.</figcaption></figure>
+
+<p>A checkpoint is the model's <code>state_dict()</code> — a dictionary of named tensors — saved with <code>torch.save</code>. To use it you rebuild the same architecture and <code>load_state_dict</code>. The equality test on 1,000 images is the check the lab asked for ("propose a way to verify the reloaded model is the same"): identical outputs, bit for bit. In a real project, save the optimiser's <code>state_dict</code> and the config too, so training can resume.</p>
+<p>From 92% (3 epochs of SGD) to 98% (Adam, 7 epochs) with the same network. The next lesson gets to 99% with a network that knows it is looking at images.</p>
+<h2 id="exercises">Exercises<a class="headerlink" href="#exercises" title="Permanent link">#</a></h2>
+<ol>
+<li>Add a learning-rate schedule (<code>torch.optim.lr_scheduler.CosineAnnealingLR</code>) to the SGD runs on the mixture data. Does plain SGD catch up with momentum?</li>
+<li>Move the model and data to the GPU if you have one (the code already does it through <code>device</code>) and time one epoch on each device.</li>
+<li>Write <code>fit</code> so that it also saves the optimiser state, and resume an interrupted training run from the checkpoint. Check that the loss curve continues smoothly.</li>
+</ol>
+      </article>
+      <nav class="pager" aria-label="Lessons">
+        <a href="11-neural-net-from-scratch.html"><span class="mono">Previous</span><strong>11 · A neural network from scratch</strong></a>
+        <a href="13-cnn.html" class="next"><span class="mono">Next</span><strong>13 · Convolutional neural networks</strong></a>
+      </nav>
+    </main>
+    <aside class="lesson-toc" aria-label="On this page">
+      <div class="sub first">On this page</div>
+      <ul><li><a href="#why-a-framework">Why a framework</a></li>
+<li><a href="#tensors-shape-dtype-device">Tensors: shape, dtype, device</a></li>
+<li class="sub"><a href="#is-it-faster">Is it faster?</a></li>
+<li><a href="#autograd">Autograd</a></li>
+<li><a href="#model-loss-optimiser-loop">Model, loss, optimiser, loop</a></li>
+<li><a href="#optimisers">Optimisers</a></li>
+<li><a href="#the-bug-that-costs-50-points-of-accuracy">The bug that costs 50 points of accuracy</a></li>
+<li><a href="#early-stopping-and-checkpoints">Early stopping and checkpoints</a></li>
+<li><a href="#exercises">Exercises</a></li></ul>
+    </aside>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container footer-inner mono wide">
+      <span>© <span id="year"></span> Henrique Corneau · course text and code under MIT</span>
+      <span><a href="https://github.com/henriquecorneau" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/henriquecorneau/" target="_blank" rel="noopener">LinkedIn</a></span>
+    </div>
+  </footer>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+  <script defer src="../course/course.js"></script>
+</body>
+</html>

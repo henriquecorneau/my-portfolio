@@ -311,6 +311,7 @@ a { color: inherit; }
     radial-gradient(circle at 0% 0%, color-mix(in srgb, var(--accent) 10%, transparent), transparent 55%),
     var(--surface);
 }
+.course-banner + .course-banner { margin-top: 20px; }
 .course-banner h2 { font-size: 1.6rem; letter-spacing: -.02em; margin: 0 0 12px; }
 .course-banner p { color: var(--muted); margin: 0 0 22px; }
 .course-banner .eyebrow { color: var(--accent); margin-bottom: 10px; }

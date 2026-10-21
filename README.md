@@ -44,3 +44,20 @@ pip install markdown pymdown-extensions pygments -r course/code/requirements.txt
 python course/build.py                    # pages only
 python course/build.py --figures --zip    # also re-run every script (figures) and rebuild the zip
 ```
+
+## Machine Learning course (`ml-course/`)
+
+An 18-lesson course (English) built the same way as the CV course, and sharing its style
+(`../course/course.css`, `../course/course.js`):
+
+- lesson text: `ml-course/src/NN-*.md`; code: `ml-course/code/NN_*.py` (+ `mlutils.py`)
+- public datasets are downloaded on first run into `ml-course/code/data/cache/` (git-ignored, ~1 GB)
+- regenerate:
+
+```bash
+pip install markdown pymdown-extensions pygments -r ml-course/code/requirements.txt
+python ml-course/build.py                    # pages only
+python ml-course/build.py --figures --zip    # re-run every script (~40 min on a CPU) and rebuild the zip
+```
+
+`17b_stable_diffusion.py` needs a GPU and is not run by `--figures`.

@@ -17,7 +17,7 @@ Each lesson follows the same rhythm:
 
 ## Who it is for
 
-Students and engineers who know some Python and want to *understand* computer vision instead of copying function calls. You need high-school maths; a bit of linear algebra (matrices, vectors) helps from Part I on and becomes essential in Part V. No deep learning is required: this is the classical toolbox that every vision pipeline — including the neural ones — still relies on for calibration, geometry, pre- and post-processing.
+Students and engineers who know some Python and want to *understand* computer vision instead of copying function calls. You need high-school maths; a bit of linear algebra (matrices, vectors) helps from Part I on and becomes essential in Part V. No deep learning is required: this is the classical toolbox that every vision pipeline — including the neural ones — still relies on for calibration, geometry, pre- and post-processing. The learning side — from k-NN and SVMs to CNNs, YOLO and diffusion models — is in the companion [Machine Learning course](../ml-course/index.html).
 
 ## How to follow it
 

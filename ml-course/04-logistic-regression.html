@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>04 · Logistic regression · Machine Learning Course</title>
+  <meta name="description" content="The workhorse of classification. Derive the cross-entropy loss from probabilities, train logistic regression by gradient descent in ten lines, build a spam filter whose weights you can read, and extend it to ten classes with the softmax — the exact output layer of every classification network in Part IV.">
+  <meta property="og:title" content="04 · Logistic regression · Machine Learning Course">
+  <meta property="og:description" content="The workhorse of classification. Derive the cross-entropy loss from probabilities, train logistic regression by gradient descent in ten lines, build a spam filter whose weights you can read, and extend it to ten classes with the softmax — the exact output layer of every classification network in Part IV.">
+  <meta property="og:image" content="../assets/img/profile.jpg">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23111'/><text x='50' y='66' font-size='46' font-family='monospace' fill='%23fff' text-anchor='middle'>HC</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../course/course.css">
+  <script>
+    try { var t = localStorage.getItem('theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+</head>
+<body data-page="course">
+  <header class="site-header">
+    <div class="container header-inner wide">
+      <a href="../index.html" class="logo">henrique<span>.corneau</span></a>
+      <nav class="nav" aria-label="Main">
+        <a href="../index.html#projects">Projects</a>
+        <a href="../course/index.html">CV Course</a>
+        <a href="index.html" class="current">ML Course</a>
+        <a href="../index.html#papers">Papers</a>
+        <a href="../index.html#about">About</a>
+      </nav>
+      <div class="header-actions">
+        <button type="button" class="icon-btn menu-btn" id="menu-toggle" aria-label="Lessons" aria-expanded="false" aria-controls="course-side">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+        </button>
+        <button type="button" class="icon-btn" id="theme-toggle" aria-label="Toggle theme">
+          <svg class="i-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="i-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="course-layout container wide">
+    <aside class="course-side" id="course-side" aria-label="Lessons">
+      <a class="side-home" href="index.html">← Course overview</a>
+      <div class="side-part"><span class="mono">Part I</span> Foundations</div><ol>
+<li><a href="00-setup.html"><span class="mono">00</span>Setup and how the course code works</a></li>
+<li><a href="01-knn-data-splits.html"><span class="mono">01</span>Data, splits and a first classifier</a></li>
+<li><a href="02-linear-regression.html"><span class="mono">02</span>Linear regression and gradient descent</a></li>
+<li><a href="03-optimization.html"><span class="mono">03</span>Optimisation for machine learning</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part II</span> Supervised learning</div><ol>
+<li><a href="04-logistic-regression.html" class="active" aria-current="page"><span class="mono">04</span>Logistic regression</a></li>
+<li><a href="05-svm.html"><span class="mono">05</span>Support vector machines</a></li>
+<li><a href="06-model-selection.html"><span class="mono">06</span>Model selection and evaluation</a></li>
+<li><a href="07-decision-trees.html"><span class="mono">07</span>Decision trees</a></li>
+<li><a href="08-ensembles.html"><span class="mono">08</span>Ensembles — bagging, forests and boosting</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part III</span> Unsupervised learning</div><ol>
+<li><a href="09-clustering.html"><span class="mono">09</span>Clustering</a></li>
+<li><a href="10-pca.html"><span class="mono">10</span>Dimensionality reduction</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part IV</span> Deep learning</div><ol>
+<li><a href="11-neural-net-from-scratch.html"><span class="mono">11</span>A neural network from scratch</a></li>
+<li><a href="12-pytorch-training.html"><span class="mono">12</span>PyTorch and the training loop</a></li>
+<li><a href="13-cnn.html"><span class="mono">13</span>Convolutional neural networks</a></li>
+<li><a href="14-transfer-learning.html"><span class="mono">14</span>Architectures and transfer learning</a></li>
+</ol>
+<div class="side-part"><span class="mono">Part V</span> Deep learning for vision</div><ol>
+<li><a href="15-object-detection.html"><span class="mono">15</span>Object detection with YOLO</a></li>
+<li><a href="16-metric-learning.html"><span class="mono">16</span>Metric learning and face recognition</a></li>
+<li><a href="17-diffusion.html"><span class="mono">17</span>Generative models — diffusion</a></li>
+</ol>
+    </aside>
+    <main class="lesson" id="top">
+      <header class="lesson-head">
+        <p class="eyebrow mono">Part II · Supervised learning · Lesson 04</p>
+        <h1>Logistic regression</h1>
+        <p class="lead">The workhorse of classification. Derive the cross-entropy loss from probabilities, train logistic regression by gradient descent in ten lines, build a spam filter whose weights you can read, and extend it to ten classes with the softmax — the exact output layer of every classification network in Part IV.</p>
+        <p class="lesson-sources mono">Based on: INSA IML lab 2 (logistic regression), UFRN Deep Learning class 7</p>
+        <div class="run-box"><div><span class="mono label">Run this lesson</span><code>python 04_logistic_regression.py</code><code>python 04_logistic_regression.py --save out</code></div><a class="btn btn-ghost" href="code/04_logistic_regression.py" download>Download 04_logistic_regression.py</a></div>
+      </header>
+      <article class="prose">
+<h2 id="from-a-score-to-a-probability">From a score to a probability<a class="headerlink" href="#from-a-score-to-a-probability" title="Permanent link">#</a></h2>
+<p>For classification we want <span class="arithmatex">\(P(y = 1 \mid \mathbf{x})\)</span>, a number between 0 and 1. Logistic regression computes a linear <strong>score</strong> <span class="arithmatex">\(z = \mathbf{w}^\top\mathbf{x} + b\)</span>, exactly as in lesson 02, and squashes it with the <strong>sigmoid</strong>:</p>
+<div class="arithmatex">\[P(y=1 \mid \mathbf{x}) = \sigma(z) = \frac{1}{1 + e^{-z}}\]</div>
+<p>The decision rule "predict 1 if <span class="arithmatex">\(P &gt; 0.5\)</span>" is the same as "<span class="arithmatex">\(z &gt; 0\)</span>": the <strong>decision boundary is the hyperplane</strong> <span class="arithmatex">\(\mathbf{w}^\top\mathbf{x} + b = 0\)</span>. Logistic regression is a <em>linear</em> classifier; the sigmoid only turns distances to the boundary into confidences.</p>
+<p>Another way to read it: <span class="arithmatex">\(z = \log\frac{P}{1-P}\)</span>, the <strong>log-odds</strong>. Each weight <span class="arithmatex">\(w_j\)</span> says how much the log-odds change when <span class="arithmatex">\(x_j\)</span> grows by one unit — that will make the spam filter readable.</p>
+<h2 id="the-loss-cross-entropy">The loss: cross-entropy<a class="headerlink" href="#the-loss-cross-entropy" title="Permanent link">#</a></h2>
+<p>Squared error is a bad fit for probabilities (with a sigmoid it is not convex, and it barely punishes confident mistakes). Take the same road as lesson 02 — <strong>maximum likelihood</strong>. Each label is a coin flip with probability <span class="arithmatex">\(p_i = \sigma(z_i)\)</span>, so the likelihood of the data is <span class="arithmatex">\(\prod_i p_i^{y_i}(1-p_i)^{1-y_i}\)</span>. Its negative logarithm, averaged, is the <strong>binary cross-entropy</strong>:</p>
+<div class="arithmatex">\[J(\mathbf{w}, b) = -\frac{1}{N}\sum_i \Big[y_i \log p_i + (1 - y_i)\log(1 - p_i)\Big]\]</div>
+<p>A confident wrong answer (<span class="arithmatex">\(p_i \to 0\)</span> while <span class="arithmatex">\(y_i = 1\)</span>) costs <span class="arithmatex">\(-\log p_i \to \infty\)</span>. And the gradient is strikingly simple — thanks to <span class="arithmatex">\(\sigma'(z) = \sigma(z)(1-\sigma(z))\)</span>, everything cancels to</p>
+<div class="arithmatex">\[\nabla_\mathbf{w} J = \frac{1}{N}\sum_i (p_i - y_i)\,\mathbf{x}_i\]</div>
+<p>"error times input", the same form as linear regression. <span class="arithmatex">\(J\)</span> is convex: gradient descent finds the global minimum.</p>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">two_gaussians</span><span class="p">(</span><span class="n">n_per_class</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""The lab's synthetic data: two 2-D Gaussian clouds with different covariances."""</span>
+    <span class="n">mu1</span><span class="p">,</span> <span class="n">S1</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]),</span> <span class="mf">1.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.1</span><span class="p">],</span> <span class="p">[</span><span class="mf">0.1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]])</span>
+    <span class="n">mu2</span><span class="p">,</span> <span class="n">S2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">2</span><span class="p">,</span> <span class="o">-</span><span class="mi">2</span><span class="p">]),</span> <span class="mf">3.5</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.25</span><span class="p">],</span> <span class="p">[</span><span class="o">-</span><span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">]])</span>
+    <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">vstack</span><span class="p">([</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">mu1</span><span class="p">,</span> <span class="n">S1</span><span class="p">,</span> <span class="n">n_per_class</span><span class="p">),</span>
+                   <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="p">(</span><span class="n">mu2</span><span class="p">,</span> <span class="n">S2</span><span class="p">,</span> <span class="n">n_per_class</span><span class="p">)])</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">r_</span><span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n_per_class</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">n_per_class</span><span class="p">)]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span>
+
+
+<span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">two_gaussians</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>                          <span class="c1"># X (200, 2), y (200,) in {0, 1}</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">sigmoid</span><span class="p">(</span><span class="n">z</span><span class="p">):</span>
+    <span class="k">return</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">z</span><span class="p">))</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">fit_logistic</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">epochs</span><span class="o">=</span><span class="mi">5000</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">"""Minimise the mean cross-entropy by gradient descent. Returns w (d,), b and the loss history."""</span>
+    <span class="n">w</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">X</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="mf">0.0</span>
+    <span class="n">losses</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">epochs</span><span class="p">):</span>
+        <span class="n">p</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">X</span> <span class="o">@</span> <span class="n">w</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span>                     <span class="c1"># (n,) predicted P(y = 1 | x)</span>
+        <span class="n">eps</span> <span class="o">=</span> <span class="mf">1e-12</span>
+        <span class="n">losses</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">p</span> <span class="o">+</span> <span class="n">eps</span><span class="p">)</span> <span class="o">+</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">p</span> <span class="o">+</span> <span class="n">eps</span><span class="p">)))</span>
+        <span class="n">w</span> <span class="o">-=</span> <span class="n">lr</span> <span class="o">*</span> <span class="n">X</span><span class="o">.</span><span class="n">T</span> <span class="o">@</span> <span class="p">(</span><span class="n">p</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>           <span class="c1"># the gradient is (prediction - label) * input</span>
+        <span class="n">b</span> <span class="o">-=</span> <span class="n">lr</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">p</span> <span class="o">-</span> <span class="n">y</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">w</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">losses</span><span class="p">)</span>
+
+
+<span class="n">w</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">losses</span> <span class="o">=</span> <span class="n">fit_logistic</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+<span class="n">ref</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>     <span class="c1"># C = inf: no regularisation, like ours</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"from scratch: w = </span><span class="si">%s</span><span class="s2">, b = </span><span class="si">%.4f</span><span class="s2">, loss </span><span class="si">%.4f</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">w</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span> <span class="n">b</span><span class="p">,</span> <span class="n">losses</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"scikit-learn: w = </span><span class="si">%s</span><span class="s2">, b = </span><span class="si">%.4f</span><span class="s2">"</span> <span class="o">%</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="n">ref</span><span class="o">.</span><span class="n">coef_</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">4</span><span class="p">),</span> <span class="n">ref</span><span class="o">.</span><span class="n">intercept_</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"training accuracy </span><span class="si">%.3f</span><span class="s2">"</span> <span class="o">%</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">((</span><span class="n">sigmoid</span><span class="p">(</span><span class="n">X</span> <span class="o">@</span> <span class="n">w</span> <span class="o">+</span> <span class="n">b</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">==</span> <span class="n">y</span><span class="p">))</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>from scratch: w = [0.8451 3.2715], b = 1.6196, loss 0.0641
+scikit-learn: w = [0.8631 3.3297], b = 1.6758
+training accuracy 0.980
+</code></pre></div>
+<p>Our weights are close to scikit-learn's but not identical: the two clouds barely overlap, so the loss keeps decreasing very slowly as the weights grow (on perfectly separable data the unregularised optimum is at infinity!). scikit-learn's L-BFGS solver, a quasi-Newton method (lesson 03), gets further than 5,000 plain gradient steps. In practice a small L2 penalty — scikit-learn's default, <span class="arithmatex">\(C=1\)</span> — keeps the weights finite.</p>
+<figure class="fig"><a href="img/04-synthetic.webp" target="_blank" rel="noopener"><img src="img/04-synthetic.webp" alt="The sigmoid; the predicted probability of class 1 over the plane (the black line is P = 0.5, a straight line); and the cross-entropy during training." loading="lazy"></a><figcaption markdown="span">The sigmoid; the predicted probability of class 1 over the plane (the black line is P = 0.5, a straight line); and the cross-entropy during training.</figcaption></figure>
+
+<h2 id="a-spam-filter">A spam filter<a class="headerlink" href="#a-spam-filter" title="Permanent link">#</a></h2>
+<p>The <em>Spambase</em> dataset: 4,601 e-mails from Hewlett-Packard in the late 90s, each described by 57 numbers — the frequency (%) of 48 words (<code>free</code>, <code>remove</code>, <code>george</code>…), of 6 characters (<code>!</code>, <code>$</code>…), and three statistics of runs of capital letters.</p>
+<div class="highlight"><pre><span></span><code><span class="n">BASE</span> <span class="o">=</span> <span class="s2">"https://archive.ics.uci.edu/ml/machine-learning-databases/spambase/"</span>
+<span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">U</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="n">BASE</span> <span class="o">+</span> <span class="s2">"spambase.data"</span><span class="p">,</span> <span class="s2">"spambase.data"</span><span class="p">),</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">","</span><span class="p">)</span>
+<span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="n">line</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">":"</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">U</span><span class="o">.</span><span class="n">fetch</span><span class="p">(</span><span class="n">BASE</span> <span class="o">+</span> <span class="s2">"spambase.names"</span><span class="p">,</span> <span class="s2">"spambase.names"</span><span class="p">)</span><span class="o">.</span><span class="n">read_text</span><span class="p">()</span>
+         <span class="o">.</span><span class="n">splitlines</span><span class="p">()</span> <span class="k">if</span> <span class="n">line</span><span class="o">.</span><span class="n">endswith</span><span class="p">(</span><span class="s2">"continuous."</span><span class="p">)]</span>                    <span class="c1"># the 57 feature names</span>
+<span class="n">Xs</span><span class="p">,</span> <span class="n">ys</span> <span class="o">=</span> <span class="n">data</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">57</span><span class="p">],</span> <span class="n">data</span><span class="p">[:,</span> <span class="mi">57</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>     <span class="c1"># (4601, 57) word/char frequencies + capital-run lengths</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="si">%d</span><span class="s2"> e-mails: </span><span class="si">%d</span><span class="s2"> ham, </span><span class="si">%d</span><span class="s2"> spam; feature max values from </span><span class="si">%.2f</span><span class="s2"> to </span><span class="si">%.0f</span><span class="s2">"</span>
+      <span class="o">%</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">ys</span><span class="p">),</span> <span class="p">(</span><span class="n">ys</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span> <span class="n">ys</span><span class="o">.</span><span class="n">sum</span><span class="p">(),</span> <span class="n">Xs</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span> <span class="n">Xs</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()))</span>
+<span class="n">Xa</span><span class="p">,</span> <span class="n">Xt</span><span class="p">,</span> <span class="n">ya</span><span class="p">,</span> <span class="n">yt</span> <span class="o">=</span> <span class="n">train_test_split</span><span class="p">(</span><span class="n">Xs</span><span class="p">,</span> <span class="n">ys</span><span class="p">,</span> <span class="n">test_size</span><span class="o">=</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">3</span><span class="p">,</span> <span class="n">stratify</span><span class="o">=</span><span class="n">ys</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>4601 e-mails: 2788 ham, 1813 spam; feature max values from 2.17 to 15841
+</code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="k">def</span><span class="w"> </span><span class="nf">evaluate</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">train</span><span class="p">,</span> <span class="n">test</span><span class="p">,</span> <span class="n">C</span><span class="o">=</span><span class="mf">1.0</span><span class="p">):</span>
+    <span class="n">clf</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="n">C</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">5000</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">train</span><span class="p">,</span> <span class="n">ya</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">name</span><span class="si">:</span><span class="s2">13s</span><span class="si">}</span><span class="s2"> train acc </span><span class="si">{</span><span class="n">clf</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">train</span><span class="p">,</span><span class="w"> </span><span class="n">ya</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">  test acc </span><span class="si">{</span><span class="n">clf</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">test</span><span class="p">,</span><span class="w"> </span><span class="n">yt</span><span class="p">)</span><span class="si">:</span><span class="s2">.4f</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">clf</span>
+
+
+<span class="n">evaluate</span><span class="p">(</span><span class="s2">"raw"</span><span class="p">,</span> <span class="n">Xa</span><span class="p">,</span> <span class="n">Xt</span><span class="p">)</span>
+<span class="n">sc</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">Xa</span><span class="p">)</span>
+<span class="n">clf_std</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span><span class="s2">"standardised"</span><span class="p">,</span> <span class="n">sc</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">Xa</span><span class="p">),</span> <span class="n">sc</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">Xt</span><span class="p">))</span>
+<span class="n">eps</span> <span class="o">=</span> <span class="mf">0.01</span>
+<span class="n">sc_log</span> <span class="o">=</span> <span class="n">StandardScaler</span><span class="p">()</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">Xa</span> <span class="o">+</span> <span class="n">eps</span><span class="p">))</span>
+<span class="n">clf_log</span> <span class="o">=</span> <span class="n">evaluate</span><span class="p">(</span><span class="s2">"log + std"</span><span class="p">,</span> <span class="n">sc_log</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">Xa</span> <span class="o">+</span> <span class="n">eps</span><span class="p">)),</span> <span class="n">sc_log</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">Xt</span> <span class="o">+</span> <span class="n">eps</span><span class="p">)))</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>raw           train acc 0.9309  test acc 0.9302
+standardised  train acc 0.9289  test acc 0.9257
+log + std     train acc 0.9416  test acc 0.9433
+</code></pre></div>
+<p>The log transform is the big win. Word frequencies are <strong>heavy-tailed</strong>: most e-mails have 0, a few have a lot. On a linear scale the model can only say "more <code>remove</code> = more spam" proportionally, and a handful of extreme e-mails dominate the fit. After <span class="arithmatex">\(\log(x + 0.01)\)</span> the feature separates <em>absent</em> (a spike at <span class="arithmatex">\(\log 0.01\)</span>) from <em>present</em> and compresses the tail, so "the word appears at all" — which is what matters — becomes easy to express.</p>
+<figure class="fig"><a href="img/04-spam-hist.webp" target="_blank" rel="noopener"><img src="img/04-spam-hist.webp" alt="The frequency of &quot;remove&quot; in ham and spam, raw and after the log transform (log counts on the y axis)." loading="lazy"></a><figcaption markdown="span">The frequency of "remove" in ham and spam, raw and after the log transform (log counts on the y axis).</figcaption></figure>
+
+<h3 id="reading-the-weights">Reading the weights<a class="headerlink" href="#reading-the-weights" title="Permanent link">#</a></h3>
+<div class="highlight"><pre><span></span><code><span class="n">coef</span> <span class="o">=</span> <span class="n">clf_log</span><span class="o">.</span><span class="n">coef_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>                             <span class="c1"># one weight per standardised log-feature</span>
+<span class="n">order</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">coef</span><span class="p">))</span>
+<span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">order</span><span class="p">[:</span><span class="mi">10</span><span class="p">]:</span>
+    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">28s</span><span class="si">}</span><span class="s2"> </span><span class="si">{</span><span class="n">coef</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="si">:</span><span class="s2">+.2f</span><span class="si">}</span><span class="s2">   (odds x</span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">coef</span><span class="p">[</span><span class="n">i</span><span class="p">])</span><span class="si">:</span><span class="s2">.2f</span><span class="si">}</span><span class="s2"> per std)"</span><span class="p">)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>word_freq_george             -1.98   (odds x0.14 per std)
+word_freq_hp                 -1.55   (odds x0.21 per std)
+capital_run_length_total     +0.90   (odds x2.46 per std)
+word_freq_meeting            -0.84   (odds x0.43 per std)
+word_freq_cs                 -0.83   (odds x0.44 per std)
+word_freq_remove             +0.79   (odds x2.20 per std)
+...
+</code></pre></div>
+<p>The strongest <em>ham</em> signals are <code>george</code> and <code>hp</code>: the ham e-mails were donated by George Forman's colleagues at HP. A filter trained on this data would be useless for anyone else — the model learnt the dataset's quirks, a lesson about <strong>where the data comes from</strong> that no test accuracy will reveal. The spam side is what you'd expect: lots of capitals, <code>remove</code> ("to be removed from this list…"), <code>!</code> and <code>$</code>.</p>
+<figure class="fig"><a href="img/04-spam-coefs.webp" target="_blank" rel="noopener"><img src="img/04-spam-coefs.webp" alt="The 15 largest weights of the log + standardised model. Red pushes towards spam, blue towards ham." loading="lazy"></a><figcaption markdown="span">The 15 largest weights of the log + standardised model. Red pushes towards spam, blue towards ham.</figcaption></figure>
+
+<div class="admonition warning">
+<p class="admonition-title">Compare weights only on a common scale</p>
+<p>In my lab report I ranked features by the raw coefficients of the model trained on <strong>unscaled</strong> data. A weight is "change in log-odds per <em>unit</em> of the feature" — and units differ: one more percent of <code>george</code> is enormous, one more character in the total capital run length is nothing. Only after standardisation are weights "per standard deviation" and comparable. Even then, correlated features share their weight, so a small weight does not prove a feature is useless.</p>
+</div>
+<h2 id="ten-classes-the-softmax">Ten classes: the softmax<a class="headerlink" href="#ten-classes-the-softmax" title="Permanent link">#</a></h2>
+<p>For <span class="arithmatex">\(K\)</span> classes, give each class its own score <span class="arithmatex">\(z_k = \mathbf{w}_k^\top\mathbf{x} + b_k\)</span> and turn the scores into probabilities with the <strong>softmax</strong>:</p>
+<div class="arithmatex">\[P(y = k \mid \mathbf{x}) = \frac{e^{z_k}}{\sum_{j=1}^{K} e^{z_j}}\]</div>
+<p>All positive, summing to 1, and the largest score gets the largest probability. The loss is again the negative log-probability of the true class (<strong>categorical cross-entropy</strong>), and the gradient again "probability minus one-hot label, times input". This <em>multinomial logistic regression</em> is literally the last layer of every classification network: a CNN (lesson 13) is a learned feature extractor followed by softmax regression.</p>
+<div class="highlight"><pre><span></span><code><span class="n">x_train</span><span class="p">,</span> <span class="n">y_train</span><span class="p">,</span> <span class="n">x_test</span><span class="p">,</span> <span class="n">y_test</span> <span class="o">=</span> <span class="n">U</span><span class="o">.</span><span class="n">load_mnist</span><span class="p">()</span>
+<span class="n">n_train</span> <span class="o">=</span> <span class="mi">10000</span>                                    <span class="c1"># a subset keeps this under a minute on a CPU</span>
+<span class="n">Xm</span> <span class="o">=</span> <span class="n">x_train</span><span class="p">[:</span><span class="n">n_train</span><span class="p">]</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="n">n_train</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mf">255.0</span>   <span class="c1"># (10000, 784) float64 in [0, 1]</span>
+<span class="n">Xm_test</span> <span class="o">=</span> <span class="n">x_test</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">x_test</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mf">255.0</span>
+<span class="n">t0</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+<span class="n">soft</span> <span class="o">=</span> <span class="n">LogisticRegression</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">max_iter</span><span class="o">=</span><span class="mi">300</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">Xm</span><span class="p">,</span> <span class="n">y_train</span><span class="p">[:</span><span class="n">n_train</span><span class="p">])</span>   <span class="c1"># multinomial (softmax)</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"softmax regression on </span><span class="si">%d</span><span class="s2"> MNIST digits: train acc </span><span class="si">%.4f</span><span class="s2">, test acc </span><span class="si">%.4f</span><span class="s2"> (</span><span class="si">%.0f</span><span class="s2"> s)"</span>
+      <span class="o">%</span> <span class="p">(</span><span class="n">n_train</span><span class="p">,</span> <span class="n">soft</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">Xm</span><span class="p">,</span> <span class="n">y_train</span><span class="p">[:</span><span class="n">n_train</span><span class="p">]),</span> <span class="n">soft</span><span class="o">.</span><span class="n">score</span><span class="p">(</span><span class="n">Xm_test</span><span class="p">,</span> <span class="n">y_test</span><span class="p">),</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="s2">"weights:"</span><span class="p">,</span> <span class="n">soft</span><span class="o">.</span><span class="n">coef_</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>                <span class="c1"># (10 classes, 784 pixels)</span>
+</code></pre></div>
+<div class="highlight"><pre><span></span><code>softmax regression on 10000 MNIST digits: train acc 0.9355, test acc 0.9104 (8 s)
+weights: (10, 784)
+</code></pre></div>
+<figure class="fig"><a href="img/04-softmax-weights.webp" target="_blank" rel="noopener"><img src="img/04-softmax-weights.webp" alt="The 784 weights of each class, shown as 28×28 images (red positive, blue negative). Each is a blurry template: the &quot;0&quot; detector rewards ink on a ring and punishes ink in the centre." loading="lazy"></a><figcaption markdown="span">The 784 weights of each class, shown as 28×28 images (red positive, blue negative). Each is a blurry template: the "0" detector rewards ink on a ring and punishes ink in the centre.</figcaption></figure>
+
+<p>Since the score is a dot product between the image and <span class="arithmatex">\(\mathbf{w}_k\)</span>, each class weight vector <em>is</em> an image — a template the digit is matched against. 91% with templates is respectable, but one template per class cannot cope with all the ways of writing a 7. Neural networks will learn many intermediate templates (features) and combine them; that takes us from 91% to 99% in lesson 13.</p>
+<h2 id="exercises">Exercises<a class="headerlink" href="#exercises" title="Permanent link">#</a></h2>
+<ol>
+<li>Change the decision threshold from 0.5 to 0.9 on the spam filter. How many spams get through, and how many legitimate e-mails are blocked? Which threshold would you choose for a real mailbox? (Lesson 06 formalises this with precision and recall.)</li>
+<li>Implement the softmax regression from scratch with NumPy (one weight matrix <code>W</code> of shape <code>(784, 10)</code>) and train it with mini-batch gradient descent. Subtract <code>z.max(axis=1, keepdims=True)</code> before the exponential — why?</li>
+<li>Train the spam model without <code>george</code> and <code>hp</code>. How much accuracy is lost?</li>
+</ol>
+      </article>
+      <nav class="pager" aria-label="Lessons">
+        <a href="03-optimization.html"><span class="mono">Previous</span><strong>03 · Optimisation for machine learning</strong></a>
+        <a href="05-svm.html" class="next"><span class="mono">Next</span><strong>05 · Support vector machines</strong></a>
+      </nav>
+    </main>
+    <aside class="lesson-toc" aria-label="On this page">
+      <div class="sub first">On this page</div>
+      <ul><li><a href="#from-a-score-to-a-probability">From a score to a probability</a></li>
+<li><a href="#the-loss-cross-entropy">The loss: cross-entropy</a></li>
+<li><a href="#a-spam-filter">A spam filter</a></li>
+<li class="sub"><a href="#reading-the-weights">Reading the weights</a></li>
+<li><a href="#ten-classes-the-softmax">Ten classes: the softmax</a></li>
+<li><a href="#exercises">Exercises</a></li></ul>
+    </aside>
+  </div>
+
+  <footer class="site-footer">
+    <div class="container footer-inner mono wide">
+      <span>© <span id="year"></span> Henrique Corneau · course text and code under MIT</span>
+      <span><a href="https://github.com/henriquecorneau" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/henriquecorneau/" target="_blank" rel="noopener">LinkedIn</a></span>
+    </div>
+  </footer>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+  <script defer src="../course/course.js"></script>
+</body>
+</html>

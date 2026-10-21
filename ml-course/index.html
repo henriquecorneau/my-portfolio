@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Machine Learning Course · Henrique Corneau</title>
+  <meta name="description" content="A hands-on course that starts with a nearest-neighbour classifier and ends with a diffusion model generating data from noise. Every algorithm is first written from scratch in NumPy or PyTorch, checked against the library you would use in practice, and run on real data — and every number and figure on these pages is the actual output of the code.">
+  <meta property="og:title" content="Machine Learning Course · Henrique Corneau">
+  <meta property="og:description" content="A hands-on course that starts with a nearest-neighbour classifier and ends with a diffusion model generating data from noise. Every algorithm is first written from scratch in NumPy or PyTorch, checked against the library you would use in practice, and run on real data — and every number and figure on these pages is the actual output of the code.">
+  <meta property="og:image" content="img/00-hero.webp">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%23111'/><text x='50' y='66' font-size='46' font-family='monospace' fill='%23fff' text-anchor='middle'>HC</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../course/course.css">
+  <script>
+    try { var t = localStorage.getItem('theme'); if (t) document.documentElement.dataset.theme = t; } catch (e) {}
+  </script>
+</head>
+<body data-page="course">
+  <header class="site-header">
+    <div class="container header-inner wide">
+      <a href="../index.html" class="logo">henrique<span>.corneau</span></a>
+      <nav class="nav" aria-label="Main">
+        <a href="../index.html#projects">Projects</a>
+        <a href="../course/index.html">CV Course</a>
+        <a href="index.html" class="current">ML Course</a>
+        <a href="../index.html#papers">Papers</a>
+        <a href="../index.html#about">About</a>
+      </nav>
+      <div class="header-actions">
+        
+        <button type="button" class="icon-btn" id="theme-toggle" aria-label="Toggle theme">
+          <svg class="i-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+          <svg class="i-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container course-index">
+    <section class="course-hero">
+      <p class="eyebrow mono">Free course · Python · NumPy · scikit-learn · PyTorch</p>
+      <h1>Machine Learning, from Linear Models to Deep Vision</h1>
+      <p class="lead">A hands-on course that starts with a nearest-neighbour classifier and ends with a diffusion model generating data from noise. Every algorithm is first written from scratch in NumPy or PyTorch, checked against the library you would use in practice, and run on real data — and every number and figure on these pages is the actual output of the code.</p>
+      <div class="detail-actions">
+        <a class="btn" href="00-setup.html">Start with lesson 00 →</a>
+        <a class="btn btn-ghost" href="ml-course-code.zip" download>Download all code + data (zip)</a>
+      </div>
+      <figure class="hero-strip">
+        <img src="img/00-hero.webp" alt="Decision boundaries of logistic regression, k-NN, an SVM, gradient boosting and a neural network on the same data" loading="eager">
+      </figure>
+    </section>
+    <article class="prose intro"><h2 id="about-this-course">About this course<a class="headerlink" href="#about-this-course" title="Permanent link">#</a></h2>
+<p>This course grew out of two university courses I took — <strong>Introduction to Machine Learning</strong> at INSA Rouen Normandie (France) and <strong>Deep Learning</strong> at UFRN (Brazil) — and the deep learning I use in my research on autonomous drones and boats. I rewrote all of it as one path, in English, moved the deep learning to PyTorch, re-ran every experiment, and fixed the mistakes I made the first time. The mistakes are still there, in red boxes: un-normalised inputs that cost 50 points of accuracy, a model tuned on its own test set, an optimiser comparison where the optimiser never changed. They teach more than the parts that worked.</p>
+<p>Each lesson follows the same rhythm:</p>
+<ol>
+<li><strong>The idea</strong> — the problem, and the maths behind it, kept short.</li>
+<li><strong>From scratch</strong> — an implementation you can read line by line: k-NN, gradient descent, an SVM dual, CART, AdaBoost, k-means, PCA, backpropagation, non-maximum suppression, ArcFace, a diffusion model…</li>
+<li><strong>The library way</strong> — the scikit-learn, PyTorch or Ultralytics call you would use in a real project, and a check that both agree.</li>
+<li><strong>Run it</strong> — every lesson is a single script. Run it, change a hyper-parameter, run it again.</li>
+<li><strong>Pitfalls</strong> — the bugs I actually hit, so you don't have to.</li>
+</ol>
+<h2 id="who-it-is-for">Who it is for<a class="headerlink" href="#who-it-is-for" title="Permanent link">#</a></h2>
+<p>Students and engineers who know Python and some linear algebra and want to <em>understand</em> machine learning instead of copying <code>model.fit()</code>. Parts I–III need high-school calculus (a derivative, the chain rule). Part IV builds neural networks from the ground up, and Part V applies them to vision. If you are new to images, the <a href="../course/index.html">Computer Vision course</a> is the natural companion: it covers the classical side — filters, features, geometry — that this course builds on in lessons 13–16.</p>
+<h2 id="how-to-follow-it">How to follow it<a class="headerlink" href="#how-to-follow-it" title="Permanent link">#</a></h2>
+<p>Start with <a href="00-setup.html">lesson 00</a> to install the environment and download the code. Parts I–III can be read in order or picked à la carte; lesson 06 (model selection) is the one not to skip. Part IV builds up in order (11 → 12 → 13 → 14), and each lesson of Part V stands on its own once Part IV is done.</p>
+<div class="admonition tip">
+<p class="admonition-title">Where this leads</p>
+<p>Lessons 13–16 are the toolbox behind my projects: <a href="../projects/boat-vision.html">boat perception</a> with a custom YOLOv11 detector for an autonomous surface vessel, <a href="../projects/tello-tracking.html">drone target tracking</a> with a custom YOLOv8 model, and <a href="../projects/tello-depth.html">monocular depth on a drone</a> with pretrained networks.</p>
+</div></article>
+    <section class="part">
+      <h2><span class="mono">Part I</span> Foundations</h2>
+      <div class="lesson-grid"><a class="lesson-card" href="00-setup.html">
+          <span class="mono num">00</span>
+          <strong>Setup and how the course code works</strong>
+          <span class="desc">Install Python, scikit-learn and PyTorch in a virtual environment, download the code, and learn the conventions every lesson script follows — seeds, configuration objects, shapes in comments, and datasets that download themselves.</span>
+          <span class="tags-line mono">venv · pip · PyTorch CPU/GPU · project layout · reproducibility</span>
+        </a><a class="lesson-card" href="01-knn-data-splits.html">
+          <span class="mono num">01</span>
+          <strong>Data, splits and a first classifier</strong>
+          <span class="desc">Load a real dataset, look at it before touching a model, split it into training, validation and test sets, and classify wines with k-nearest neighbours — written from scratch, then with scikit-learn. Along the way, the two ideas that run through the whole course — overfitting and feature scaling.</span>
+          <span class="tags-line mono">pandas · stratified split · k-NN · overfitting · standardisation · data leakage</span>
+        </a><a class="lesson-card" href="02-linear-regression.html">
+          <span class="mono num">02</span>
+          <strong>Linear regression and gradient descent</strong>
+          <span class="desc">Fit a line three ways — the closed-form formula, least squares, and gradient descent written by hand — and understand the learning rate, why feature scaling makes optimisation fast, and how a polynomial with too many degrees of freedom memorises noise.</span>
+          <span class="tags-line mono">least squares · MSE · gradient descent · learning rate · conditioning · polynomial features · ridge</span>
+        </a><a class="lesson-card" href="03-optimization.html">
+          <span class="mono num">03</span>
+          <strong>Optimisation for machine learning</strong>
+          <span class="desc">Every model in this course is trained by minimising something. Compare fixed-step gradient descent, Armijo line search and Newton's method on the Rosenbrock function, check gradients numerically, then solve constrained problems with CVXPY — primal, dual, KKT multipliers — up to the minimum enclosing ball and its soft, outlier-tolerant version.</span>
+          <span class="tags-line mono">gradient · Hessian · line search · Newton · Lagrangian · duality · CVXPY</span>
+        </a></div>
+    </section><section class="part">
+      <h2><span class="mono">Part II</span> Supervised learning</h2>
+      <div class="lesson-grid"><a class="lesson-card" href="04-logistic-regression.html">
+          <span class="mono num">04</span>
+          <strong>Logistic regression</strong>
+          <span class="desc">The workhorse of classification. Derive the cross-entropy loss from probabilities, train logistic regression by gradient descent in ten lines, build a spam filter whose weights you can read, and extend it to ten classes with the softmax — the exact output layer of every classification network in Part IV.</span>
+          <span class="tags-line mono">sigmoid · cross-entropy · maximum likelihood · log transform · odds · softmax · MNIST</span>
+        </a><a class="lesson-card" href="05-svm.html">
+          <span class="mono num">05</span>
+          <strong>Support vector machines</strong>
+          <span class="desc">The classifier with the widest margin. Write the SVM as the optimisation problem it is and solve it with CVXPY, see what C really does, derive the dual, and use it to draw curved boundaries with the kernel trick — an RBF SVM written from scratch that agrees with scikit-learn on every point.</span>
+          <span class="tags-line mono">margin · hinge loss · soft margin · support vectors · dual · kernel trick · RBF · grid search</span>
+        </a><a class="lesson-card" href="06-model-selection.html">
+          <span class="mono num">06</span>
+          <strong>Model selection and evaluation</strong>
+          <span class="desc">How to choose hyper-parameters without fooling yourself, and how to report a number someone can trust. Cross-validation from scratch, pipelines that make leakage impossible, grid search on a DNA splice-site problem, the confusion matrix, precision, recall, ROC, and learning curves to tell bias from variance.</span>
+          <span class="tags-line mono">k-fold · stratification · Pipeline · GridSearchCV · confusion matrix · precision/recall · ROC AUC · learning curves</span>
+        </a><a class="lesson-card" href="07-decision-trees.html">
+          <span class="mono num">07</span>
+          <strong>Decision trees</strong>
+          <span class="desc">A model you can read like a flowchart. Measure impurity with the Gini index, grow a CART tree recursively from scratch and check it against scikit-learn, then watch depth drive overfitting and see why a single tree is so unstable — the reason the next lesson exists.</span>
+          <span class="tags-line mono">Gini impurity · greedy splitting · recursion · depth · overfitting · variance</span>
+        </a><a class="lesson-card" href="08-ensembles.html">
+          <span class="mono num">08</span>
+          <strong>Ensembles — bagging, forests and boosting</strong>
+          <span class="desc">Many weak or unstable models, combined, beat one strong model. Build bagging and AdaBoost from scratch, tune a random forest's feature sampling, read feature importances, write gradient boosting as "fit the residuals", and benchmark everything on 100,000 forest-cover samples — including a gradient-boosting run that falls apart without regularisation.</span>
+          <span class="tags-line mono">bootstrap · bagging · random forest · max_features · feature importance · AdaBoost · gradient boosting · learning rate</span>
+        </a></div>
+    </section><section class="part">
+      <h2><span class="mono">Part III</span> Unsupervised learning</h2>
+      <div class="lesson-grid"><a class="lesson-card" href="09-clustering.html">
+          <span class="mono num">09</span>
+          <strong>Clustering</strong>
+          <span class="desc">Learning without labels. Write k-means and its k-means++ initialisation from scratch, see how often a bad start traps it, choose the number of clusters with the elbow and the silhouette, compare hierarchical linkages on shapes k-means cannot handle, and compress a photo of Rouen to 16 colours.</span>
+          <span class="tags-line mono">k-means · k-means++ · inertia · silhouette · hierarchical clustering · linkage · dendrogram · colour quantisation</span>
+        </a><a class="lesson-card" href="10-pca.html">
+          <span class="mono num">10</span>
+          <strong>Dimensionality reduction</strong>
+          <span class="desc">Find the few directions that carry most of the variance. Derive PCA as an eigenvalue problem and implement it in five lines, see the SVD give the same answer, learn why standardisation decides what PCA finds, compress handwritten digits into eigen-digits, and compare PCA with the non-linear t-SNE.</span>
+          <span class="tags-line mono">covariance · eigenvectors · SVD · explained variance · standardisation · reconstruction · t-SNE</span>
+        </a></div>
+    </section><section class="part">
+      <h2><span class="mono">Part IV</span> Deep learning</h2>
+      <div class="lesson-grid"><a class="lesson-card" href="11-neural-net-from-scratch.html">
+          <span class="mono num">11</span>
+          <strong>A neural network from scratch</strong>
+          <span class="desc">Open the black box before using a framework. Activation functions and their derivatives, why sigmoids make deep networks forget how to learn, a two-layer network written in NumPy with backpropagation derived line by line, a gradient check that proves it right, and what the hidden units actually draw.</span>
+          <span class="tags-line mono">neuron · activation functions · vanishing gradients · forward pass · backpropagation · chain rule · gradient check · mini-batch SGD</span>
+        </a><a class="lesson-card" href="12-pytorch-training.html">
+          <span class="mono num">12</span>
+          <strong>PyTorch and the training loop</strong>
+          <span class="desc">The framework that does lesson 11's calculus for you. Tensors with shapes, dtypes and devices, autograd checked against a hand derivation, the canonical training loop, SGD vs momentum vs Adam, the MNIST bug of forgetting to normalise the pixels, and early stopping with a checkpoint you can reload.</span>
+          <span class="tags-line mono">tensors · dtype · device · autograd · nn.Module · DataLoader · optimisers · input normalisation · early stopping · checkpoints</span>
+        </a><a class="lesson-card" href="13-cnn.html">
+          <span class="mono num">13</span>
+          <strong>Convolutional neural networks</strong>
+          <span class="desc">Networks that know they are looking at images. Why a dense layer is the wrong tool for pixels, what a convolution layer computes and how many parameters it costs, an MLP against a CNN on Fashion-MNIST, the overfitting of the class model and how batch norm, dropout, augmentation and a learning-rate schedule fix it — and what the learnt filters actually detect.</span>
+          <span class="tags-line mono">convolution · weight sharing · pooling · Fashion-MNIST · overfitting · batch normalisation · dropout · data augmentation · feature maps</span>
+        </a><a class="lesson-card" href="14-transfer-learning.html">
+          <span class="mono num">14</span>
+          <strong>Architectures and transfer learning</strong>
+          <span class="desc">A short tour of the architectures that shaped deep learning, the residual connection that made very deep networks trainable — measured, not just asserted — and the most useful trick in applied deep learning: start from a network pretrained on ImageNet. With 1,000 labelled satellite images, a fine-tuned ResNet-18 reaches 96%.</span>
+          <span class="tags-line mono">AlexNet · VGG · ResNet · residual connections · EfficientNet · ViT · pretrained features · linear probe · fine-tuning · EuroSAT</span>
+        </a></div>
+    </section><section class="part">
+      <h2><span class="mono">Part V</span> Deep learning for vision</h2>
+      <div class="lesson-grid"><a class="lesson-card" href="15-object-detection.html">
+          <span class="mono num">15</span>
+          <strong>Object detection with YOLO</strong>
+          <span class="desc">Find every object in an image and draw a box around it. Intersection over union and non-maximum suppression written from scratch, what a detector outputs and how confidence thresholds and input resolution change it, detection/segmentation/pose with pretrained YOLOv8, and fine-tuning on a 36-image skateboard dataset I labelled — on a CPU, compared with my original GPU run.</span>
+          <span class="tags-line mono">bounding boxes · IoU · non-maximum suppression · confidence threshold · input resolution · mAP · YOLOv8 · fine-tuning · segmentation · pose</span>
+        </a><a class="lesson-card" href="16-metric-learning.html">
+          <span class="mono num">16</span>
+          <strong>Metric learning and face recognition</strong>
+          <span class="desc">Classifiers need every class at training time; recognising people does not. Learn an embedding where the same face lands close and different faces far apart, train it with the ArcFace angular-margin loss written from scratch, make it robust to face masks with occlusion augmentation, and enrol a new person from a single photo with a threshold you can justify.</span>
+          <span class="tags-line mono">embeddings · cosine similarity · ArcFace · open-set recognition · verification · ROC · thresholds · occlusion augmentation</span>
+        </a><a class="lesson-card" href="17-diffusion.html">
+          <span class="mono num">17</span>
+          <strong>Generative models — diffusion</strong>
+          <span class="desc">From recognising images to creating them. Build a denoising diffusion model from scratch — forward noising, a network that predicts noise, and the reverse sampling loop — watch it turn Gaussian noise into a learnt distribution, then see how the same idea, moved into a latent space and conditioned on text, becomes Stable Diffusion.</span>
+          <span class="tags-line mono">generative models · DDPM · noise schedule · denoising objective · ancestral sampling · latent diffusion · classifier-free guidance</span>
+        </a></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner mono wide">
+      <span>© <span id="year"></span> Henrique Corneau · course text and code under MIT</span>
+      <span><a href="https://github.com/henriquecorneau" target="_blank" rel="noopener">GitHub</a> · <a href="https://www.linkedin.com/in/henriquecorneau/" target="_blank" rel="noopener">LinkedIn</a></span>
+    </div>
+  </footer>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+  <script defer src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+  <script defer src="../course/course.js"></script>
+</body>
+</html>

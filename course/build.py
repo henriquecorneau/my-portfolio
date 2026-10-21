@@ -120,6 +120,7 @@ HEAD = """<!doctype html>
       <nav class="nav" aria-label="Main">
         <a href="../index.html#projects">Projects</a>
         <a href="index.html" class="current">CV Course</a>
+        <a href="../ml-course/index.html">ML Course</a>
         <a href="../index.html#papers">Papers</a>
         <a href="../index.html#about">About</a>
       </nav>

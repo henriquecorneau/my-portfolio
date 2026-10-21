@@ -792,7 +792,7 @@
 
   const strings = {
     en: {
-      'nav.projects': 'Projects', 'nav.course': 'CV Course', 'nav.papers': 'Papers', 'nav.about': 'About', 'nav.contact': 'Contact',
+      'nav.projects': 'Projects', 'nav.course': 'CV Course', 'nav.mlcourse': 'ML Course', 'nav.papers': 'Papers', 'nav.about': 'About', 'nav.contact': 'Contact',
       'hero.eyebrow': 'Robotics · Computer Vision · Embedded Systems',
       'hero.title': "Hi, I'm Henrique!",
       'hero.lead': 'Mechatronics engineering student at <strong>UFRN</strong> (Brazil), with an exchange year at <strong>INSA Rouen Normandie</strong> (France). I build autonomous drones, robot perception pipelines and embedded systems — and I document my projects here.',
@@ -804,6 +804,10 @@
       'course.title': 'Computer Vision, from Pixels to 3-D',
       'course.text': 'A hands-on course built from my coursework at UFRN and INSA Rouen and my research projects: from NumPy arrays and filters to edges, features, homographies, camera calibration, stereo, Structure from Motion and ORB-SLAM3. Every method is written from scratch, then compared with OpenCV — and every figure is the real output of the code.',
       'course.cta': 'Start the course →',
+      'mlcourse.eyebrow': 'Free course · 18 lessons · scikit-learn + PyTorch',
+      'mlcourse.title': 'Machine Learning, from Linear Models to Deep Vision',
+      'mlcourse.text': 'From k-nearest neighbours, SVMs and gradient boosting to backpropagation, CNNs, transfer learning, YOLO, face embeddings and diffusion models — built from my coursework at INSA Rouen and UFRN. Every algorithm is written from scratch, checked against scikit-learn or PyTorch, and run on real data.',
+      'mlcourse.cta': 'Start the course →',
       'papers.title': 'Publications',
       'about.title': 'About',
       'about.p1': "I'm a mechatronics engineering student at the Universidade Federal do Rio Grande do Norte (UFRN), passionate about robotics, computer vision, embedded systems and edge AI.",
@@ -824,7 +828,7 @@
       metaDesc: 'Henrique Corneau — Mechatronics engineering student working on robotics, computer vision and embedded systems.'
     },
     pt: {
-      'nav.projects': 'Projetos', 'nav.course': 'Curso de Visão', 'nav.papers': 'Artigos', 'nav.about': 'Sobre', 'nav.contact': 'Contato',
+      'nav.projects': 'Projetos', 'nav.course': 'Curso de Visão', 'nav.mlcourse': 'Curso de ML', 'nav.papers': 'Artigos', 'nav.about': 'Sobre', 'nav.contact': 'Contato',
       'hero.eyebrow': 'Robótica · Visão Computacional · Sistemas Embarcados',
       'hero.title': 'Olá, eu sou o Henrique!',
       'hero.lead': 'Estudante de Engenharia Mecatrônica na <strong>UFRN</strong> (Brasil), com um ano de intercâmbio no <strong>INSA Rouen Normandie</strong> (França). Desenvolvo drones autônomos, sistemas de percepção robótica e sistemas embarcados — e documento meus projetos aqui.',
@@ -836,6 +840,10 @@
       'course.title': 'Visão Computacional, do Pixel ao 3D',
       'course.text': 'Um curso prático construído a partir das minhas disciplinas na UFRN e no INSA Rouen e dos meus projetos de pesquisa: de arrays NumPy e filtros a bordas, features, homografias, calibração de câmera, estéreo, Structure from Motion e ORB-SLAM3. Cada método é implementado do zero e depois comparado com o OpenCV — e cada figura é a saída real do código.',
       'course.cta': 'Começar o curso →',
+      'mlcourse.eyebrow': 'Curso gratuito · 18 lições · scikit-learn + PyTorch (em inglês)',
+      'mlcourse.title': 'Machine Learning, de Modelos Lineares à Visão Profunda',
+      'mlcourse.text': 'De k vizinhos mais próximos, SVMs e gradient boosting a backpropagation, CNNs, transfer learning, YOLO, embeddings de rostos e modelos de difusão — construído a partir das minhas disciplinas no INSA Rouen e na UFRN. Cada algoritmo é implementado do zero, conferido com o scikit-learn ou o PyTorch e executado em dados reais.',
+      'mlcourse.cta': 'Começar o curso →',
       'papers.title': 'Publicações',
       'about.title': 'Sobre',
       'about.p1': 'Sou estudante de Engenharia Mecatrônica na Universidade Federal do Rio Grande do Norte (UFRN), apaixonado por robótica, visão computacional, sistemas embarcados e Edge AI.',

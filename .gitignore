@@ -1,3 +1,5 @@
 __pycache__/
 course/code/out/
 course/code/camera_calibration.yaml
+ml-course/code/data/cache/
+ml-course/code/out/
